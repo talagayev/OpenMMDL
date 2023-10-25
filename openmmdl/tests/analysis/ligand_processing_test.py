@@ -1,4 +1,5 @@
 import pytest
+import openmmdl
 from openmmdl.openmmdl_analysis.ligand_processing import increase_ring_indices, convert_ligand_to_smiles
 
 
