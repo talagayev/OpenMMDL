@@ -1,51 +1,21 @@
-import rdkit
-from rdkit import Chem
-from rdkit.Chem import Draw
-from rdkit.Chem import AllChem
-from rdkit.Chem.Draw import rdMolDraw2D
+import pytest
+from openmmdl.openmmdl_analysis.ligand_processing import increase_ring_indices, convert_ligand_to_smiles import increase_ring_indices, convert_ligand_to_smiles
 
-def increase_ring_indices(ring, lig_index):
-    """
-    Increases the atom indices in a ring of the ligand obtained from the ligand to fit the atom indices present in the protein-ligand complex.
 
-    Parameters
-    ----------
-    ring : str
-        A list of atom indices belonging to a ring that need to be modified.
-    lig_index : str
-        An integer that is the first number of the ligand atom indices obtained from the protein-ligand, which is used to modify the ring indices
+def test_increase_ring_indices():
+    # Test case 1: Check if ring indices are correctly increased
+    ring = [1, 2, 3]
+    lig_index = 10
+    result = increase_ring_indices(ring, lig_index)
+    assert result == [11, 12, 13]
 
-    Returns
-    -------
-    list of int :
-        A new list with modified atom indicies.
-    """
-    return [atom_idx + lig_index for atom_idx in ring]
+    # Test case 2: Check with a different lig_index
+    ring = [3, 4, 5]
+    lig_index = 20
+    result = increase_ring_indices(ring, lig_index)
+    assert result == [23, 24, 25]
 
-def convert_ligand_to_smiles(input_sdf, output_smi):
-    """
-    Converts ligand structures from an SDF file to SMILES :) format
+    # Add more test cases as needed
 
-    Parameters
-    ----------
-    input_sdf : str
-        Path to the SDF file with the ligand that wll be converted.
-    output_smi : str
-        Path to the output SMILES files.
-
-    Returns
-    -------
-    None
-    """
-    # Create a molecule supplier from an SDF file
-    mol_supplier = Chem.SDMolSupplier(input_sdf)
-
-    # Open the output SMILES file for writing
-    with open(output_smi, "w") as output_file:
-        # Iterate through molecules and convert each to SMILES
-        for mol in mol_supplier:
-            if mol is not None:  # Make sure the molecule was successfully read
-                smiles = Chem.MolToSmiles(mol)
-                output_file.write(smiles + "\n")
-            else:
-            	print("nono")
+if __name__ == '__main__':
+    pytest.main()
