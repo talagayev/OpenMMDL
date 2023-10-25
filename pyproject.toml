@@ -67,12 +67,12 @@ openmmdl = [
 ]
 
 [tool.versioningit]
-default-version = "0.0.1"  # Change to your desired initial version
+default-version = "0.0.11"  # Change to your desired initial version
 
 [tool.versioningit.vcs]
 method = "git"
 match = ["*"]
-default-tag = "v0.0.1"  # Change to your desired initial version tag
+default-tag = "v0.0.11"  # Change to your desired initial version tag
 
 [tool.versioningit.write]
 file = "openmmdl/_version.py"
