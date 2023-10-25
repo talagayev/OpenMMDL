@@ -1,0 +1,4 @@
+name: CI-CD_OpenMMDL
+
+
+on: [push]
