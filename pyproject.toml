@@ -67,19 +67,17 @@ openmmdl = [
 ]
 
 [tool.versioningit]
-default-version = "0.0.1"
+default-version = "0.0.1"  # Change to your desired initial version
 
 [tool.versioningit.format]
-distance = "{base_version}+{distance}.{vcs}{rev}"
-dirty = "{base_version}+{distance}.{vcs}{rev}.dirty"
-distance-dirty = "{base_version}+{distance}.{vcs}{rev}.dirty"
+distance = "{base_version}.post{distance}+{vcs}{rev}"
+dirty = "{base_version}.post{distance}+{vcs}{rev}.dirty"
+distance-dirty = "{base_version}.post{distance}+{vcs}{rev}.dirty"
 
 [tool.versioningit.vcs]
-# The method key:
-method = "git"  # <- The method name
-# Parameters to pass to the method:
+method = "git"
 match = ["*"]
-default-tag = "1.0.0"
+default-tag = "v0.0.1"  # Change to your desired initial version tag
 
 [tool.versioningit.write]
 file = "openmmdl/_version.py"
