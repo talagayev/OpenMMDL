@@ -69,11 +69,6 @@ openmmdl = [
 [tool.versioningit]
 default-version = "0.0.1"  # Change to your desired initial version
 
-[tool.versioningit.format]
-distance = "{base_version}.post{distance}+{vcs}{rev}"
-dirty = "{base_version}.post{distance}+{vcs}{rev}"
-distance-dirty = "{base_version}.post{distance}+{vcs}{rev}"
-
 [tool.versioningit.vcs]
 method = "git"
 match = ["*"]
