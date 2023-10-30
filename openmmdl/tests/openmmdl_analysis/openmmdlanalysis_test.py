@@ -3,6 +3,8 @@ import subprocess
 import os
 import openmmdl
 
+from pathlib import Path
+
 from openmmdl.openmmdl_analysis.preprocessing import process_pdb_file, convert_pdb_to_sdf
 from openmmdl.openmmdl_analysis.rmsd_calculation import rmsd_for_atomgroups, RMSD_dist_frames
 from openmmdl.openmmdl_analysis.ligand_processing import increase_ring_indices, convert_ligand_to_smiles
@@ -14,6 +16,7 @@ from openmmdl.openmmdl_analysis.barcode_generation import barcodegeneration,plot
 from openmmdl.openmmdl_analysis.visualization_functions import interacting_water_ids, save_interacting_waters_trajectory, cloud_json_generation
 from openmmdl.openmmdl_analysis.pml_writer import generate_md_pharmacophore_cloudcenters, generate_bindingmode_pharmacophore, generate_pharmacophore_centers_all_points, generate_point_cloud_pml
 
+test_data_directory = Path("openmmdl/tests/data/in")
 
 @pytest.fixture(scope="session")
 def test_data_dir(tmp_path_factory):
@@ -23,7 +26,7 @@ def test_data_dir(tmp_path_factory):
 def test_script_execution(test_data_dir):
     # Ensure that the script runs successfully without errors
     script_path = "openmmdlanalysis.py"
-    topology_file = "openmmdl/tests/data/in/0_unk_hoh.pdb"
+    topology_file = test_data_directory / "0_unk_hoh.pdb"
     trajectory_file = "openmmdl/tests/data/in/all_50.dcd"
     ligand_sdf_file = "openmmdl/tests/data/in/ligand.sdf"
     ligand_name = "UNK"
