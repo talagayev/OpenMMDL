@@ -16,6 +16,13 @@ from openmmdl.openmmdl_analysis.barcode_generation import barcodegeneration,plot
 from openmmdl.openmmdl_analysis.visualization_functions import interacting_water_ids, save_interacting_waters_trajectory, cloud_json_generation
 from openmmdl.openmmdl_analysis.pml_writer import generate_md_pharmacophore_cloudcenters, generate_bindingmode_pharmacophore, generate_pharmacophore_centers_all_points, generate_point_cloud_pml
 
+# Print current working directory
+print("Current working directory:", os.getcwd())
+
+# Print the full path to the input file
+input_pdb_filename = "openmmdl/tests/data/in/0_unk_hoh.pdb"
+print("Full path to input file:", os.path.abspath(input_pdb_filename))
+
 test_data_directory = Path("openmmdl/tests/data/in")
 
 @pytest.fixture(scope="session")
