@@ -1,83 +1,36 @@
 import pytest
 import openmmdl
-from openmmdl.openmmdl_setup import openmmdlsetup
+from openmmdl.openmmdl_setup.openmmdlsetup import configureDefaultAmberOptions
 
-# Test the function that requires session data
-def test_prepare_simulation():
-    session = {
-        "fileType": "pdb",
-        "pdbType": "pdb",
-        "sdfFile": "ligand.sdf",
-        "ligandMinimization": "True",
-        "ligandSanitization": "True",
-        "forcefield": "amber",
-        "waterModel": "TIP3P",
-        "add_membrane": "True",
-        "lipidType": "POPC",
-        "membrane_padding": "20.0",
-        "membrane_ionicstrength": "0.15",
-        "membrane_positive": "Na+",
-        "membrane_negative": "Cl-",
-        "clean_up": "True",
-        "solvent": "True",
-        "water_padding": "True",
-        "water_padding_distance": "20.0",
-        "water_boxShape": "octahedral",
-        "water_ionicstrength": "0.15",
-        "water_positive": "Na+",
-        "water_negative": "Cl-",
-        "hmr": "True",
-        "hmrMass": "4.0",
-        "nonbondedMethod": "PME",
-        "cutoff": "12.0",
-        "ewaldTol": "1e-5",
-        "constraints": "hbonds",
-        "constraintTol": "1e-4",
-        "temperature": "300",
-        "friction": "1.0",
-        "ensemble": "npt",
-        "pressure": "1.0",
-        "barostatInterval": "25",
-        "sim_length": "10",
-        "dcdFrames": "1000",
-        "dcdInterval": "1",
-        "pdbInterval_ns": "10",
-        "pdbInterval": "10",
-        "restart_checkpoint": "yes",
-        "restart_step": "100",
-        "equilibration_length": "5",
-        "equilibrationSteps": "5000",
-        "platform": "CUDA",
-        "precision": "mixed",
-        "writeDCD": "True",
-        "writeData": "True",
-        "dataFields": ["kineticEnergy", "potentialEnergy"],
-        "writeCheckpoint": "True",
-        "checkpointInterval_ns": "50",
-        "checkpointFilename": "checkpoint.chk",
-        "writeSimulationXml": "True",
-        "systemXmlFilename": "system.xml",
-        "integratorXmlFilename": "integrator.xml",
-        "writeFinalState": "True",
-        "finalStateFileType": "checkpoint",
-        "finalStateFilename": "final_state.chk",
-        "md_postprocessing": "True",
-        "mdtraj_output": "mdtraj_gro",
-        "mda_output": "output_data.csv",
-        "mda_selection": "protein and name CA",
-        "mdtraj_removal": "True",
-        "analysis_selection": "analysis_all",
-        "sdfFile": "ligand.sdf",
-        "binding_mode": "true",
-        "min_transition": "1",
-        "rmsd_diff": "0.1",
-        "pml_generation": "True",
-    }
+@pytest.fixture
+def session():
+    # Implement a fixture that provides a session-like dictionary
+    return {}
 
-    script = openmmdlsetup.prepare_simulation(session)  # Call the main function with the session data
-    assert script is not None
+def test_configure_default_amber_options(session):
+    # Call the function with an empty session dictionary
+    configureDefaultAmberOptions(session)
 
-# Additional test cases can be added for other functions as needed
-
-if __name__ == '__main__':
-    pytest.main()
+    # Check that the default options are correctly set
+    assert session['nmLig'] is False
+    assert session['lig_ff'] == 'gaff'
+    assert session['charge_value'] == '0'
+    assert session['charge_method'] == 'bcc'
+    assert session['spLig'] is False
+    assert session['prot_ff'] == 'ff14SB'
+    assert session['dna_ff'] == 'OL15'
+    assert session['rna_ff'] == 'OL3'
+    assert session['carbo_ff'] == 'GLYCAM_06j'
+    assert session['addType'] == 'addWater'
+    assert session['boxType'] == 'cube'
+    assert session['dist'] == '10'
+    assert session['lipid_tp'] == 'POPC'
+    assert session['other_lipid_tp_input'] == 'POPC:TOPC'
+    assert session['lipid_ratio'] == '1:1'
+    assert session['lipid_ff'] == 'lipid21'
+    assert session['dist2Border'] == '15'
+    assert session['padDist'] == '17'
+    assert session['water_ff'] == 'tip3p'
+    assert session['pos_ion'] == 'Na+'
+    assert session['neg_ion'] == 'Cl-'
+    assert session['ionConc'] == '0.15'
