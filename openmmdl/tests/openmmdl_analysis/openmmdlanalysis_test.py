@@ -23,9 +23,9 @@ def test_data_dir(tmp_path_factory):
 def test_script_execution(test_data_dir):
     # Ensure that the script runs successfully without errors
     script_path = "openmmdlanalysis.py"
-    topology_file = "openmmdl/tests/data/0_unk_hoh.pdb"
-    trajectory_file = "openmmdl/tests/data/all_50.dcd"
-    ligand_sdf_file = "openmmdl/tests/data/ligand.sdf"
+    topology_file = "openmmdl/tests/data/in/0_unk_hoh.pdb"
+    trajectory_file = "openmmdl/tests/data/in/all_50.dcd"
+    ligand_sdf_file = "openmmdl/tests/data/in/ligand.sdf"
     ligand_name = "UNK"
     
     cmd = f" openmmdl_analysis -t {topology_file} -d {trajectory_file} -l {ligand_sdf_file} -n {ligand_name} -b 40 -c 2"
