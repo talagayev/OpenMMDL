@@ -1,6 +1,6 @@
 import networkx as nx
 import os
-from your_module_name import min_transition_calculation, binding_site_markov_network
+from openmmdl.openmmdl_analysis.markov_state_figure_generation import min_transition_calculation, binding_site_markov_network
 
 # Create a test for min_transition_calculation
 def test_min_transition_calculation():
