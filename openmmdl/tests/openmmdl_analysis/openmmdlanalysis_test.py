@@ -15,8 +15,6 @@ from openmmdl.openmmdl_analysis.visualization_functions import interacting_water
 from openmmdl.openmmdl_analysis.pml_writer import generate_md_pharmacophore_cloudcenters, generate_bindingmode_pharmacophore, generate_pharmacophore_centers_all_points, generate_point_cloud_pml
 
 
-PATH_TEST_DATA = Path(__name__).parent / "openmmdl/tests/data"
-
 @pytest.fixture(scope="session")
 def test_data_dir(tmp_path_factory):
     data_dir = tmp_path_factory.mktemp("test_data")
