@@ -1,5 +1,5 @@
 import pytest
-from openmmdl.openmmdl_setup.openmmdlsetup import *
+import openmmdl.openmmdl_setup.openmmdlsetup
 
 # Test the function that requires session data
 def test_prepare_simulation():
@@ -73,7 +73,7 @@ def test_prepare_simulation():
         "pml_generation": "True",
     }
 
-    script = my_script.prepare_simulation(session)  # Call the main function with the session data
+    script = openmmdlsetup.prepare_simulation(session)  # Call the main function with the session data
     assert script is not None
 
 # Additional test cases can be added for other functions as needed
