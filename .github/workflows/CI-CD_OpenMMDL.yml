@@ -31,12 +31,12 @@ jobs:
 
     - name: Install pytest and run tests
       run: |
-        pip install pytest
-        pytest --junitxml=junit.xml  # Generate JUnit XML report
+        pip install pytest pytest-cov
+        pytest --cov=my_module --cov-report=xml
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
       with:
-        files: junit.xml  # Specify the path to your JUnit XML report
+        files: coverage.xml  # Specify the path to the XML coverage report
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
