@@ -7,11 +7,12 @@ def session():
     # Implement a fixture that provides a session-like dictionary
     return {}
 
-def test_configure_default_amber_options(session):
-    # Call the function with an empty session dictionary
-    configureDefaultAmberOptions(session)
+def test_configure_default_amber_options():
+    # Call the function without any arguments
+    configureDefaultAmberOptions()
 
     # Check that the default options are correctly set
+    # Replace the following checks with your specific expectations
     assert session['nmLig'] is False
     assert session['lig_ff'] == 'gaff'
     assert session['charge_value'] == '0'
