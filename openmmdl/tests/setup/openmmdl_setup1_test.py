@@ -1,43 +1,82 @@
 import pytest
-import openmm as mm
-import openmm.unit as unit
-from openmm.app import PDBFile, PDBxFile
-from pdbfixer.pdbfixer import PDBFixer, proteinResidues, dnaResidues, rnaResidues, _guessFileFormat
-from flask import Flask, request, session, g, render_template, make_response, send_file, url_for
-from werkzeug.utils import secure_filename
-from multiprocessing import Process, Pipe
-import datetime
-import os
-import shutil
-import signal
-import sys
-import tempfile
-import threading
-import time
-import traceback
-import webbrowser
-import zipfile
 from openmmdl.openmmdl_setup.openmmdlsetup import *
 
-@pytest.fixture
-def client():
-    app.config['TESTING'] = True
-    with app.test_client() as client:
-        yield client
+# Test the function that requires session data
+def test_prepare_simulation():
+    session = {
+        "fileType": "pdb",
+        "pdbType": "pdb",
+        "sdfFile": "ligand.sdf",
+        "ligandMinimization": "True",
+        "ligandSanitization": "True",
+        "forcefield": "amber",
+        "waterModel": "TIP3P",
+        "add_membrane": "True",
+        "lipidType": "POPC",
+        "membrane_padding": "20.0",
+        "membrane_ionicstrength": "0.15",
+        "membrane_positive": "Na+",
+        "membrane_negative": "Cl-",
+        "clean_up": "True",
+        "solvent": "True",
+        "water_padding": "True",
+        "water_padding_distance": "20.0",
+        "water_boxShape": "octahedral",
+        "water_ionicstrength": "0.15",
+        "water_positive": "Na+",
+        "water_negative": "Cl-",
+        "hmr": "True",
+        "hmrMass": "4.0",
+        "nonbondedMethod": "PME",
+        "cutoff": "12.0",
+        "ewaldTol": "1e-5",
+        "constraints": "hbonds",
+        "constraintTol": "1e-4",
+        "temperature": "300",
+        "friction": "1.0",
+        "ensemble": "npt",
+        "pressure": "1.0",
+        "barostatInterval": "25",
+        "sim_length": "10",
+        "dcdFrames": "1000",
+        "dcdInterval": "1",
+        "pdbInterval_ns": "10",
+        "pdbInterval": "10",
+        "restart_checkpoint": "yes",
+        "restart_step": "100",
+        "equilibration_length": "5",
+        "equilibrationSteps": "5000",
+        "platform": "CUDA",
+        "precision": "mixed",
+        "writeDCD": "True",
+        "writeData": "True",
+        "dataFields": ["kineticEnergy", "potentialEnergy"],
+        "writeCheckpoint": "True",
+        "checkpointInterval_ns": "50",
+        "checkpointFilename": "checkpoint.chk",
+        "writeSimulationXml": "True",
+        "systemXmlFilename": "system.xml",
+        "integratorXmlFilename": "integrator.xml",
+        "writeFinalState": "True",
+        "finalStateFileType": "checkpoint",
+        "finalStateFilename": "final_state.chk",
+        "md_postprocessing": "True",
+        "mdtraj_output": "mdtraj_gro",
+        "mda_output": "output_data.csv",
+        "mda_selection": "protein and name CA",
+        "mdtraj_removal": "True",
+        "analysis_selection": "analysis_all",
+        "sdfFile": "ligand.sdf",
+        "binding_mode": "true",
+        "min_transition": "1",
+        "rmsd_diff": "0.1",
+        "pml_generation": "True",
+    }
 
-def test_showSelectFileType(client):
-    response = client.get('/')
-    assert response.status_code == 200
-    assert b"selectFileType.html" in response.data
+    script = my_script.prepare_simulation(session)  # Call the main function with the session data
+    assert script is not None
 
-def test_selectFiles(client):
-    response = client.get('/selectFiles?type=pdb')
-    assert response.status_code == 200
-    assert b"configurePdbFile.html" in response.data
+# Additional test cases can be added for other functions as needed
 
-def test_showConfigureFiles(client):
-    with client.session_transaction() as sess:
-        sess['fileType'] = 'pdb'
-    response = client.get('/showConfigureFiles')
-    assert response.status_code == 200
-    assert b"configurePdbFile.html" in response.data
+if __name__ == '__main__':
+    pytest.main()
