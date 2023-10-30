@@ -1,5 +1,6 @@
 import pytest
 import openmmdl
+import openmmdl.openmmdl_setup.openmmdlsetup
 from openmmdl.openmmdl_setup.openmmdlsetup import *
 
 # Test the function that requires session data
