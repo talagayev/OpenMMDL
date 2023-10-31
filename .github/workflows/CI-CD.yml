@@ -1,4 +1,4 @@
-name: CI-CD_OpenMMDL
+name: CI-CD
 
 on: [push]
 
