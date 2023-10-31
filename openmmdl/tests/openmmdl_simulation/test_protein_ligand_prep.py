@@ -1,7 +1,7 @@
 import pytest
 import os
 from pathlib import Path
-from openmmdl.openmmdl_simulation.scripts.protein_ligand_prep import protein_choice, prepare_ligand, rdkit_to_openmm
+from openmmdl.openmmdl_simulation.scripts.protein_ligand_prep import *
 
 # Print current working directory
 print("Current working directory:", os.getcwd())
