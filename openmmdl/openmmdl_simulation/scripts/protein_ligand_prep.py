@@ -48,8 +48,10 @@ def prepare_ligand(ligand_file, minimize_molecule=True):
     """
     # Reading of SDF File, converting to RDKit.
     file_name = ligand_file.lower()
+    print(file_name)
     if file_name.endswith(".sdf"):
         rdkit_mol = Chem.SDMolSupplier(ligand_file, sanitize=False)
+        print(type(rdkit_mol))
         for mol in rdkit_mol:
             rdkit_mol = mol
     elif file_name.endswith(".mol") and not file_name.endswith(".mol2"):
