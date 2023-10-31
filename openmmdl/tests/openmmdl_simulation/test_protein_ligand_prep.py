@@ -26,7 +26,7 @@ def test_protein_choice():
 # Test the prepare_ligand function
 def test_prepare_ligand():
     # Test the function with the sample ligand file.
-    rdkit_mol = prepare_ligand(str(TEST_LIGAND_FILE), minimize_molecule=True)  # Convert to string
+    rdkit_mol = prepare_ligand("openmmdl/tests/data/in/CVV.sdf", minimize_molecule=True)  # Convert to string
 
     # Assertions to check the behavior of the function.
     assert isinstance(rdkit_mol, Chem.Mol)
