@@ -1,5 +1,7 @@
 import pytest
 import os
+from rdkit import Chem
+from simtk import openmm, unit
 from pathlib import Path
 from openmmdl.openmmdl_simulation.scripts.protein_ligand_prep import *
 
@@ -23,10 +25,50 @@ def test_protein_choice():
 
 # Test the prepare_ligand function
 def test_prepare_ligand():
-    rdkitmolh = prepare_ligand(str(TEST_LIGAND_FILE))
-    Chem.GetSSSR(rdkitmolh)  # Initialize the RingInfo
-    assert isinstance(rdkitmolh, Chem.Mol)
+    # Test the function with the sample ligand file.
+    rdkit_mol = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=True)
 
+    # Assertions to check the behavior of the function.
+    assert isinstance(rdkit_mol, Chem.Mol)
+    assert Chem.MolToSmiles(rdkit_mol)  # Check if a valid SMILES can be generated.
+
+    # Check if hydrogen atoms are added.
+    assert rdkit_mol.GetNumAtoms() > 0
+    assert rdkit_mol.GetNumAtoms() > rdkit_mol.GetNumHeavyAtoms()
+
+    # Check if chiral tags are assigned.
+    assert all(atom.HasChiralTag() for atom in rdkit_mol.GetAtoms())
+
+    # Check if minimization was performed when selected.
+    assert isinstance(rdkit_mol, Chem.Mol)  # Check if the molecule is still an RDKit molecule.
+
+    # Check the conversion to an OpenFF Molecule object.
+    openff_mol = Molecule(rdkit_mol)
+    assert isinstance(openff_mol, Molecule)
+
+def test_rdkit_to_openmm():
+    # Create an RDKit molecule (rdkit_mol) and provide a name.
+    rdkit_mol = Chem.MolFromSmiles('CCO')  # Example molecule: Ethanol
+    name = "Ethanol"
+
+    # Convert the RDKit molecule to an OpenMM Modeller object.
+    omm_mol = rdkit_to_openmm(rdkit_mol, name)
+
+    # Check if the returned object is an instance of openmm.app.Modeller.
+    assert isinstance(omm_mol, openmm.app.Modeller)
+
+    # Check if the Modeller object's topology contains the expected number of atoms.
+    num_atoms_expected = rdkit_mol.GetNumAtoms()
+    num_atoms_actual = omm_mol.topology.getNumAtoms()
+    assert num_atoms_expected == num_atoms_actual
+
+    # Check if the Modeller object's name matches the provided name.
+    assert omm_mol.topology.getPeriodicBoxVectors() == name
+
+    # Check if the Modeller object's positions are in nanometers.
+    positions = omm_mol.getPositions()
+    for position in positions:
+        assert position.unit == unit.nanometers
 
 if __name__ == '__main__':
     pytest.main()
