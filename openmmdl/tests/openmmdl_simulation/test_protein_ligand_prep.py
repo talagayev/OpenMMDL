@@ -23,7 +23,7 @@ def test_protein_choice():
 
 # Test the prepare_ligand function
 def test_prepare_ligand():
-    rdkitmolh = prepare_ligand(TEST_LIGAND_FILE)
+    rdkitmolh = prepare_ligand(str(TEST_LIGAND_FILE)) 
     assert isinstance(rdkitmolh, Chem.Mol)
 
 # Test the rdkit_to_openmm function
