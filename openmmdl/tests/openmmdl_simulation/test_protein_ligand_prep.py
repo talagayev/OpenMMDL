@@ -15,8 +15,8 @@ print("Full path to input file:", os.path.abspath(input_pdb_filename))
 test_data_directory = Path("openmmdl/tests/data/in")
 
 # Define full paths to test files
-TEST_LIGAND_FILE = test_data_directory / 'lig.sdf'
-TEST_PROTEIN = test_data_directory / '0_unk_hoh.pdb'
+TEST_LIGAND_FILE = test_data_directory / 'CVV.sdf'
+TEST_PROTEIN = test_data_directory / '6b73.pdb'
 
 # Test the protein_choice function
 def test_protein_choice():
@@ -26,7 +26,7 @@ def test_protein_choice():
 # Test the prepare_ligand function
 def test_prepare_ligand():
     # Test the function with the sample ligand file.
-    rdkit_mol = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=True)
+    rdkit_mol = prepare_ligand(str(TEST_LIGAND_FILE), minimize_molecule=True)  # Convert to string
 
     # Assertions to check the behavior of the function.
     assert isinstance(rdkit_mol, Chem.Mol)
