@@ -8,14 +8,15 @@ from openmmdl.openmmdl_simulation.scripts.protein_ligand_prep import *
 # Print current working directory
 print("Current working directory:", os.getcwd())
 
-# Define the full path to the input file
-input_pdb_filename = "openmmdl/tests/data/in/0_unk_hoh.pdb"
-print("Full path to input file:", os.path.abspath(input_pdb_filename))
+# Assuming that 'test_data_directory' is properly defined in your test setup
+test_data_directory = "openmmdl/tests/data/in"
+
 
 test_data_directory = Path("openmmdl/tests/data/in")
 
-# Define full paths to test files
-TEST_LIGAND_FILE = test_data_directory / 'CVV.sdf'
+
+# Define the full path to the input SDF file
+TEST_LIGAND_FILE = f"{test_data_directory}/CVV.sdf"
 TEST_PROTEIN = test_data_directory / '6b73.pdb'
 
 # Test the protein_choice function
@@ -26,10 +27,11 @@ def test_protein_choice():
 # Test the prepare_ligand function
 def test_prepare_ligand():
     # Test the function with the sample ligand file.
-    rdkit_mol = prepare_ligand("openmmdl/tests/data/in/CVV.sdf", minimize_molecule=True)  # Convert to string
+    rdkit_mol = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=True)
 
     # Assertions to check the behavior of the function.
-    assert isinstance(rdkit_mol, Chem.Mol)
+    assert isinstance(rdkit_mol, rdkit.Chem.rdchem.Mol)
+    
     assert Chem.MolToSmiles(rdkit_mol)  # Check if a valid SMILES can be generated.
 
     # Check if hydrogen atoms are added.
