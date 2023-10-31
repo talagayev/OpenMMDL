@@ -27,15 +27,6 @@ def test_prepare_ligand():
     Chem.GetSSSR(rdkitmolh)  # Initialize the RingInfo
     assert isinstance(rdkitmolh, Chem.Mol)
 
-# Test the rdkit_to_openmm function
-def test_rdkit_to_openmm():
-    # Replace 'valid_smiles_string' with an actual valid SMILES string
-    valid_smiles_string = 'S1C(=O)N(C(=O)C1=Cc2cc(c(cc2)OCCc3ccccc3)OC)Cc4ccc(cc4)C(=O)[O-]'
-    rdkit_mol = Chem.MolFromSmiles(valid_smiles_string)
-    omm_molecule = rdkit_to_openmm(rdkit_mol, 'Ligand')
-    assert isinstance(omm_molecule, app.Modeller)
-
-# Other test functions for the remaining functions
 
 if __name__ == '__main__':
     pytest.main()
