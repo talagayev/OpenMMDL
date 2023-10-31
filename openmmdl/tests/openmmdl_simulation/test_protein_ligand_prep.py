@@ -31,7 +31,7 @@ def test_prepare_ligand():
     rdkit_mol = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=True)
 
     # Assertions to check the behavior of the function.
-    assert isinstance(rdkit_mol, rdkit.Chem.rdchem.Mol)
+    assert "rdkit.Chem.rdchem.Mol" in str(type(rdkit_mol))
     
     assert Chem.MolToSmiles(rdkit_mol)  # Check if a valid SMILES can be generated.
 
