@@ -20,16 +20,25 @@ jobs:
         run: |
           # $CONDA is an environment variable pointing to the root of the miniconda directory
           echo $CONDA/bin >> $GITHUB_PATH
+
       - name: Install dependencies
         run: |
           conda env update --file environment.yml --name base 
+
       - name: Install package and its entry points
         run: |
           pip install .
+
+      - name: Lint code with flake8
+        run: |
+          pip install flake8
+          flake8 .
+        
       - name: Install pytest and run tests
         run: |
           pip install pytest pytest-cov
           pytest -vv --cov=openmmdl --cov-report=xml --cov-report=html --color=yes openmmdl/tests/
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
