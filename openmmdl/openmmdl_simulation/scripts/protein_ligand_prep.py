@@ -1,4 +1,5 @@
 from rdkit import Chem
+from rdkit.Chem import AllChem
 from openff.toolkit.topology import Molecule, Topology
 import simtk.openmm.app as app
 from simtk.openmm.app import PDBFile, Modeller
