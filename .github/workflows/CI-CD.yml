@@ -47,6 +47,9 @@ jobs:
         run: |
           pip install pytest pytest-cov
           pytest -vv --cov=openmmdl --cov-report=xml --cov-report=html --color=yes openmmdl/tests/
+          coverage run -m pytest tests
+          coverage xml
+          coverage report
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
