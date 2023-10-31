@@ -47,7 +47,7 @@ def prepare_ligand(ligand_file, minimize_molecule=True):
         The prepared and converted ligand.
     """
     # Reading of SDF File, converting to RDKit.
-    file_name = ligand_file.lower()
+    file_name = ligand_file
     print(file_name)
     if file_name.endswith(".sdf"):
         rdkit_mol_supplier = Chem.SDMolSupplier(ligand_file, sanitize=False)
