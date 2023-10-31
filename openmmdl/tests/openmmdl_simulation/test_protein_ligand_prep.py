@@ -29,7 +29,7 @@ def test_prepare_ligand():
 # Test the rdkit_to_openmm function
 def test_rdkit_to_openmm():
     # Replace 'valid_smiles_string' with an actual valid SMILES string
-    valid_smiles_string = 'CCO'
+    valid_smiles_string = 'c1cc(CCc(ccc2)cc2)ccc1'
     rdkit_mol = Chem.MolFromSmiles(valid_smiles_string)
     omm_molecule = rdkit_to_openmm(rdkit_mol, 'Ligand')
     assert isinstance(omm_molecule, app.Modeller)
