@@ -40,36 +40,39 @@ def prepare_ligand(ligand_file, minimize_molecule=True):
         User input of SDF or MOL File
     minimize_molecule: bool
         Minimization of ligand.
-        
+
     Returns
     -------
     rdkitmolh: rdkit.Chem.rdchem.Mol
-    	The prepared and converted ligand.
+        The prepared and converted ligand.
     """
-    # Reading of SDF File, converting to rdkit.
+    # Reading of SDF File, converting to RDKit.
     file_name = ligand_file.lower()
     if file_name.endswith(".sdf"):
-        rdkit_mol = Chem.SDMolSupplier(ligand_file, sanitize = False)
+        rdkit_mol = Chem.SDMolSupplier(ligand_file, sanitize=False)
         for mol in rdkit_mol:
             rdkit_mol = mol
     elif file_name.endswith(".mol") and not file_name.endswith(".mol2"):
         print(ligand_file)
-        rdkit_mol = Chem.rdmolfiles.MolFromMolFile(ligand_file, sanitize = False)
+        rdkit_mol = Chem.rdmolfiles.MolFromMolFile(ligand_file, sanitize=False)
     elif file_name.endswith(".mol2"):
-        rdkit_mol = Chem.rdmolfiles.MolFromMol2File(ligand_file, sanitize = False)
-    # Adding of hydrogens and assigning chrial tags from the structure.
+        rdkit_mol = Chem.rdmolfiles.MolFromMol2File(ligand_file, sanitize=False)
+
+    # Adding of hydrogens and assigning chiral tags from the structure.
     print('Adding hydrogens')
     rdkitmolh = Chem.AddHs(rdkit_mol, addCoords=True)
     Chem.AssignAtomChiralTagsFromStructure(rdkitmolh)
-    
-    # Minimizes the molecule with the MMFF94s Forcefield if selected. 
-    if minimize_molecule:
-        Chem.rdForceFieldHelpers.MMFFOptimizeMolecule(mol=rdkitmolh, mmffVariant='MMFF94s',maxIters=2000)
-        
-    # Converting of the ligand from rdkit to an opeenforcefield Molecule object.
-    Molecule(rdkitmolh)
 
-    return rdkitmolh
+    # Initialize RingInfo to avoid the RingInfo not initialized error.
+    Chem.GetSSSR(rdkitmolh)
+
+    # Minimize the molecule with the MMFF94s Forcefield if selected.
+    if minimize_molecule:
+        from rdkit.Chem import AllChem
+        AllChem.MMFFOptimizeMolecule(rdkitmolh, maxIters=2000)
+
+    # Converting of the ligand from RDKit to an openforcefield Molecule object.
+    return Molecule(rdkitmolh)
     
 def rdkit_to_openmm(rdkit_mol, name):
     """
