@@ -45,7 +45,7 @@ def test_script_execution(test_data_dir):
     script_path = "openmmdlanalysis.py"
     topology_file = os.path.join(input_data_path, "0_unk_hoh.pdb")
     trajectory_file = os.path.join(root_dir, "openmmdl/tests/data/in/all_50.dcd")
-    ligand_sdf_file = os.path.join(input_data_path, "ligand.sdf")
+    ligand_sdf_file = os.path.join(input_data_path, "lig.sdf")
     ligand_name = "UNK"
     
     cmd = f" openmmdl_analysis -t {topology_file} -d {trajectory_file} -l {ligand_sdf_file} -n {ligand_name} -b 40 -c 2"
