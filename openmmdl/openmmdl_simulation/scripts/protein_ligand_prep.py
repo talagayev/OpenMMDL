@@ -50,10 +50,11 @@ def prepare_ligand(ligand_file, minimize_molecule=True):
     file_name = ligand_file.lower()
     print(file_name)
     if file_name.endswith(".sdf"):
-        rdkit_mol = Chem.SDMolSupplier(ligand_file, sanitize=False)
-        print(type(rdkit_mol))
-        for mol in rdkit_mol:
-            rdkit_mol = mol
+        rdkit_mol_supplier = Chem.SDMolSupplier(ligand_file, sanitize=False)
+        rdkit_mol = None  # Initialize the variable
+        for mol in rdkit_mol_supplier:
+            if mol is not None:  # Ensure the molecule is not None
+                rdkit_mol = mol  # Assign the molecule to rdkit_mol
     elif file_name.endswith(".mol") and not file_name.endswith(".mol2"):
         print(ligand_file)
         rdkit_mol = Chem.rdmolfiles.MolFromMolFile(ligand_file, sanitize=False)
