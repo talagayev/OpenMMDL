@@ -73,11 +73,13 @@ def prepare_ligand(ligand_file, minimize_molecule=True):
 
     # Minimize the molecule with the MMFF94s Forcefield if selected.
     if minimize_molecule:
-        from rdkit.Chem import AllChem
         AllChem.MMFFOptimizeMolecule(rdkitmolh, maxIters=2000)
 
     # Converting of the ligand from RDKit to an openforcefield Molecule object.
-    return Molecule(rdkitmolh)
+    of_molecule = Molecule(rdkitmolh)
+    print(of_molecule)
+    
+    return of_molecule
     
 def rdkit_to_openmm(rdkit_mol, name):
     """
