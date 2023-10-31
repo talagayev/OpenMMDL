@@ -1,5 +1,6 @@
 import pytest
 import os
+import rdkit
 from rdkit import Chem
 from simtk import openmm, unit
 from pathlib import Path
