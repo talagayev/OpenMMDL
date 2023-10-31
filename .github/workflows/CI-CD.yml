@@ -54,7 +54,7 @@ jobs:
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
-          file: coverage.xml  # Specify the path to the XML coverage report
+          file: ./coverage.xml  # Specify the path to the XML coverage report
           flags: unittests
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
