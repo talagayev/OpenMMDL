@@ -29,11 +29,18 @@ jobs:
         run: |
           pip install .
 
-      - name: Lint code with flake8
+      - name: Install linter and formatter
         run: |
-          pip install flake8
+          python -m pip install shyaml flake8 black black-nb flake8-nb
+
+      - name: Run black formatter
+        run: |
+          black -l 99 .
+
+      - name: Run flake8 linter
+        run: |
           flake8 .
-        
+
       - name: Install pytest and run tests
         run: |
           pip install pytest pytest-cov
