@@ -34,13 +34,13 @@ def test_generate_forcefield(sample_rdkit_molecule):
     forcefield = generate_forcefield('amber14-all.xml', 'amber14/tip3p.xml', False, sample_rdkit_molecule)
     assert isinstance(forcefield, app.ForceField)
 
-@pytest.mark.parametrize("add_membrane, protein_ff, expected_ff", [
-    (True, 'amber10.xml', ['amber10.xml', 'amber14/lipid17.xml']),
-    (True, 'amber99sb.xml', ['amber99sb.xml', 'amber14/lipid17.xml']),
-    (False, 'amber14-all.xml', ['amber14-all.xml', 'amber14/tip3p.xml']),
-    (False, 'amber03.xml', ['amber03.xml', 'amber14/tip3p.xml']),
+@pytest.mark.parametrize("add_membrane, protein_ff, solvent_ff, expected_ff", [
+    (True, 'amber10.xml', 'tip3p.xml', ['amber10.xml', 'tip3p.xml', 'amber14/lipid17.xml']),
+    (True, 'amber14-all.xml', 'amber14/tip3p.xml', ['amber14-all.xml', 'amber14/tip3p.xml']),
+    (False, 'amber14-all.xml', 'amber14/tip3p.xml', ['amber14-all.xml', 'amber14/tip3p.xml']),
+    (False, 'amber03.xml', 'tip3p.xml', ['amber03.xml', 'tip3p.xml']),
 ])
-def test_generate_forcefield_membrane_logic(add_membrane, protein_ff, expected_ff):
+def test_generate_forcefield_membrane_logic(add_membrane, protein_ff, solvent_ff, expected_ff):
     forcefield = generate_forcefield(protein_ff, 'amber14/tip3p.xml', add_membrane, sample_rdkit_molecule)
     ff_files = [ff._forcefield for ff in forcefield._forces]
     assert ff_files == expected_ff
