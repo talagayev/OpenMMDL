@@ -95,7 +95,7 @@ def test_post_md_file_movement():
     post_md_file_movement(protein_name, prmtop, inpcrd, ligand)
     
     # Check if the files have been organized and moved to the correct directories
-    input_files_dir = Path("openmmdl/tests/data/in/Input_Files")
+    input_files_dir = Path("Input_Files")
 
     assert os.path.exists(input_files_dir)
     assert os.path.exists(input_files_dir / "6b73.pdb")
