@@ -90,8 +90,8 @@ def test_post_md_file_movement():
     # Check if the files have been organized and moved to the correct directories
     input_files_dir = os.path.join(test_data_directory, "Input_Files")
     assert os.path.exists(os.path.join(input_files_dir, "6b73.pdb"))
-    assert os.path.exists(os.path.join(input_files_dir, "test.prmtop"))
-    assert os.path.exists(os.path.join(input_files_dir, "test.inpcrd"))
+    assert os.path.exists(os.path.join(input_files_dir, "6b73.prmtop"))
+    assert os.path.exists(os.path.join(input_files_dir, "6b73.inpcrd"))
     assert os.path.exists(os.path.join(input_files_dir, "CVV.sdf"))
 # Run the tests
 if __name__ == "__main__":
