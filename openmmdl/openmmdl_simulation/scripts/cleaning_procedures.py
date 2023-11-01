@@ -110,66 +110,13 @@ def post_md_file_movement(protein_name, prmtop=None, inpcrd=None, ligand=None):
     create_directory_if_not_exists("Final_Output/Prot_Lig")
     create_directory_if_not_exists("Checkpoints")
 
-    # Print if directories have been created
-    for directory in ["Input_Files", "MD_Files", "MD_Files/Pre_MD", "MD_Files/Minimization_Equilibration",
-                     "MD_Files/MD_Output", "MD_Postprocessing", "Final_Output", "Final_Output/All_Atoms",
-                     "Final_Output/Prot_Lig", "Checkpoints"]:
-        if os.path.exists(directory):
-            print(f"Directory '{directory}' exists.")
-        else:
-            print(f"Directory '{directory}' does not exist.")
-
     # Move input files
-    if ligand:
-        copy_file(ligand, "Final_Output/All_Atoms")
-        copy_file(ligand, "Final_Output/Prot_Lig")
-        copy_file(ligand, "Input_Files")  # Add this line to copy the ligand to Input_Files
-        ligand_basename = os.path.basename(ligand)
-        print(f"Copied ligand to Final_Output/All_Atoms: {os.path.join('Final_Output/All_Atoms', ligand_basename)}")
-        print(f"Copied ligand to Final_Output/Prot_Lig: {os.path.join('Final_Output/Prot_Lig', ligand_basename)}")
-        print(f"Copied ligand to Input_Files: {os.path.join('Input_Files', ligand_basename)}")
-
-        ligand_dir = "Final_Output/All_Atoms"
-        if os.path.exists(os.path.join(ligand_dir, os.path.basename(ligand))):
-            print(f"File '{os.path.basename(ligand)}' exists in '{ligand_dir}'")
-        else:
-            print(f"File '{os.path.basename(ligand)}' does not exist in '{ligand_dir}'")
-
-        input_files_dir = "Input_Files"
-        if os.path.exists(os.path.join(input_files_dir, os.path.basename(ligand))):
-            print(f"File '{os.path.basename(ligand)}' exists in '{input_files_dir}'")
-        else:
-            print(f"File '{os.path.basename(ligand)}' does not exist in '{input_files_dir}'")
-
-    if protein_name:
-        copy_file(protein_name, "Input_Files")
-        print(f"Copied {os.path.basename(protein_name)} to Input_Files")
-
-        input_files_dir = "Input_Files"
-        if os.path.exists(os.path.join(input_files_dir, os.path.basename(protein_name))):
-            print(f"File '{os.path.basename(protein_name)}' exists in '{input_files_dir}'")
-        else:
-            print(f"File '{os.path.basename(protein_name)}' does not exist in '{input_files_dir}'")
-
-    if prmtop:
-        copy_file(prmtop, "Input_Files")
-        print(f"Copied {os.path.basename(prmtop)} to Input_Files")
-
-        input_files_dir = "Input_Files"
-        if os.path.exists(os.path.join(input_files_dir, os.path.basename(prmtop))):
-            print(f"File '{os.path.basename(prmtop)}' exists in '{input_files_dir}'")
-        else:
-            print(f"File '{os.path.basename(prmtop)}' does not exist in '{input_files_dir}'")
-
-    if inpcrd:
-        copy_file(inpcrd, "Input_Files")
-        print(f"Copied {os.path.basename(inpcrd)} to Input_Files")
-
-        input_files_dir = "Input_Files"
-        if os.path.exists(os.path.join(input_files_dir, os.path.basename(inpcrd))):
-            print(f"File '{os.path.basename(inpcrd)}' exists in '{input_files_dir}'")
-        else:
-            print(f"File '{os.path.basename(inpcrd)}' does not exist in '{input_files_dir}'")
+    copy_file(ligand, "Final_Output/All_Atoms") if ligand else None
+    copy_file(ligand, "Final_Output/Prot_Lig") if ligand else None
+    copy_file(protein_name, "Input_Files")
+    copy_file(prmtop, "Input_Files") if prmtop else None
+    copy_file(inpcrd, "Input_Files") if inpcrd else None
+    copy_file(ligand, "Input_Files") if ligand else None
 
     # Organize pre-MD files
     source_pre_md_files = ["prepared_no_solvent_", "solvent_padding_", "solvent_absolute_", "membrane_"]
