@@ -32,7 +32,8 @@ def test_prepare_ligand():
     
     # Add your assertions here to check if the preparation worked as expected
     assert rdkit_mol is not None  # Check if the result is not None
-    
+
+    name = "CVV" 
     omm_molecule = rdkit_to_openmm(rdkit_mol, name)
     
     # Check if the result is an OpenMM Modeller
