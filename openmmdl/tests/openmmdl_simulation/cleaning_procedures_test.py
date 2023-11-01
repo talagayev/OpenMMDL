@@ -97,10 +97,11 @@ def test_post_md_file_movement():
     # Check if the files have been organized and moved to the correct directories
     input_files_dir = Path("openmmdl/tests/data/in/Input_Files")
 
-    assert (input_files_dir / "6b73.pdb").is_file()
-    assert (input_files_dir / "6b73.prmtop").is_file()
-    assert (input_files_dir / "6b73.inpcrd").is_file()
-    assert (input_files_dir / "CVV.sdf").is_file()
+    assert os.path.exists(input_files_dir)
+    assert os.path.exists(input_files_dir / "6b73.pdb")
+    assert os.path.exists(input_files_dir / "6b73.prmtop")
+    assert os.path.exists(input_files_dir / "6b73.inpcrd")
+    assert os.path.exists(input_files_dir / "CVV.sdf")
 
 # Run the tests
 if __name__ == "__main__":
