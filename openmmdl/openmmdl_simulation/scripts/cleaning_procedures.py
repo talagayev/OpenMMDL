@@ -124,7 +124,10 @@ def post_md_file_movement(protein_name, prmtop=None, inpcrd=None, ligand=None):
         copy_file(ligand, "Final_Output/All_Atoms")
         copy_file(ligand, "Final_Output/Prot_Lig")
         copy_file(ligand, "Input_Files")  # Add this line to copy the ligand to Input_Files
-        print("Copied ligand to Final_Output/All_Atoms, Final_Output/Prot_Lig, and Input_Files")
+        ligand_basename = os.path.basename(ligand)
+        print(f"Copied ligand to Final_Output/All_Atoms: {os.path.join('Final_Output/All_Atoms', ligand_basename)}")
+        print(f"Copied ligand to Final_Output/Prot_Lig: {os.path.join('Final_Output/Prot_Lig', ligand_basename)}")
+        print(f"Copied ligand to Input_Files: {os.path.join('Input_Files', ligand_basename)}")
 
         ligand_dir = "Final_Output/All_Atoms"
         if os.path.exists(os.path.join(ligand_dir, os.path.basename(ligand))):
@@ -188,3 +191,13 @@ def post_md_file_movement(protein_name, prmtop=None, inpcrd=None, ligand=None):
 
     # Organize checkpoint files
     organize_files(["checkpoint.chk", "10x_checkpoint.chk", "100x_checkpoint.chk"], "Checkpoints")
+
+    input_files_dir = "Input_Files"
+    print(f"Input_Files directory path: {input_files_dir}")
+
+    if os.path.exists(input_files_dir):
+        for root, dirs, files in os.walk(input_files_dir):
+            print(f"Files in '{root}':")
+            for file in files:
+                file_path = os.path.join(root, file)
+                print(f" - {file_path}")
