@@ -196,13 +196,10 @@ def generate_transitional_forcefield(protein_ff, solvent_ff, add_membrane, rdkit
     if add_membrane == True:
         if protein_ff in old_amber:
             transitional_forcefield  = app.ForceField(protein_ff, 'tip3p.xml', 'amber14/lipid17.xml')
-            print(transitional_forcefield)
         else:
             transitional_forcefield = app.ForceField(protein_ff,'amber14/tip3p.xml')
-            print(transitional_forcefield)
     else:
         transitional_forcefield = app.ForceField(protein_ff,solvent_ff)
-        print(transitional_forcefield)
     
     # If a ligand is present, a Forcefield with GAFF will be created for the ligand 
     if rdkit_mol is not None:
