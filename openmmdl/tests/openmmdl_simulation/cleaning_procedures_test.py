@@ -84,17 +84,17 @@ ligand = "sample_ligand.pdb"
 # Define the fixtures
 @pytest.fixture
 def mock_organize_files():
-    with patch("your_module.organize_files") as mock:
+    with patch("openmmdl.openmmdl_simulation.scripts.cleaning_procedures.organize_files") as mock:
         yield mock
 
 @pytest.fixture
 def mock_copy_file():
-    with patch("your_module.copy_file") as mock:
+    with patch("openmmdl.openmmdl_simulation.scripts.cleaning_procedures.copy_file") as mock:
         yield mock
 
 @pytest.fixture
 def mock_create_directory():
-    with patch("your_module.create_directory_if_not_exists") as mock:
+    with patch("openmmdl.openmmdl_simulation.scripts.cleaning_procedures.create_directory_if_not_exists") as mock:
         yield mock
 
 def test_post_md_file_movement(
