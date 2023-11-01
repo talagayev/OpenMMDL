@@ -1,6 +1,7 @@
 import os
 import shutil
 import pytest
+from pathlib import Path
 from unittest.mock import mock_open, patch
 from openmmdl.openmmdl_simulation.scripts.cleaning_procedures import cleanup, create_directory_if_not_exists, post_md_file_movement, copy_file, create_directory_if_not_exists, organize_files
 
