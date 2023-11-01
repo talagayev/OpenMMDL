@@ -101,9 +101,11 @@ def rdkit_to_openmm(rdkit_mol, name):
     """
     # convert RDKit to OpenFF
     off_mol = Molecule.from_rdkit(rdkit_mol)
+    print(off_mol)
 
     # add name for molecule
     off_mol.name = name
+    print(off_mol.name)
 
     # add names for atoms
     element_counter_dict = {}
@@ -124,9 +126,12 @@ def rdkit_to_openmm(rdkit_mol, name):
     # convert units from Ångström to Nanometers
     for mol_position in off_mol.conformers[0]:
         new_mol_positions.append(mol_position.magnitude/10.0);
+        print("yep")
 
     # combine topology and positions in modeller object
     omm_mol = app.Modeller(mol_topology, new_mol_positions * unit.nanometers)
+    print(omm_mol)
+    print(type(omm_mol))
 
     return omm_mol
     
