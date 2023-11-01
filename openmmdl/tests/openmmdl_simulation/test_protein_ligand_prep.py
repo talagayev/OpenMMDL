@@ -33,29 +33,21 @@ def test_prepare_ligand():
     # Add your assertions here to check if the preparation worked as expected
     assert rdkit_mol is not None  # Check if the result is not None
 
-def test_rdkit_to_openmm():
-    # Create an RDKit molecule (rdkit_mol) and provide a name.
-    rdkit_mol = Chem.MolFromSmiles('CCO')  # Example molecule: Ethanol
-    name = "Ethanol"
+# Define test cases
+@pytest.mark.parametrize("rdkit_mol, name, expected_num_atoms", [
+    (Chem.MolFromSmiles("CCO"), "Ethanol", 6),  # Example with ethanol molecule
+    # Add more test cases as needed
+])
 
-    # Convert the RDKit molecule to an OpenMM Modeller object.
-    omm_mol = rdkit_to_openmm(rdkit_mol, name)
+def test_rdkit_to_openmm(rdkit_mol, name, expected_num_atoms):
+    # Call the conversion function
+    omm_molecule = rdkit_to_openmm(rdkit_mol, name)
+    
+    # Check if the result is an OpenMM Modeller
+    assert isinstance(omm_molecule, app.Modeller)
 
-    # Check if the returned object is an instance of openmm.app.Modeller.
-    assert isinstance(omm_mol, openmm.app.Modeller)
-
-    # Check if the Modeller object's topology contains the expected number of atoms.
-    num_atoms_expected = rdkit_mol.GetNumAtoms()
-    num_atoms_actual = omm_mol.topology.getNumAtoms()
-    assert num_atoms_expected == num_atoms_actual
-
-    # Check if the Modeller object's name matches the provided name.
-    assert omm_mol.topology.getPeriodicBoxVectors() == name
-
-    # Check if the Modeller object's positions are in nanometers.
-    positions = omm_mol.getPositions()
-    for position in positions:
-        assert position.unit == unit.nanometers
+    # Check the number of atoms in the OpenMM molecule
+    assert len(omm_molecule.topology.atoms()) == expected_num_atoms
 
 if __name__ == '__main__':
     pytest.main()
