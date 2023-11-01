@@ -74,38 +74,25 @@ def test_organize_files(mock_rename, mock_exists):
     for call in mock_rename.call_args_list:
         print(call)
 
-# Define a test directory for temporary files
-TEST_DIR = "test_directory"
-
-# Create the test directory before running tests
-@pytest.fixture(scope="module")
-def setup_test_directory():
-    os.makedirs(TEST_DIR)
-    yield
-    # Clean up: Remove the test directory and its contents
-    shutil.rmtree(TEST_DIR)
-
-def test_post_md_file_movement(setup_test_directory):
-    # Create some sample files for the post-MD movement
-    protein_name = "test_protein.pdb"
-    prmtop = os.path.join(TEST_DIR, "test.prmtop")
-    inpcrd = os.path.join(TEST_DIR, "test.inpcrd")
-    ligand = os.path.join(TEST_DIR, "test_ligand.pdb")
+def test_post_md_file_movement():
+    # Get the absolute path to the test data directory
+    data_dir = os.path.abspath("openmmdl/tests/data/in")
     
-    for file in [prmtop, inpcrd, ligand, protein_name]:
-        with open(file, "w") as f:
-            f.write("Sample content.")
-    
+    # Create absolute file paths for the sample files
+    protein_name = os.path.join(data_dir, "6b73.pdb")
+    prmtop = os.path.join(data_dir, "test.prmtop")
+    inpcrd = os.path.join(data_dir, "test.inpcrd")
+    ligand = os.path.join(data_dir, "CVV.sdf")
+
     # Call the post_md_file_movement function
     post_md_file_movement(protein_name, prmtop, inpcrd, ligand)
     
     # Check if the files have been organized and moved to the correct directories
-    assert os.path.exists(os.path.join(TEST_DIR, "Input_Files", protein_name))
-    assert os.path.exists(os.path.join(TEST_DIR, "Input_Files", prmtop))
-    assert os.path.exists(os.path.join(TEST_DIR, "Input_Files", inpcrd))
-    assert os.path.exists(os.path.join(TEST_DIR, "Input_Files", ligand))
-    
-
+    input_files_dir = os.path.join(data_dir, "Input_Files")
+    assert os.path.exists(os.path.join(input_files_dir, "6b73.pdb"))
+    assert os.path.exists(os.path.join(input_files_dir, "test.prmtop"))
+    assert os.path.exists(os.path.join(input_files_dir, "test.inpcrd"))
+    assert os.path.exists(os.path.join(input_files_dir, "CVV.sdf"))
 # Run the tests
 if __name__ == "__main__":
     pytest.main()
