@@ -100,6 +100,8 @@ def rdkit_to_openmm(rdkit_mol, name):
         OpenMM modeller object holding the molecule of interest.
     """
     # convert RDKit to OpenFF
+    print(rdkit_mol)
+    print(type(rdkit_mol))
     off_mol = Molecule.from_rdkit(rdkit_mol)
     print(off_mol)
 
