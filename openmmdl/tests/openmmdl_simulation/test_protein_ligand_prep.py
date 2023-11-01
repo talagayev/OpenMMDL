@@ -39,5 +39,14 @@ def test_prepare_ligand():
     assert rdkit_mol_mol is not None  # Check if the result is not None
     assert rdkit_mol_mol2 is not None  # Check if the result is not None
 
+rdkit_mol = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=False)
+
+def test_rdkit_to_openmm_conversion():
+    # Convert the RDKit molecule to an OpenMM modeller object
+    openmm_molecule = rdkit_to_openmm(rdkit_mol, 'UNK')
+
+    # Check if the OpenMM modeller is an instance of OpenMM's app.Modeller
+    assert isinstance(openmm_molecule, app.Modeller)
+
 if __name__ == '__main__':
     pytest.main()
