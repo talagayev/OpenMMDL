@@ -102,7 +102,7 @@ def test_post_md_file_movement():
     assert os.path.exists(os.path.join(input_files_dir, "6b73.prmtop"))
     assert os.path.exists(os.path.join(input_files_dir, "6b73.inpcrd"))
     assert os.path.exists(os.path.join(input_files_dir, "CVV.sdf"))
-}
+
 # Run the tests
 if __name__ == "__main__":
     pytest.main()
