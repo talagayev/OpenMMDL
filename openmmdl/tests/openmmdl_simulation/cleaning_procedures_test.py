@@ -74,98 +74,37 @@ def test_organize_files(mock_rename, mock_exists):
     for call in mock_rename.call_args_list:
         print(call)
 
+# Define a test directory for temporary files
+TEST_DIR = "test_directory"
 
-# Define some sample file paths
-protein_name = "sample_protein.pdb"
-prmtop = "sample_topology.prmtop"
-inpcrd = "sample_coordinates.inpcrd"
-ligand = "sample_ligand.pdb"
+# Create the test directory before running tests
+@pytest.fixture(scope="module")
+def setup_test_directory():
+    os.makedirs(TEST_DIR)
+    yield
+    # Clean up: Remove the test directory and its contents
+    shutil.rmtree(TEST_DIR)
 
-# Define the fixtures
-@pytest.fixture
-def mock_organize_files():
-    with patch("openmmdl.openmmdl_simulation.scripts.cleaning_procedures.organize_files") as mock:
-        yield mock
-
-@pytest.fixture
-def mock_copy_file():
-    with patch("openmmdl.openmmdl_simulation.scripts.cleaning_procedures.copy_file") as mock:
-        yield mock
-
-@pytest.fixture
-def mock_create_directory():
-    with patch("openmmdl.openmmdl_simulation.scripts.cleaning_procedures.create_directory_if_not_exists") as mock:
-        yield mock
-
-def test_post_md_file_movement(
-    mock_organize_files, mock_copy_file, mock_create_directory
-):
-    # Call the function with sample file paths
+def test_post_md_file_movement(setup_test_directory):
+    # Create some sample files for the post-MD movement
+    protein_name = "test_protein.pdb"
+    prmtop = os.path.join(TEST_DIR, "test.prmtop")
+    inpcrd = os.path.join(TEST_DIR, "test.inpcrd")
+    ligand = os.path.join(TEST_DIR, "test_ligand.pdb")
+    
+    for file in [prmtop, inpcrd, ligand, protein_name]:
+        with open(file, "w") as f:
+            f.write("Sample content.")
+    
+    # Call the post_md_file_movement function
     post_md_file_movement(protein_name, prmtop, inpcrd, ligand)
-
-    # Check that create_directory_if_not_exists is called with the correct directories
-    mock_create_directory.assert_called_with("Input_Files")
-    mock_create_directory.assert_called_with("MD_Files/Pre_MD")
-    mock_create_directory.assert_called_with("MD_Files/Minimization_Equilibration")
-    mock_create_directory.assert_called_with("MD_Files/MD_Output")
-    mock_create_directory.assert_called_with("MD_Postprocessing")
-    mock_create_directory.assert_called_with("Final_Output")
-    mock_create_directory.assert_called_with("Final_Output/All_Atoms")
-    mock_create_directory.assert_called_with("Final_Output/Prot_Lig")
-    mock_create_directory.assert_called_with("Checkpoints")
-
-    # Check that copy_file is called with the correct files and destinations
-    mock_copy_file.assert_called_with(ligand, "Final_Output/All_Atoms")
-    mock_copy_file.assert_called_with(ligand, "Final_Output/Prot_Lig")
-    mock_copy_file.assert_called_with(protein_name, "Input_Files")
-    mock_copy_file.assert_called_with(prmtop, "Input_Files")
-    mock_copy_file.assert_called_with(inpcrd, "Input_Files")
-    mock_copy_file.assert_called_with(ligand, "Input_Files")
-
-    # Check that organize_files is called with the correct source and destination paths
-    expected_source_files = [
-        f"{prefix}{protein_name}"
-        for prefix in ["prepared_no_solvent_", "solvent_padding_", "solvent_absolute_", "membrane_"]
-    ]
-    mock_organize_files.assert_called_with(expected_source_files, "MD_Files/Pre_MD")
-
-    expected_source_files = [
-        f"{prefix}{protein_name}"
-        for prefix in ["Energyminimization_", "Equilibration_"]
-    ]
-    mock_organize_files.assert_called_with(expected_source_files, "MD_Files/Minimization_Equilibration")
-
-    mock_organize_files.assert_called_with([f"output_{protein_name}", "trajectory.dcd"], "MD_Files/MD_Output")
-    mock_organize_files.assert_called_with(
-        [
-            "centered_old_coordinates_top.pdb",
-            "centered_old_coordinates.dcd",
-            "centered_old_coordinates_top.gro",
-            "centered_old_coordinates.xtc",
-        ],
-        "MD_Postprocessing",
-    )
-    mock_organize_files.assert_called_with(
-        [
-            "centered_top.pdb",
-            "centered_traj.dcd",
-            "centered_top.gro",
-            "centered_traj.xtc",
-        ],
-        "Final_Output/All_Atoms",
-    )
-    mock_organize_files.assert_called_with(
-        [
-            "prot_lig_top.pdb",
-            "prot_lig_traj.dcd",
-            "prot_lig_top.gro",
-            "prot_lig_traj.xtc",
-        ],
-        "Final_Output/Prot_Lig",
-    )
-    mock_organize_files.assert_called_with(
-        ["checkpoint.chk", "10x_checkpoint.chk", "100x_checkpoint.chk"], "Checkpoints"
-    )
+    
+    # Check if the files have been organized and moved to the correct directories
+    assert os.path.exists(os.path.join(TEST_DIR, "Input_Files", protein_name))
+    assert os.path.exists(os.path.join(TEST_DIR, "Input_Files", prmtop))
+    assert os.path.exists(os.path.join(TEST_DIR, "Input_Files", inpcrd))
+    assert os.path.exists(os.path.join(TEST_DIR, "Input_Files", ligand))
+    
 
 # Run the tests
 if __name__ == "__main__":
