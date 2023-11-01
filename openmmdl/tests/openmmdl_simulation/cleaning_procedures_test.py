@@ -96,7 +96,6 @@ def test_post_md_file_movement():
     
     # Check if the files have been organized and moved to the correct directories
     input_files_dir = Path("openmmdl/tests/data/in/Input_Files")
-    assert os.path.exists(input_files_dir)
 
     assert (input_files_dir / "6b73.pdb").is_file()
     assert (input_files_dir / "6b73.prmtop").is_file()
