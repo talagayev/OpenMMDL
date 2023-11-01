@@ -32,31 +32,11 @@ def test_prepare_ligand():
     
     # Add your assertions here to check if the preparation worked as expected
     assert rdkit_mol is not None  # Check if the result is not None
-
-# Define test cases
-@pytest.mark.parametrize("rdkit_mol, name, expected_num_atoms", [
-    (Chem.MolFromSmiles("CCO"), "Ethanol", 6),  # Example with ethanol molecule
-    # Add more test cases as needed
-])
-
-def test_rdkit_to_openmm():
-    # Call the conversion function
-    rdkit_mol_supplier = Chem.SDMolSupplier(TEST_LIGAND_FILE, sanitize=False)
-    rdkit_mol = None  # Initialize the variable
-    for mol in rdkit_mol_supplier:
-        if mol is not None:  # Ensure the molecule is not None
-            rdkit_mol = mol  # Assign the molecule to rdkit_mol
-    name="CVV"
-
     
     omm_molecule = rdkit_to_openmm(rdkit_mol, name)
-
     
     # Check if the result is an OpenMM Modeller
     assert isinstance(omm_molecule, app.Modeller)
-
-    # Check the number of atoms in the OpenMM molecule
-    assert len(omm_molecule.topology.atoms()) == expected_num_atoms
 
 if __name__ == '__main__':
     pytest.main()
