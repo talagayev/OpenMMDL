@@ -31,7 +31,7 @@ def test_prepare_ligand():
     rdkit_mol = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=True)
     
     # Add your assertions here to check if the preparation worked as expected
-    assert of_molecule is not None  # Check if the result is not None
+    assert rdkit_mol is not None  # Check if the result is not None
 
 def test_rdkit_to_openmm():
     # Create an RDKit molecule (rdkit_mol) and provide a name.
