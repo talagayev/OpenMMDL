@@ -56,12 +56,15 @@ test_data_directory = "openmmdl/tests/data/in"
 
 test_data_directory = Path("openmmdl/tests/data/in")
 
+original_cwd = os.getcwd()
+os.chdir(test_data_directory)
+
 
 # Define the full path to the input SDF file
-TEST_LIGAND_FILE = f"{test_data_directory}/CVV.sdf"
+TEST_LIGAND_FILE = "CVV.sdf"
 TEST_MOL_FILE = f"{test_data_directory}/CVV.mol"
 TEST_MOL2_FILE = f"{test_data_directory}/CVV.mol2"
-TEST_PROTEIN = test_data_directory / '6b73.pdb'
+TEST_PROTEIN = "6b73.pdb"
 
 
 ligand_prepared = prepare_ligand(TEST_LIGAND_FILE,minimize_molecule=minimization)
