@@ -46,13 +46,39 @@ def test_prepare_ligand():
 
 
 def test_rdkit_to_openmm_conversion():
-    ligand_prepared = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=False)
+    rdkit_mol = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=False)
     
-    # Convert the RDKit molecule to an OpenMM modeller object
-    omm_ligand = rdkit_to_openmm(ligand_prepared, 'UNK')
+    off_mol = Molecule.from_rdkit(rdkit_mol)
 
+    # add name for molecule
+    off_mol.name = name
+
+    # add names for atoms
+    element_counter_dict = {}
+    for off_atom, rdkit_atom in zip(off_mol.atoms, rdkit_mol.GetAtoms()):
+        element = rdkit_atom.GetSymbol()
+        if element in element_counter_dict.keys():
+            element_counter_dict[element] += 1
+        else:
+            element_counter_dict[element] = 1
+        off_atom.name = element + str(element_counter_dict[element])
+        
+    # convert from OpenFF to OpenMM
+    off_mol_topology = off_mol.to_topology()
+    mol_topology = off_mol_topology.to_openmm()
+    mol_positions = off_mol.conformers[0];
+    new_mol_positions = []
+
+    # convert units from Ångström to Nanometers
+    for mol_position in off_mol.conformers[0]:
+        new_mol_positions.append(mol_position.magnitude/10.0);
+        print("yep")
+
+    # combine topology and positions in modeller object
+    omm_mol = app.Modeller(mol_topology, new_mol_positions * unit.nanometers)
+    
     # Check if the OpenMM modeller is an instance of OpenMM's app.Modeller
-    assert omm_ligand is not None
+    assert omm_mol is not None
 
 def test_water_conversion():
     # Load the sample PDB file
