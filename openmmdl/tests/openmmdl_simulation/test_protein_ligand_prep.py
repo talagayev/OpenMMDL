@@ -9,7 +9,6 @@ from simtk.openmm import Vec3
 import mdtraj as md
 import numpy as np
 from pathlib import Path
-import openmm
 import pdbfixer
 from openmm.app import PDBFile
 from pdbfixer import PDBFixer
