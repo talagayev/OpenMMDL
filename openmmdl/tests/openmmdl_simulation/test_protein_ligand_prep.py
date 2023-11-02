@@ -70,6 +70,7 @@ protein_pdb = protein_choice(protein_is_prepared=protein_prepared,protein=TEST_P
 forcefield_selected = ff_selection(ff)
 water_selected = water_forcefield_selection(water=water,forcefield_selection=ff_selection(ff))
 model_water = water_model_selection(water=water,forcefield_selection=ff_selection(ff))
+forcefield = generate_forcefield(protein_ff=forcefield_selected, solvent_ff=water_selected, add_membrane=add_membrane, rdkit_mol=ligand_prepared)
 complex_topology, complex_positions = merge_protein_and_ligand(protein_pdb, omm_ligand)
 modeller = app.Modeller(complex_topology, complex_positions)
 
