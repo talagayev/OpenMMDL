@@ -34,7 +34,7 @@ minimization = False
 sanitization = False
 protein_prepared = "Yes"
 ff = 'AMBER14'
-water = 'TIP3P-FB'
+water = 'SPC/E'
 add_membrane = False
 Water_Box = "Buffer"
 water_padding_distance = 1.0
@@ -43,6 +43,9 @@ water_ionicstrength = 0.15
 water_positive_ion = 'Na+'
 water_negative_ion = 'Cl-'
 
+water_box_x = 6.873
+water_box_y = 7.0
+water_box_z = 9.132
 
 # Print current working directory
 print("Current working directory:", os.getcwd())
@@ -68,6 +71,7 @@ forcefield_selected = ff_selection(ff)
 water_selected = water_forcefield_selection(water=water,forcefield_selection=ff_selection(ff))
 model_water = water_model_selection(water=water,forcefield_selection=ff_selection(ff))
 complex_topology, complex_positions = merge_protein_and_ligand(protein_pdb, omm_ligand)
+modeller = app.Modeller(complex_topology, complex_positions)
 
 # Test the protein_choice function
 def test_protein_choice():
@@ -94,6 +98,15 @@ def test_merge_protein_and_ligand():
     complex_topology, complex_positions = merge_protein_and_ligand(protein_pdb, omm_ligand)
     assert complex_topology is not None
     assert complex_positions is not None
+
+def test_water_padding_solvent_builder():
+    protein_buffer_solved = water_padding_solvent_builder(model_water, forcefield, water_padding_distance, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, TEST_PROTEIN)
+    assert protein_buffer_solved is not None
+
+def test_water_absolute_solvent_builder():
+    protein_absolute_solved = water_absolute_solvent_builder(model_water, forcefield, water_box_x, water_box_y, water_box_z, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, TEST_PROTEIN)
+    assert protein_absolute_solved is not None
+
 
 if __name__ == '__main__':
     pytest.main()
