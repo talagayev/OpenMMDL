@@ -59,11 +59,11 @@ def test_water_conversion():
     protein_name = "6b73.pdb"
     
     # Create a sample PDBFixer object and specify a model water
-    fixer = pdbfixer.PDBFixer(str(TEST_PROTEIN))
+    modeller_pre_conversion = Modeller(PDBFile(str(TEST_PROTEIN)))  
     model_water = "TIP4P-EW"
 
     # Call the water_conversion function
-    modeller = water_conversion(model_water, fixer, protein_name)
+    modeller = water_conversion(model_water, modeller_pre_conversion, protein_name)
 
     # Check if the modeller object is an instance of Modeller
     assert isinstance(modeller, Modeller)
