@@ -3,6 +3,12 @@ import os
 import rdkit
 from rdkit import Chem
 from simtk import openmm, unit
+import simtk.openmm.app as app
+from simtk.openmm.app import PDBFile, Modeller
+from simtk.openmm import unit
+from simtk.openmm import Vec3
+import mdtraj as md
+import numpy as np
 from pathlib import Path
 import openmm
 import pdbfixer
