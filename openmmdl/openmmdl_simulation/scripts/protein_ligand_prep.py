@@ -102,6 +102,7 @@ def rdkit_to_openmm(rdkit_mol, name):
     # convert RDKit to OpenFF
     print(rdkit_mol)
     print(type(rdkit_mol))
+    print("hello")
     off_mol = Molecule.from_rdkit(rdkit_mol)
     print(off_mol)
 
