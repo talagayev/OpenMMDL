@@ -4,6 +4,9 @@ import rdkit
 from rdkit import Chem
 from simtk import openmm, unit
 from pathlib import Path
+import openmm
+from openmm.app import PDBFile
+from pdbfixer import PDBFixer
 from openmmdl.openmmdl_simulation.scripts.protein_ligand_prep import *
 
 # Print current working directory
@@ -49,6 +52,20 @@ def test_rdkit_to_openmm_conversion():
 
     # Check if the OpenMM modeller is an instance of OpenMM's app.Modeller
     assert omm_ligand is not None
+
+def test_water_conversion():
+    # Load the sample PDB file
+    protein_name = "6b73.pdb"
+    
+    # Create a sample PDBFixer object and specify a model water
+    fixer = PDBFixer()
+    model_water = "TIP4P-EW"
+
+    # Call the water_conversion function
+    modeller = water_conversion(model_water, fixer, protein_name)
+
+    # Check if the modeller object is an instance of Modeller
+    assert isinstance(modeller, Modeller)
 
 if __name__ == '__main__':
     pytest.main()
