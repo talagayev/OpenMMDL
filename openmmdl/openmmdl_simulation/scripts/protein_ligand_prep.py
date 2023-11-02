@@ -101,16 +101,19 @@ def rdkit_to_openmm(rdkit_mol, name):
     """
     # convert RDKit to OpenFF
     print(rdkit_mol)
+    print(name)
     print(type(rdkit_mol))
     print("hello")
     off_mol = Molecule.from_rdkit(rdkit_mol)
     print(off_mol)
 
     # add name for molecule
+    print("add name for molecule")
     off_mol.name = name
     print(off_mol.name)
 
     # add names for atoms
+    print("add names for atoms")
     element_counter_dict = {}
     for off_atom, rdkit_atom in zip(off_mol.atoms, rdkit_mol.GetAtoms()):
         element = rdkit_atom.GetSymbol()
