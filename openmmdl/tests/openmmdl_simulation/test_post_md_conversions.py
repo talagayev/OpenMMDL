@@ -1,4 +1,5 @@
 import pytest
+import os
 import mdtraj as md
 
 from openmmdl.openmmdl_simulation.scripts.post_md_conversions import mdtraj_conversion, MDanalysis_conversion
