@@ -42,13 +42,13 @@ def test_prepare_ligand():
 
 
 def test_rdkit_to_openmm_conversion():
-    rdkit_mol = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=False)
+    ligand_prepared = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=False)
     
     # Convert the RDKit molecule to an OpenMM modeller object
-    openmm_molecule = rdkit_to_openmm(rdkit_mol, 'UNK')
+    omm_ligand = rdkit_to_openmm(ligand_prepared, 'UNK')
 
     # Check if the OpenMM modeller is an instance of OpenMM's app.Modeller
-    assert openmm_molecule is not None
+    assert omm_ligand is not None
 
 if __name__ == '__main__':
     pytest.main()
