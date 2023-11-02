@@ -8,8 +8,8 @@ import mdtraj as md
 from openmmdl.openmmdl_analysis.rmsd_calculation import rmsd_for_atomgroups
 
 test_data_directory = Path("openmmdl/tests/data/in")
-topology_file = "0_unk_hoh.pdb"
-trajectory_file = "all_50.dcd"
+topology_file = f"{test_data_directory}/0_unk_hoh.pdb"
+trajectory_file = f"{test_data_directory}/all_50.dcd"
 selection1 = "protein"
 selection2 = ["resname UNK"]
 
