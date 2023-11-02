@@ -8,6 +8,7 @@ from simtk.openmm import unit
 from simtk.openmm import Vec3
 import mdtraj as md
 import numpy as np
+import simtk
 from pathlib import Path
 import pdbfixer
 from openmm.app import PDBFile
