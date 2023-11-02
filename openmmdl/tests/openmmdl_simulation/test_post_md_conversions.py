@@ -8,11 +8,11 @@ from openmmdl.openmmdl_simulation.scripts.post_md_conversions import mdtraj_conv
 
 
 test_data_directory = Path("openmmdl/tests/data/in")
-pdb_file = f"{test_data_directory}/0_unk_hoh.pdb"
+pdb_file = "0_unk_hoh.pdb"
 
 def test_mdtraj_conversion():
     original_cwd = os.getcwd()
-    os.chdir(test_data_dir)
+    os.chdir(test_data_directory)
     # Create temporary directories to save the output files
     output_file_dcd = "centered_old_coordinates.dcd"
     output_file_xtc = 'centered_old_coordinates.xtc'
