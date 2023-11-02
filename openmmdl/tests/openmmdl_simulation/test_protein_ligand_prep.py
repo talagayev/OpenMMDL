@@ -5,6 +5,7 @@ from rdkit import Chem
 from simtk import openmm, unit
 from pathlib import Path
 import openmm
+import pdbfixer
 from openmm.app import PDBFile
 from pdbfixer import PDBFixer
 from openmmdl.openmmdl_simulation.scripts.protein_ligand_prep import *
@@ -58,7 +59,7 @@ def test_water_conversion():
     protein_name = "6b73.pdb"
     
     # Create a sample PDBFixer object and specify a model water
-    fixer = PDBFixer()
+    fixer = pdbfixer.PDBFixer(str(TEST_PROTEIN))
     model_water = "TIP4P-EW"
 
     # Call the water_conversion function
