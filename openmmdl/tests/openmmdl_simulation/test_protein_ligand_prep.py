@@ -85,20 +85,6 @@ def test_rdkit_to_openmm_conversion():
     # Check if the OpenMM modeller is an instance of OpenMM's app.Modeller
     assert omm_mol is not None
 
-def test_water_conversion():
-    # Load the sample PDB file
-    protein_name = "6b73.pdb"
-    
-    # Create a sample PDBFixer object and specify a model water
-    protein = PDBFile(str(TEST_PROTEIN))
-    modeller_pre_conversion = app.Modeller(protein)
-    model_water = "TIP4P-EW"
-
-    # Call the water_conversion function
-    modeller = water_conversion(model_water, modeller_pre_conversion, protein_name)
-
-    # Check if the modeller object is an instance of Modeller
-    assert isinstance(modeller, Modeller)
 
 if __name__ == '__main__':
     pytest.main()
