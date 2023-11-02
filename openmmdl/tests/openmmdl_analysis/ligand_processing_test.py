@@ -3,7 +3,7 @@ import openmmdl
 from pathlib import Path
 from openmmdl.openmmdl_analysis.ligand_processing import increase_ring_indices, convert_ligand_to_smiles
 
-
+test_data_directory = Path("openmmdl/tests/data/in")
 TEST_LIGAND_FILE = f"{test_data_directory}/CVV.sdf"
 TEST_OUTPUT_FILE = "CVV.smi"
 
