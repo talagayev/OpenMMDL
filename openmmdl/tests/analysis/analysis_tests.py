@@ -274,3 +274,6 @@ def test_cloud_json_generation(sample_dataframe_cloud_json_generation):
     }
 
     assert result == expected_clouds
+
+if __name__ == '__main__':
+    pytest.main()
