@@ -61,7 +61,13 @@ TEST_MOL2_FILE = f"{test_data_directory}/CVV.mol2"
 TEST_PROTEIN = test_data_directory / '6b73.pdb'
 
 
-ligand_prepared = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=False)
+ligand_prepared = prepare_ligand(ligand,minimize_molecule=minimization)
+omm_ligand = rdkit_to_openmm(ligand_prepared, ligand_name)
+protein_pdb = protein_choice(protein_is_prepared=protein_prepared,protein=protein)
+forcefield_selected = ff_selection(ff)
+water_selected = water_forcefield_selection(water=water,forcefield_selection=ff_selection(ff))
+model_water = water_model_selection(water=water,forcefield_selection=ff_selection(ff))
+complex_topology, complex_positions = merge_protein_and_ligand(protein_pdb, omm_ligand)
 
 # Test the protein_choice function
 def test_protein_choice():
@@ -84,6 +90,10 @@ def test_rdkit_to_openmm():
     omm_ligand = rdkit_to_openmm(ligand_prepared, ligand_name)
     assert isinstance(omm_ligand, simtk.openmm.app.Modeller)
 
+def test_merge_protein_and_ligand():
+    complex_topology, complex_positions = merge_protein_and_ligand(protein_pdb, omm_ligand)
+    assert complex_topology is not None
+    assert complex_positions is not None
 
 if __name__ == '__main__':
     pytest.main()
