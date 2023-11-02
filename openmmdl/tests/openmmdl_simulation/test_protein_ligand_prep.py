@@ -90,7 +90,8 @@ def test_water_conversion():
     protein_name = "6b73.pdb"
     
     # Create a sample PDBFixer object and specify a model water
-    modeller_pre_conversion = Modeller(PDBFile(str(TEST_PROTEIN)))  
+    protein = PDBFile(str(TEST_PROTEIN))
+    modeller_pre_conversion = app.Modeller(protein)
     model_water = "TIP4P-EW"
 
     # Call the water_conversion function
