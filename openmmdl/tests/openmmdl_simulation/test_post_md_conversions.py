@@ -26,3 +26,5 @@ def test_mdtraj_conversion():
     assert output_file_xtc is not None
     assert output_file_pdb is not None
     assert output_file_gro is not None
+
+    os.chdir(original_cwd)
