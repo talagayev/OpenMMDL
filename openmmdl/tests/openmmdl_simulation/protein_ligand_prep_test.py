@@ -56,8 +56,6 @@ test_data_directory = "openmmdl/tests/data/in"
 
 test_data_directory = Path("openmmdl/tests/data/in")
 
-original_cwd = os.getcwd()
-os.chdir(test_data_directory)
 
 
 # Define the full path to the input SDF file
@@ -79,11 +77,16 @@ modeller = app.Modeller(complex_topology, complex_positions)
 
 # Test the protein_choice function
 def test_protein_choice():
+    original_cwd = os.getcwd()
+    os.chdir(test_data_directory)
     prepared_protein = protein_choice("Yes", TEST_PROTEIN)
     assert isinstance(prepared_protein, pdbfixer.PDBFixer)
+    os.chdir(original_cwd)
 
 # Test the prepare_ligand function
 def test_prepare_ligand():
+    original_cwd = os.getcwd()
+    os.chdir(test_data_directory)
     # Test the function with the sample ligand file.
     rdkit_mol_sdf = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=False)
     rdkit_mol_mol = prepare_ligand(TEST_MOL_FILE, minimize_molecule=False)
@@ -93,23 +96,36 @@ def test_prepare_ligand():
     assert rdkit_mol_sdf is not None  # Check if the result is not None
     assert rdkit_mol_mol is not None  # Check if the result is not None
     assert rdkit_mol_mol2 is not None  # Check if the result is not None
+    os.chdir(original_cwd)
 
 def test_rdkit_to_openmm():
+    original_cwd = os.getcwd()
+    os.chdir(test_data_directory)
     omm_ligand = rdkit_to_openmm(ligand_prepared, ligand_name)
     assert isinstance(omm_ligand, simtk.openmm.app.Modeller)
+    os.chdir(original_cwd)
 
 def test_merge_protein_and_ligand():
+    original_cwd = os.getcwd()
+    os.chdir(test_data_directory)
     complex_topology, complex_positions = merge_protein_and_ligand(protein_pdb, omm_ligand)
     assert complex_topology is not None
     assert complex_positions is not None
+    os.chdir(original_cwd)
 
 def test_water_padding_solvent_builder():
+    original_cwd = os.getcwd()
+    os.chdir(test_data_directory)
     protein_buffer_solved = water_padding_solvent_builder(model_water, forcefield, water_padding_distance, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, TEST_PROTEIN)
     assert protein_buffer_solved is not None
+    os.chdir(original_cwd)
 
 def test_water_absolute_solvent_builder():
+    original_cwd = os.getcwd()
+    os.chdir(test_data_directory)
     protein_absolute_solved = water_absolute_solvent_builder(model_water, forcefield, water_box_x, water_box_y, water_box_z, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, TEST_PROTEIN)
     assert protein_absolute_solved is not None
+    os.chdir(original_cwd)
 
 
 if __name__ == '__main__':
