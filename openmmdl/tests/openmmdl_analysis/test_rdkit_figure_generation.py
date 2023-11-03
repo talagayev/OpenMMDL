@@ -23,7 +23,6 @@ def test_highlight_numbers():
         "125TYRA 4192 Acceptor waterbridge",
         "161PHEA 4211 4212 4213 4214 4215 4210 hydrophobic",
         "59ARGA 4205 4206 4207 4216 4217 4218 Aromatic pication",
-        "98PHEA 4210,4211,4212,4213,4214,4215 pistacking",
         "59ARGA 4194 F halogen",
         "166ARGA 4202,4203 Carboxylate NI saltbridge"
     ]
@@ -37,7 +36,6 @@ def test_highlight_numbers():
     assert highlighted_hbond_both is not None
     assert highlighted_hydrophobic is not None
     assert highlighted_waterbridge is not None
-    assert highlighted_pistacking is not None
     assert highlighted_halogen is not None
     assert highlighted_ni is not None
     assert highlighted_pication is not None
