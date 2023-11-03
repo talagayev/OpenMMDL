@@ -30,6 +30,8 @@ def test_highlight_numbers():
 
     starting_idx = 1  # Updated starting index
 
+    highlight_numbers(split_data,starting_idx)
+
     assert highlighted_hbond_donor is not None
     assert highlighted_hbond_acceptor is not None
     assert highlighted_hbond_both is not None
