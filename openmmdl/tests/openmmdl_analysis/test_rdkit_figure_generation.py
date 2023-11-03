@@ -1,7 +1,7 @@
 import pytest
 import os
 from pathlib import Path
-from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction_data, highlight_numbers, update_dict
+from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction_data, highlight_numbers, update_dict, create_and_merge_images
 
 
 @pytest.mark.parametrize("input_data, expected_output", [
@@ -62,6 +62,19 @@ def test_update_dict():
     target_dict = {1: '1', 2: '2'}
     update_dict(target_dict)  # No source dictionaries provided
     assert target_dict == {1: '1', 2: '2'}
+
+# Define test cases
+@pytest.mark.parametrize("binding_mode, occurrence_percent, split_data, expected_output", [
+    ("Binding_mode_1", {"Binding_mode_1": 60}, ["163GLYA 4202 Acceptor hbond", "165ASPA 4222 Donor hbond", "161PHEA 4211 4212 4213 4214 4215 4210 hydrophobic"], ["Binding_mode_1_merged.png"]),
+    ("Binding_mode_2", {"Binding_mode_2": 20}, ["59ARGA 4194 F halogen", "125TYRA 4192 Acceptor waterbridge", "166ARGA 4202,4203 Carboxylate NI saltbridge"], ["Binding_mode_2_merged.png"]),
+])
+def test_create_and_merge_images(binding_mode, occurrence_percent, split_data, expected_output):
+    merged_image_paths = create_and_merge_images(binding_mode, occurrence_percent, split_data, [])
+    assert merged_image_paths == expected_output
+
+# Run the tests
+if __name__ == '__main__':
+    pytest.main()
 
 
 
