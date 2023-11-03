@@ -30,7 +30,7 @@ def test_highlight_numbers():
     starting_idx = 1  # Updated starting index
 
     highlighted_hbond_donor, highlighted_hbond_acceptor, highlighted_hbond_both, \
-    highlighted_hydrophobic, highlighted_waterbridge, highlighted_halogen, \
+    highlighted_hydrophobic, highlighted_waterbridge, highlighted_pistacking, highlighted_halogen, \
     highlighted_ni, highlighted_pi, highlighted_pication, highlighted_metal = result
 
     assert highlighted_hbond_donor is not None
