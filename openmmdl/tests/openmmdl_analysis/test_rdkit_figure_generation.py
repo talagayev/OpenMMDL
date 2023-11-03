@@ -53,13 +53,13 @@ def test_update_dict():
 
     # Test case 2: Check if the function handles multiple source dictionaries
     target_dict = {}
-    source_dict1 = {'1': '1'}
-    source_dict2 = {'2': '2', '3': '3'}
+    source_dict1 = {1: '1'}
+    source_dict2 = {2: '2', 3: '3'}
     update_dict(target_dict, source_dict1, source_dict2)
     assert target_dict == {1: 1, 2: 2, 3: 3}
 
     # Test case 3: Check if the function handles empty source dictionaries
-    target_dict = {'1': '1', '2': 'tw2o'}
+    target_dict = {1: '1', 2: '2'}
     update_dict(target_dict)  # No source dictionaries provided
     assert target_dict == {1: '1', 2: '2'}
 
