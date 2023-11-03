@@ -16,16 +16,13 @@ lig_name = "UNK"
 
 # Test the function
 def test_characterize_complex():
-
     # Call the function
     interaction_set = characterize_complex(topology_file, binding_site_id)
 
     # Check if the function returns a PLInteraction object
     assert isinstance(interaction_set, PLInteraction)
 
-def test_retrieve_plip_interactions(prepare_test_data):
-    pdb_file, ligand_name = prepare_test_data
-
+def test_retrieve_plip_interactions():
     # Call the function
     interactions = retrieve_plip_interactions(topology_file, lig_name)
 
