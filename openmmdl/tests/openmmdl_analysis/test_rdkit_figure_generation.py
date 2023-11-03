@@ -1,7 +1,7 @@
 import pytest
 import os
 from pathlib import Path
-from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction_data, highlight_numbers
+from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction_data, highlight_numbers, update_dict
 
 
 @pytest.mark.parametrize("input_data, expected_output", [
@@ -44,6 +44,25 @@ def test_highlight_numbers():
     assert highlighted_ni is not None
     assert highlighted_pication is not None
     
+def test_update_dict():
+    # Test case 1: Check if the target dictionary is updated correctly
+    target_dict = {'1': 'one', '2': 'two'}
+    source_dict = {'3': 'three', '4': 'four'}
+    update_dict(target_dict, source_dict)
+    assert target_dict == {1: 'one', 2: 'two', 3: 'three', 4: 'four'}
+
+    # Test case 2: Check if the function handles multiple source dictionaries
+    target_dict = {}
+    source_dict1 = {'1': 'one'}
+    source_dict2 = {'2': 'two', '3': 'three'}
+    update_dict(target_dict, source_dict1, source_dict2)
+    assert target_dict == {1: 'one', 2: 'two', 3: 'three'}
+
+    # Test case 3: Check if the function handles empty source dictionaries
+    target_dict = {'1': 'one', '2': 'two'}
+    update_dict(target_dict)  # No source dictionaries provided
+    assert target_dict == {1: 'one', 2: 'two'}
+
 
 # Run the tests
 if __name__ == "__main__":
