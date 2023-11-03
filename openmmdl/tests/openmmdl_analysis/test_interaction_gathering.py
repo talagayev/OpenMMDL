@@ -10,7 +10,7 @@ from openmmdl.openmmdl_analysis.interaction_gathering import characterize_comple
 
 
 test_data_directory = Path("openmmdl/tests/data/in")
-topology_file = f"{test_data_directory}/0_unk_hoh.pdb"
+topology_file = f"{test_data_directory}/complex.pdb"
 binding_site_id = "UNK:X:0"
 
 # Test the function
