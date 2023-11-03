@@ -46,8 +46,8 @@ def test_highlight_numbers():
     
 def test_update_dict():
     # Test case 1: Check if the target dictionary is updated correctly
-    target_dict = {'1': '1', '2': '2'}
-    source_dict = {'3': '3', '4': '4'}
+    target_dict = {1: '1', 2: '2'}
+    source_dict = {3: '3', 4: '4'}
     update_dict(target_dict, source_dict)
     assert target_dict == {1: '1', 2: '2', 3: '3', 4: '4'}
 
