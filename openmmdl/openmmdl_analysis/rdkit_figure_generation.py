@@ -308,6 +308,7 @@ def create_and_merge_images(binding_mode, occurrence_percent, split_data, merged
     merged_image_paths.append(merged_image_filename)
 
     # Remove the original files
+    print("File created")
     os.remove(f'{binding_mode}.png')
     os.remove(legend_filename)
     os.remove(f'{binding_mode}.svg')
