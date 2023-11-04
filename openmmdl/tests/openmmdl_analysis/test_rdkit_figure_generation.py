@@ -70,8 +70,7 @@ def test_update_dict():
 ])
 def test_create_and_merge_images(binding_mode, occurrence_percent, split_data, expected_output):
     merged_image_paths = create_and_merge_images(binding_mode, occurrence_percent, split_data, [])
-    for merged_image_path in merged_image_paths:
-        assert "merged.png" in merged_image_path
+    assert "merged.png" in merged_image_paths
 
 # Run the tests
 if __name__ == '__main__':
