@@ -1,8 +1,10 @@
 import pytest
 import os
+import shutil
 from pathlib import Path
 from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction_data, highlight_numbers, update_dict, create_and_merge_images
 
+test_data_directory = Path("openmmdl/tests/data/in")
 
 @pytest.mark.parametrize("input_data, expected_output", [
     (["60GLUA_4206_4207_4216_4217_4218_4205_hydrophobic"], ['60GLUA 4206 4207 4216 4217 4218 4205 hydrophobic']),
@@ -69,8 +71,16 @@ def test_update_dict():
     ("Binding_mode_2", {"Binding_mode_2": 20}, ["59ARGA 4194 F halogen", "125TYRA 4192 Acceptor waterbridge", "166ARGA 4202,4203 Carboxylate NI saltbridge"], ["Binding_mode_2_merged.png"]),
 ])
 def test_create_and_merge_images(binding_mode, occurrence_percent, split_data, expected_output):
+
+    for binding_mode_file in ["Binding_Mode_1.png", "Binding_Mode_2.png"]:
+        source_path = os.path.join(test_data_directory, binding_mode_file)
+        shutil.copy(source_path, binding_mode_file)
+        
     merged_image_paths = create_and_merge_images(binding_mode, occurrence_percent, split_data, [])
+    
     assert "merged.png" in merged_image_paths
+    for merged_image_path in merged_image_paths:
+        assert os.path.exists(merged_image_path)
 
 # Run the tests
 if __name__ == '__main__':
