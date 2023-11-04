@@ -313,6 +313,7 @@ def create_and_merge_images(binding_mode, occurrence_percent, split_data, merged
     os.remove(legend_filename)
     os.remove(f'{binding_mode}.svg')
 
+    print(merged_image_paths)
     return merged_image_paths
 
 def arranged_figure_generation(merged_image_paths, output_path):
