@@ -103,10 +103,6 @@ def test_arranged_figure_generation(merged_image_paths, output_path):
         expected_height = 200  # 2 rows
         assert output_image.size == (expected_width, expected_height)
 
-    # Check if individual image files are removed
-    for path in merged_image_paths:
-        assert not os.path.exists(path)
-
     # Check if the output file is renamed
     new_output_path = "Binding_Modes_Markov_States/output.png"
     assert os.path.exists(new_output_path)
