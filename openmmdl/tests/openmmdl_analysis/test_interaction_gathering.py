@@ -7,7 +7,7 @@ import mdtraj as md
 import MDAnalysis as mda
 from plip.structure.preparation import PDBComplex, LigandFinder, Mol, PLInteraction
 
-from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame
+from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame, fill_missing_frames
 
 
 test_data_directory = Path("openmmdl/tests/data/in")
@@ -74,6 +74,21 @@ def test_process_frame_with_sample_data():
     # Check if all expected columns are present in the result
     for column in expected_columns:
         assert column in result.columns
+
+def test_fill_missing_frames():
+    # Create a sample DataFrame with missing frames
+    data = {'FRAME': [1, 2, 4, 5],
+            'Value1': ['A', 'B', 'C', 'D']}
+    df = pd.DataFrame(data)
+
+    # Call the fill_missing_frames function
+    filled_df = fill_missing_frames(df, 6)  # md_len = 6, should include frames 1 to 5
+
+    # Assert that all frame numbers from 1 to 5 are present in the 'FRAME' column
+    assert all(filled_df['FRAME'] == [1, 2, 3, 4, 5])
+
+    # Assert that missing frames have 'Value1' column set to "skip"
+    assert all(filled_df.loc[filled_df['FRAME'] == 3, 'Value1'] == 'skip')
 
 if __name__ == "__main":
     pytest.main()
