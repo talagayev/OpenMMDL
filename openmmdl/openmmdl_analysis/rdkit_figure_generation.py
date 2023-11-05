@@ -289,7 +289,7 @@ def create_and_merge_images(binding_mode, occurrence_percent, split_data, merged
     figlegend.savefig(legend_filename)
 
     # Read the two images
-    image1 = Image.open(figure_file)
+    image1 = Image.open(f'{binding_mode}.png')
     image2 = Image.open(legend_filename)
 
     # Resize the first image
