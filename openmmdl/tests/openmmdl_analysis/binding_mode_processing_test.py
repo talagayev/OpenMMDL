@@ -23,6 +23,32 @@ def sample_dataframe_bindingmode_processing():
         'LIG_GROUP': {0: 'Group1', 1: 'Group2', 2: 'Group3', 3: 'Group1'},
         'PROTISPOS': {0: True, 1: False, 2: True, 3: True}
     }
+
+    # Add 'halogen' and 'hbond' data to the existing DataFrame
+    data['FRAME'][4] = 4  # Add a new 'FRAME' value
+    data['Prot_partner'][4] = 'A'  # Add a new 'Prot_partner' value
+    data['INTERACTION'][4] = 'halogen'  # Add 'halogen' interaction
+    data['DON_IDX'][4] = 501  # DON_IDX for 'halogen'
+    data['DONORTYPE'][4] = 'Cl'  # Halogen type
+
+    data['FRAME'][5] = 5  # Add a new 'FRAME' value
+    data['Prot_partner'][5] = 'A'  # Add a new 'Prot_partner' value
+    data['INTERACTION'][5] = 'hbond'  # Add 'hbond' interaction
+    data['ACCEPTORIDX'][5] = 301  # ACCEPTORIDX for 'hbond'
+    data['PROTISDON'][5] = True  # PROTISDON is True for 'hbond'
+
+    # Add 'waterbridge' cases where PROTISDON is both True and False
+    data['FRAME'][6] = 6  # Add a new 'FRAME' value
+    data['Prot_partner'][6] = 'A'  # Add a new 'Prot_partner' value
+    data['INTERACTION'][6] = 'waterbridge'  # Add 'waterbridge' interaction
+    data['ACCEPTOR_IDX'][6] = 401  # ACCEPTOR_IDX for 'waterbridge'
+    data['PROTISDON'][6] = True  # PROTISDON is True for 'waterbridge'
+
+    data['FRAME'][7] = 7  # Add a new 'FRAME' value
+    data['Prot_partner'][7] = 'B'  # Add a new 'Prot_partner' value
+    data['INTERACTION'][7] = 'waterbridge'  # Add 'waterbridge' interaction
+    data['DONOR_IDX'][7] = 501  # DONOR_IDX for 'waterbridge'
+    data['PROTISDON'][7] = False  # PROTISDON is False for 'waterbridge'
     return pd.DataFrame(data)
 
 
@@ -37,9 +63,9 @@ def test_gather_interactions(sample_dataframe_bindingmode_processing):
 
     # Check specific values in the generated dictionary for known interactions based on the updated fixture
     expected_result = {
-        1: {0: 'A_101_hydrophobic'},
-        2: {1: 'B_202_Donor_hbond', 3: 'A_102_hydrophobic'},
-        3: {2: 'C_[5, 6]_Group3_NI_saltbridge'}
+    1: {0: 'A_101_hydrophobic', 4: 'A_501_Cl_halogen', 5: 'A_301_Acceptor_hbond', 6: 'A_401_Acceptor_waterbridge'},
+    2: {1: 'B_202_Donor_hbond', 3: 'A_102_hydrophobic'},
+    3: {2: 'C_[5, 6]_Group3_NI_saltbridge', 7: 'B_501_Donor_waterbridge'}
     }
 
     # Check if the actual result matches the expected result
