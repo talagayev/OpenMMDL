@@ -228,7 +228,7 @@ def update_dict(target_dict, *source_dicts):
                 target_dict[int_key] = value
 
 
-def create_and_merge_images(binding_mode, occurrence_percent, split_data, figure_file, merged_image_paths):
+def create_and_merge_images(binding_mode, occurrence_percent, split_data, merged_image_paths):
     """
     Create and merge images to generate a legend for binding modes.
 
