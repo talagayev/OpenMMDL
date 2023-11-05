@@ -7,6 +7,7 @@ from pathlib import Path
 from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction_data, highlight_numbers, update_dict, create_and_merge_images, arranged_figure_generation
 
 test_data_directory = Path("openmmdl/tests/data/in")
+current_directory = os.getcwd() 
 
 @pytest.mark.parametrize("input_data, expected_output", [
     (["60GLUA_4206_4207_4216_4217_4218_4205_hydrophobic"], ['60GLUA 4206 4207 4216 4217 4218 4205 hydrophobic']),
@@ -76,24 +77,42 @@ def test_update_dict():
 
 # Define test data
 @pytest.fixture
-def merged_image_paths(tmp_path):
+def merged_image_paths(current_directory):
     image_paths = []
     for i in range(1, 5):
         image = Image.new('RGB', (100, 100), (i * 25, i * 25, i * 25))
-        image_path = tmp_path / f"image_{i}.png"
+        image_path = current_directory / f"image_{i}.png"
         image.save(image_path)
         image_paths.append(str(image_path))
     return image_paths
 
 @pytest.fixture
-def output_path(tmp_path):
-    return str(tmp_path / "output.png")
+def output_path(current_directory):
+    return str(current_directory / "output.png")
 
 # Test the arranged_figure_generation function
 def test_arranged_figure_generation(merged_image_paths, output_path):
     arranged_figure_generation(merged_image_paths, output_path)
+    assert os.path.exists(output_path)
     
-    assert 1 == 1
+    # Check if the output file is an image
+    with Image.open(output_path) as output_image:
+        assert output_image.mode == 'RGB'
+
+    # Check the output image dimensions (you may need to adjust this depending on your input)
+    with Image.open(output_path) as output_image:
+        expected_width = 200  # 2 images per row
+        expected_height = 200  # 2 rows
+        assert output_image.size == (expected_width, expected_height)
+
+    # Check if individual image files are removed
+    for path in merged_image_paths:
+        assert not os.path.exists(path)
+
+    # Check if the output file is renamed
+    new_output_path = "Binding_Modes_Markov_States/output.png"
+    assert os.path.exists(new_output_path)
+
 
 
 # Run the tests
