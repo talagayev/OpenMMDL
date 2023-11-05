@@ -21,7 +21,8 @@ def sample_dataframe_bindingmode_processing():
         'PROTISDON': {0: True, 1: False, 2: True, 3: False},
         'LIG_IDX_LIST': {0: [1, 2], 1: [3, 4], 2: [5, 6], 3: [3, 4]},
         'LIG_GROUP': {0: 'Group1', 1: 'Group2', 2: 'Group3', 3: 'Group1'},
-        'PROTISPOS': {0: True, 1: False, 2: True, 3: True}
+        'PROTISPOS': {0: True, 1: False, 2: True, 3: True},
+        'DON_IDX': {0: 0, 1: 0, 2: 0, 3: 0}
     }
 
     # Add 'halogen' and 'hbond' data to the existing DataFrame
@@ -35,6 +36,7 @@ def sample_dataframe_bindingmode_processing():
     data['Prot_partner'][5] = 'A'  # Add a new 'Prot_partner' value
     data['INTERACTION'][5] = 'hbond'  # Add 'hbond' interaction
     data['ACCEPTORIDX'][5] = 301  # ACCEPTORIDX for 'hbond'
+    data['DON_IDX'][5] = 0  # DON_IDX
     data['PROTISDON'][5] = True  # PROTISDON is True for 'hbond'
 
     # Add 'waterbridge' cases where PROTISDON is both True and False
@@ -42,12 +44,14 @@ def sample_dataframe_bindingmode_processing():
     data['Prot_partner'][6] = 'A'  # Add a new 'Prot_partner' value
     data['INTERACTION'][6] = 'waterbridge'  # Add 'waterbridge' interaction
     data['ACCEPTOR_IDX'][6] = 401  # ACCEPTOR_IDX for 'waterbridge'
+    data['DON_IDX'][6] = 0  # DON_IDX
     data['PROTISDON'][6] = True  # PROTISDON is True for 'waterbridge'
 
     data['FRAME'][7] = 7  # Add a new 'FRAME' value
     data['Prot_partner'][7] = 'B'  # Add a new 'Prot_partner' value
     data['INTERACTION'][7] = 'waterbridge'  # Add 'waterbridge' interaction
     data['DONOR_IDX'][7] = 501  # DONOR_IDX for 'waterbridge'
+    data['DON_IDX'][7] = 0  # DON_IDX
     data['PROTISDON'][7] = False  # PROTISDON is False for 'waterbridge'
     return pd.DataFrame(data)
 
