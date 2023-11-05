@@ -59,8 +59,12 @@ def test_process_frame_with_sample_data():
     # Define a sample frame number
     frame_number = 1
 
+    topology_file = f"{test_data_directory}/complex.pdb"
+    destination_file = "complex.pdb"
+    shutil.copy(source_file, destination_file)
+
     # Load the sample PDB file into an MDAnalysis Universe
-    sample_universe = mda.Universe(topology_file)
+    sample_universe = mda.Universe(destination_file)
 
     # Call the process_frame function with the sample data
     result = process_frame(frame_number, sample_universe, lig_name)
