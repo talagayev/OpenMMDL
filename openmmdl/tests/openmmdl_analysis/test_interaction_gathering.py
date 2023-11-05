@@ -1,5 +1,6 @@
 import os
 import pytest
+import shutil
 import tempfile
 from pathlib import Path
 import pandas as pd
@@ -62,6 +63,10 @@ def test_process_frame_with_sample_data():
     # Define a sample frame number
     frame_number = 1
 
+    destination_file = "processing_frame_1.pdb"
+
+    shutil.copy(frame_file, destination_file)
+
     # Load the sample PDB file into an MDAnalysis Universe
     sample_universe = mda.Universe(topology_file)
 
@@ -84,9 +89,7 @@ def test_fill_missing_frames():
     data = {'FRAME': [1, 2, 4, 5],
             'Value1': ['A', 'B', 'C', 'D']}
     df = pd.DataFrame(data)
-    destination_file = "processing_frame_1.pdb"
 
-    shutil.copy(frame_file, destination_file)
 
     # Call the fill_missing_frames function
     filled_df = fill_missing_frames(df, 6)  # md_len = 6, should include frames 1 to 5
