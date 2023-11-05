@@ -1,5 +1,6 @@
 import pytest
 import os
+import time
 import shutil
 from PIL import Image
 from pathlib import Path
