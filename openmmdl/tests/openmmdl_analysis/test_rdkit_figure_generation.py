@@ -77,7 +77,7 @@ def test_update_dict():
 
 # Define test data
 @pytest.fixture
-def merged_image_paths(current_directory):
+def merged_image_paths():
     image_paths = []
     for i in range(1, 5):
         image = Image.new('RGB', (100, 100), (i * 25, i * 25, i * 25))
@@ -87,11 +87,11 @@ def merged_image_paths(current_directory):
     return image_paths
 
 @pytest.fixture
-def output_path(current_directory):
-    return str(current_directory / "output.png")
+def output_path():
+    return (f"{current_directory} / output.png")
 
 # Test the arranged_figure_generation function
-def test_arranged_figure_generation(merged_image_paths, output_path):
+def test_arranged_figure_generation(merged_image_paths,output_path):
     arranged_figure_generation(merged_image_paths, output_path)
     assert os.path.exists(output_path)
     
