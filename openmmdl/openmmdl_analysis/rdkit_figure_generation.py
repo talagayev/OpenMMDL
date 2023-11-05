@@ -366,6 +366,8 @@ def arranged_figure_generation(merged_image_paths, output_path):
 
     # Save the big figure
     big_figure.save(output_path, "PNG")
+    print(output_path)
+    print("it worked")
 
     # Rename the merged image
     os.rename(output_path, "Binding_Modes_Markov_States/" + os.path.basename(output_path))
