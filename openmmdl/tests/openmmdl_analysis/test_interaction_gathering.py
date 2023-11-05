@@ -6,7 +6,7 @@ import numpy as np
 import mdtraj as md
 from plip.structure.preparation import PDBComplex, LigandFinder, Mol, PLInteraction
 
-from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, , create_df_from_binding_site
+from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site
 
 
 test_data_directory = Path("openmmdl/tests/data/in")
