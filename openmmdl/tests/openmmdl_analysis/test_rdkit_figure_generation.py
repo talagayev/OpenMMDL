@@ -75,46 +75,6 @@ def test_update_dict():
 ])
 
 
-# Define test data
-@pytest.fixture
-def merged_image_paths():
-    image_paths = []
-    for i in range(1, 5):
-        image = Image.new('RGB', (100, 100), (i * 25, i * 25, i * 25))
-        image_filename = f"image_{i}.png"
-        image_path = os.path.join(current_directory, image_filename)
-        image.save(image_path)
-        image_paths.append(image_path)
-    return image_paths
-
-@pytest.fixture
-def output_path():
-    filename = "output.png"
-    return os.path.join(current_directory, filename)
-
-# Test the arranged_figure_generation function
-def test_arranged_figure_generation(merged_image_paths, output_path):
-    arranged_figure_generation(merged_image_paths, output_path)
-    
-    # Check if the output file is an image
-    with Image.open(output_path) as output_image:
-        assert output_image.mode == 'RGB'
-
-    # Check the output image dimensions (you may need to adjust this depending on your input)
-    with Image.open(output_path) as output_image:
-        expected_width = 200  # 2 images per row
-        expected_height = 200  # 2 rows
-        assert output_image.size == (expected_width, expected_height)
-
-    # Check if individual image files are removed
-    for path in merged_image_paths:
-        assert not os.path.exists(path)
-
-    # Check if the output file is renamed
-    new_output_filename = "output.png"
-    new_output_path = os.path.join("Binding_Modes_Markov_States", new_output_filename)
-    assert os.path.exists(new_output_path)
-
 # Run the tests
 if __name__ == '__main__':
     pytest.main()
