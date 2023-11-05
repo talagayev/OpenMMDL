@@ -6,7 +6,7 @@ import numpy as np
 import mdtraj as md
 from plip.structure.preparation import PDBComplex, LigandFinder, Mol, PLInteraction
 
-from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site
+from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame
 
 
 test_data_directory = Path("openmmdl/tests/data/in")
@@ -53,6 +53,26 @@ def test_create_df_from_binding_site():
     assert isinstance(df_invalid, pd.DataFrame)
     assert df_invalid.shape == (2, 2)
     assert list(df_invalid.columns) == ["ColumnA", "ColumnB"]
+
+def test_process_frame_with_sample_data():
+    # Define a sample frame number
+    frame_number = 1
+
+    # Load the sample PDB file into an MDAnalysis Universe
+    sample_universe = md.Universe(topology_file)
+
+    # Call the process_frame function with the sample data
+    result = process_frame(frame_number, sample_universe, lig_name)
+
+    # Define the expected columns you want to check
+    expected_columns = ["FRAME", "INTERACTION"]  # Add the specific columns you want to validate
+
+    # Check if the result is a Pandas DataFrame
+    assert isinstance(result, pd.DataFrame)
+
+    # Check if all expected columns are present in the result
+    for column in expected_columns:
+        assert column in result.columns
 
 if __name__ == "__main":
     pytest.main()
