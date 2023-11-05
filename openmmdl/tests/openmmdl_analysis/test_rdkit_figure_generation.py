@@ -81,7 +81,7 @@ def merged_image_paths():
     image_paths = []
     for i in range(1, 5):
         image = Image.new('RGB', (100, 100), (i * 25, i * 25, i * 25))
-        image_path = f"{current_directory} / image_{i}.png"
+        image_path = f"{current_directory}/image_{i}.png"
         image.save(image_path)
         image_paths.append(image_path)
     return image_paths
