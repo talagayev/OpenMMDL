@@ -141,6 +141,7 @@ def process_frame(frame, pdb_md, lig_name):
     atoms_selected = pdb_md.select_atoms(f"protein or resname {lig_name} or (resname HOH and around 10 resname {lig_name})")
     for num in pdb_md.trajectory[(frame):(frame+1)]:
         atoms_selected.write(f'processing_frame_{frame}.pdb')
+    print(f'processing_frame_{frame}.pdb')
     interactions_by_site = retrieve_plip_interactions(f"processing_frame_{frame}.pdb", lig_name)
     index_of_selected_site = -1
     selected_site = list(interactions_by_site.keys())[index_of_selected_site]
