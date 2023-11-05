@@ -87,7 +87,8 @@ def test_remove_duplicates_data():
     }
     return input_data, expected_output
 
-def sample_data():
+
+def test_update_values(sample_data):
     # Create sample DataFrames for testing
     df = pd.DataFrame({'FRAME': [1, 2, 3, 4],
                        'Value1': [10, 20, 30, 40],
@@ -98,11 +99,6 @@ def sample_data():
                            'Value2': [210, 310, 410, 510]})
 
     unique_data = {'Value1': 'Value1', 'Value2': 'Value2'}
-
-    return df, new_df, unique_data
-
-def test_update_values(sample_data):
-    df, new_df, unique_data = sample_data
 
     # Call the function to be tested
     update_values(df, new_df, unique_data)
