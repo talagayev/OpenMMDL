@@ -83,17 +83,15 @@ def test_remove_duplicates_data():
     }
     return input_data, expected_output
 
-# Define a sample test case
-@pytest.fixture
 def sample_data():
     # Create sample DataFrames for testing
     df = pd.DataFrame({'FRAME': [1, 2, 3, 4],
                        'Value1': [10, 20, 30, 40],
                        'Value2': [100, 200, 300, 400]})
 
-    new_df = pd.DataFrame({'FRAME': [2, 3, 4],
-                           'Value1': [21, 31, 41],
-                           'Value2': [210, 310, 410]})
+    new_df = pd.DataFrame({'FRAME': [1, 2, 3, 4],
+                           'Value1': [21, 31, 41, 51],
+                           'Value2': [210, 310, 410, 510]})
 
     unique_data = {'Value1': 'Value1', 'Value2': 'Value2'}
 
@@ -106,13 +104,15 @@ def test_update_values(sample_data):
     update_values(df, new_df, unique_data)
 
     # Check if the values have been updated as expected
-    assert df.loc[df['FRAME'] == 2, 'Value1'].values[0] == 21
-    assert df.loc[df['FRAME'] == 2, 'Value2'].values[0] == 210
-    assert df.loc[df['FRAME'] == 3, 'Value1'].values[0] == 31
-    assert df.loc[df['FRAME'] == 3, 'Value2'].values[0] == 310
-    assert df.loc[df['FRAME'] == 4, 'Value1'].values[0] == 41
-    assert df.loc[df['FRAME'] == 4, 'Value2'].values[0] == 410
-
+    assert df.loc[df['FRAME'] == 1, 'Value1'].values[0] == 21
+    assert df.loc[df['FRAME'] == 1, 'Value2'].values[0] == 210
+    assert df.loc[df['FRAME'] == 2, 'Value1'].values[0] == 31
+    assert df.loc[df['FRAME'] == 2, 'Value2'].values[0] == 310
+    assert df.loc[df['FRAME'] == 3, 'Value1'].values[0] == 41
+    assert df.loc[df['FRAME'] == 3, 'Value2'].values[0] == 410
+    assert df.loc[df['FRAME'] == 4, 'Value1'].values[0] == 51
+    assert df.loc[df['FRAME'] == 4, 'Value2'].values[0] == 510
+    
 # Define a test case that uses the fixture
 def test_remove_duplicate_values(test_remove_duplicates_data):
     input_data, expected_output = test_remove_duplicates_data
