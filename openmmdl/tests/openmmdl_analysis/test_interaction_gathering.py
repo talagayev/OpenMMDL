@@ -13,6 +13,7 @@ from openmmdl.openmmdl_analysis.interaction_gathering import characterize_comple
 
 test_data_directory = Path("openmmdl/tests/data/in")
 topology_file = f"{test_data_directory}/complex.pdb"
+frame_file = f"{test_data_directory}/processing_frame_1.pdb"
 binding_site_id = "UNK:X:0"
 lig_name = "UNK"
 
@@ -83,6 +84,9 @@ def test_fill_missing_frames():
     data = {'FRAME': [1, 2, 4, 5],
             'Value1': ['A', 'B', 'C', 'D']}
     df = pd.DataFrame(data)
+    destination_file = "processing_frame_1.pdb"
+
+    shutil.copy(frame_file, destination_file)
 
     # Call the fill_missing_frames function
     filled_df = fill_missing_frames(df, 6)  # md_len = 6, should include frames 1 to 5
