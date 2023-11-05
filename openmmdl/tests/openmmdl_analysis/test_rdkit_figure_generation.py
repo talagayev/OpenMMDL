@@ -93,6 +93,7 @@ def test_arranged_figure_generation(merged_image_paths, output_path):
     arranged_figure_generation(merged_image_paths, output_path)
     
     # Check if the output file is an image
+    time.sleep(10)
     with Image.open(output_path) as output_image:
         assert output_image.mode == 'RGB'
 
