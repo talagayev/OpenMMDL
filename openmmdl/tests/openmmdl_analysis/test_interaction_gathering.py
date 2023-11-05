@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import Mock, patch
 from plip.structure.preparation import PDBComplex, LigandFinder, Mol, PLInteraction
 
-from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame, fill_missing_frames
+from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame, process_trajectory, fill_missing_frames
 
 
 test_data_directory = Path("openmmdl/tests/data/in")
@@ -19,6 +19,8 @@ topology_file = f"{test_data_directory}/complex.pdb"
 frame_file = f"{test_data_directory}/processing_frame_1.pdb"
 binding_site_id = "UNK:X:0"
 lig_name = "UNK"
+topology_all
+trajectory_all
 
 # Test the function
 def test_characterize_complex():
@@ -103,34 +105,12 @@ def test_fill_missing_frames():
     assert all(filled_df.loc[filled_df['FRAME'] == 3, 'Value1'] == 'skip')
 
 
-class TestProcessFrame(unittest.TestCase):
-    @patch('your_module.retrieve_plip_interactions')  # Replace 'your_module' with the actual module name
-    @patch('mda.Universe')
-    def test_process_frame(self, mock_mda_universe, mock_retrieve_plip_interactions):
-        # Create a mock Universe object
-        mock_pdb_md = mock_mda_universe.return_value
+def test_processing_frames():
+    pdb_md = mda.Universe()
+    interaction_list = pd.DataFrame(columns=["RESNR", "RESTYPE", "RESCHAIN", "RESNR_LIG", "RESTYPE_LIG", "RESCHAIN_LIG", "DIST", "LIGCARBONIDX", "PROTCARBONIDX", "LIGCOO", "PROTCOO"])
 
-        # Define sample arguments for process_frame
-        frame = 1
-        lig_name = 'LigandName'
+    interaction_list = process_trajectory(pdb_md, dataframe=dataframe, num_processes=cpu_count, lig_name=lig_name)
 
-        # Create a mock return value for retrieve_plip_interactions
-        mock_interactions_by_site = {
-            'site1': {'interaction_type': 'interaction_data'}
-        }
-        mock_retrieve_plip_interactions.return_value = mock_interactions_by_site
-
-        # Call the process_frame function with sample arguments
-        interaction_list = process_frame(frame, mock_pdb_md, lig_name)
-
-        # Assert that retrieve_plip_interactions was called with the correct arguments
-        mock_retrieve_plip_interactions.assert_called_with(f'processing_frame_{frame}.pdb', lig_name)
-
-        # Assert that the result is a DataFrame
-        self.assertTrue(isinstance(interaction_list, pd.DataFrame))
-
-        # Assert other conditions as needed
-        # For example, check if the DataFrame has expected columns and data.
 
 if __name__ == "__main":
     pytest.main()
