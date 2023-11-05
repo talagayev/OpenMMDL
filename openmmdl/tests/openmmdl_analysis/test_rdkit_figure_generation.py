@@ -81,17 +81,19 @@ def merged_image_paths():
     image_paths = []
     for i in range(1, 5):
         image = Image.new('RGB', (100, 100), (i * 25, i * 25, i * 25))
-        image_path = f"{current_directory}/image_{i}.png"
+        image_filename = f"image_{i}.png"
+        image_path = os.path.join(current_directory, image_filename)
         image.save(image_path)
         image_paths.append(image_path)
     return image_paths
 
 @pytest.fixture
 def output_path():
-    return (f"{current_directory}/output.png")
+    filename = "output.png"
+    return os.path.join(current_directory, filename)
 
 # Test the arranged_figure_generation function
-def test_arranged_figure_generation(merged_image_paths,output_path):
+def test_arranged_figure_generation(merged_image_paths, output_path):
     arranged_figure_generation(merged_image_paths, output_path)
     assert os.path.exists(output_path)
     
@@ -110,10 +112,9 @@ def test_arranged_figure_generation(merged_image_paths,output_path):
         assert not os.path.exists(path)
 
     # Check if the output file is renamed
-    new_output_path = "Binding_Modes_Markov_States/output.png"
+    new_output_filename = "output.png"
+    new_output_path = os.path.join("Binding_Modes_Markov_States", new_output_filename)
     assert os.path.exists(new_output_path)
-
-
 
 # Run the tests
 if __name__ == '__main__':
