@@ -19,8 +19,6 @@ topology_file = f"{test_data_directory}/complex.pdb"
 frame_file = f"{test_data_directory}/processing_frame_1.pdb"
 binding_site_id = "UNK:X:0"
 lig_name = "UNK"
-topology_all
-trajectory_all
 
 # Test the function
 def test_characterize_complex():
