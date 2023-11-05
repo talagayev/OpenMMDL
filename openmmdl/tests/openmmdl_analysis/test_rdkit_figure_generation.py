@@ -95,7 +95,6 @@ def output_path():
 # Test the arranged_figure_generation function
 def test_arranged_figure_generation(merged_image_paths, output_path):
     arranged_figure_generation(merged_image_paths, output_path)
-    assert os.path.exists(output_path)
     
     # Check if the output file is an image
     with Image.open(output_path) as output_image:
