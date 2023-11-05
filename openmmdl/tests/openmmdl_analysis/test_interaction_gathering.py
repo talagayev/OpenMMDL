@@ -103,12 +103,6 @@ def test_fill_missing_frames():
     assert all(filled_df.loc[filled_df['FRAME'] == 3, 'Value1'] == 'skip')
 
 
-def test_processing_frames():
-    pdb_md = mda.Universe()
-    interaction_list = pd.DataFrame(columns=["RESNR", "RESTYPE", "RESCHAIN", "RESNR_LIG", "RESTYPE_LIG", "RESCHAIN_LIG", "DIST", "LIGCARBONIDX", "PROTCARBONIDX", "LIGCOO", "PROTCOO"])
-
-    interaction_list = process_trajectory(pdb_md, dataframe=dataframe, num_processes=cpu_count, lig_name=lig_name)
-
 
 if __name__ == "__main":
     pytest.main()
