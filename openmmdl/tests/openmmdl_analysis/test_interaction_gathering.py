@@ -65,7 +65,7 @@ def test_process_frame_with_sample_data():
     sample_universe = mda.Universe(topology_file)
 
     # Call the process_frame function with the sample data
-    result = process_frame(frame_number, topology_file, lig_name)
+    result = process_frame(frame_number, sample_universe, lig_name)
 
     # Define the expected columns you want to check
     expected_columns = ["FRAME", "INTERACTION"]  # Add the specific columns you want to validate
