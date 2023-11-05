@@ -56,23 +56,6 @@ def test_create_df_from_binding_site():
     assert df_invalid.shape == (2, 2)
     assert list(df_invalid.columns) == ["ColumnA", "ColumnB"]
 
-def create_temporary_pdb_file():
-    # Create a temporary directory to store the PDB file
-    temp_dir = tempfile.mkdtemp()
-
-    # Define a sample PDB content (replace with your own content if needed)
-    pdb_content = """
-    HEADER    SAMPLE PDB FILE
-    ATOM      1  C   LIG     1      10.000  10.000  10.000  1.00  0.00
-    END
-    """
-
-    # Create a temporary PDB file and write the content
-    temp_pdb_file = os.path.join(temp_dir, 'processing_frame_1.pdb')
-    with open(temp_pdb_file, 'w') as f:
-        f.write(pdb_content)
-
-    return temp_pdb_file
 
 def test_process_frame_with_sample_data():
     # Define a sample frame number
@@ -80,10 +63,10 @@ def test_process_frame_with_sample_data():
 
     # Load the sample PDB file into an MDAnalysis Universe
     sample_pdb_file = create_temporary_pdb_file()
-    sample_universe = mda.Universe(sample_pdb_file)
+    sample_universe = mda.Universe(topology_file)
 
     # Call the process_frame function with the sample data
-    result = process_frame(frame_number, sample_universe, sample_ligand_name)
+    result = process_frame(frame_number, topology_file, lig_name)
 
     # Define the expected columns you want to check
     expected_columns = ["FRAME", "INTERACTION"]  # Add the specific columns you want to validate
