@@ -4,6 +4,7 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 import mdtraj as md
+import MDAnalysis as mda
 from plip.structure.preparation import PDBComplex, LigandFinder, Mol, PLInteraction
 
 from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame
@@ -59,7 +60,7 @@ def test_process_frame_with_sample_data():
     frame_number = 1
 
     # Load the sample PDB file into an MDAnalysis Universe
-    sample_universe = md.Universe(topology_file)
+    sample_universe = mda.Universe(topology_file)
 
     # Call the process_frame function with the sample data
     result = process_frame(frame_number, sample_universe, lig_name)
