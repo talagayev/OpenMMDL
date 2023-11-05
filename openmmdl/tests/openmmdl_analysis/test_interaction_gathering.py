@@ -7,6 +7,8 @@ import pandas as pd
 import numpy as np
 import mdtraj as md
 import MDAnalysis as mda
+import unittest
+from unittest.mock import Mock, patch
 from plip.structure.preparation import PDBComplex, LigandFinder, Mol, PLInteraction
 
 from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame, fill_missing_frames
@@ -99,6 +101,36 @@ def test_fill_missing_frames():
 
     # Assert that missing frames have 'Value1' column set to "skip"
     assert all(filled_df.loc[filled_df['FRAME'] == 3, 'Value1'] == 'skip')
+
+
+class TestProcessFrame(unittest.TestCase):
+    @patch('your_module.retrieve_plip_interactions')  # Replace 'your_module' with the actual module name
+    @patch('mda.Universe')
+    def test_process_frame(self, mock_mda_universe, mock_retrieve_plip_interactions):
+        # Create a mock Universe object
+        mock_pdb_md = mock_mda_universe.return_value
+
+        # Define sample arguments for process_frame
+        frame = 1
+        lig_name = 'LigandName'
+
+        # Create a mock return value for retrieve_plip_interactions
+        mock_interactions_by_site = {
+            'site1': {'interaction_type': 'interaction_data'}
+        }
+        mock_retrieve_plip_interactions.return_value = mock_interactions_by_site
+
+        # Call the process_frame function with sample arguments
+        interaction_list = process_frame(frame, mock_pdb_md, lig_name)
+
+        # Assert that retrieve_plip_interactions was called with the correct arguments
+        mock_retrieve_plip_interactions.assert_called_with(f'processing_frame_{frame}.pdb', lig_name)
+
+        # Assert that the result is a DataFrame
+        self.assertTrue(isinstance(interaction_list, pd.DataFrame))
+
+        # Assert other conditions as needed
+        # For example, check if the DataFrame has expected columns and data.
 
 if __name__ == "__main":
     pytest.main()
