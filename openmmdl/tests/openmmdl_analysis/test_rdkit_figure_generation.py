@@ -73,12 +73,7 @@ def test_update_dict():
 def test_create_and_merge_images(binding_mode, occurrence_percent, split_data, expected_output):
 
     original_cwd = os.getcwd()
-    binding_mode_1 = f"{test_data_directory}/Binding_Mode_1.png"
-    binding_mode_2 = f"{test_data_directory}/Binding_Mode_2.png"
-    binding_mode_1 = os.path.join(test_data_directory, "Binding_Mode_1.png")
-    binding_mode_2 = os.path.join(test_data_directory, "Binding_Mode_2.png")
-    shutil.copy(binding_mode_1, original_cwd)
-    shutil.copy(binding_mode_2, original_cwd)
+    os.chdir(test_data_directory)
         
     merged_image_paths = create_and_merge_images(binding_mode, occurrence_percent, split_data, [])
     
