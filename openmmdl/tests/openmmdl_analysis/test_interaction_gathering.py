@@ -62,7 +62,6 @@ def test_process_frame_with_sample_data():
     frame_number = 1
 
     # Load the sample PDB file into an MDAnalysis Universe
-    sample_pdb_file = create_temporary_pdb_file()
     sample_universe = mda.Universe(topology_file)
 
     # Call the process_frame function with the sample data
