@@ -257,3 +257,39 @@ def test_filtering_values_with_provided_data():
     result = filtering_values(threshold, frames, df, unique_columns_rings_grouped)
 
     assert isinstance(result, list)
+
+# Define a test case for the df_iteration_numbering function
+def test_df_iteration_numbering():
+    # Sample DataFrame for testing
+    data = {
+        'INTERACTION': ["hydrophobic", "hbond", "halogen"],
+        'LIGCARBONIDX': [1, 2, 3],
+        'Prot_partner': ['A', 'B', 'C'],
+        'ACCEPTORIDX': [4, 5, 6],
+        'PROTISDON': [True, False, True],
+        'DONORIDX': [7, 8, 9],
+        'DON_IDX': [10, 11, 12],
+        'DONORTYPE': ['X', 'Y', 'Z'],
+        'LIG_IDX_LIST': ['1,2', '3,4', '5,6'],
+        'LIG_GROUP': ['Group1', 'Group2', 'Group3'],
+    }
+    df = pd.DataFrame(data)
+
+    # Sample unique_data dictionary
+    unique_data = {
+        1: ["A_hydrophobic", "B_hydrophobic"],
+        2: ["B_hbond_1_interaction", "C_hbond_2_interaction"],
+        3: ["C_halogen_X_interaction", "D_halogen_Y_interaction"],
+    }
+
+    # Call the function with the sample DataFrame and unique_data
+    df_iteration_numbering(df, unique_data)
+
+    # Check if the DataFrame has been updated correctly
+    assert df.loc[0, 'A_hydrophobic'] == 1
+    assert df.loc[0, 'B_hydrophobic'] == 1
+    assert df.loc[1, 'B_hbond_1_interaction'] == 1
+    assert df.loc[1, 'C_hbond_2_interaction'] == 0
+    assert df.loc[2, 'C_halogen_X_interaction'] == 0
+    assert df.loc[2, 'D_halogen_Y_interaction'] == 0
+
