@@ -172,10 +172,10 @@ def test_remove_duplicates_data():
 sample_data = {
     'Threshold': 0.2,
     'Frames': 1000,
-    'Unique_Columns_Rings_Grouped': {
-        'group1': ['A', 'B', 'C'],
-        'group2': ['B', 'C', 'D'],
-    }
+    'Unique_Columns_Rings_Grouped': [
+        {'group1': ['A', 'B', 'C']},
+        {'group2': ['B', 'C', 'D']},
+    ]
 }
 
 def test_filtering_values():
@@ -187,6 +187,7 @@ def test_filtering_values():
 
     # Assert that the result is a list
     assert isinstance(result, list)
+
     
 # Define a test case that uses the fixture
 def test_remove_duplicate_values(test_remove_duplicates_data):
