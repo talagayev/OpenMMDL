@@ -22,7 +22,7 @@ def sample_dataframe_bindingmode_processing():
         'LIG_IDX_LIST': {0: [1, 2], 1: [3, 4], 2: [5, 6], 3: [3, 4]},
         'LIG_GROUP': {0: 'Group1', 1: 'Group2', 2: 'Group3', 3: 'Group1'},
         'PROTISPOS': {0: True, 1: False, 2: True, 3: True},
-        'DON_IDX': {0: 0, 1: 0, 2: 0, 3: 0}
+        'DON_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'DONORTYPE': {0: 0, 1: 0, 2: 0, 3: 0}
     }
 
