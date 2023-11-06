@@ -168,6 +168,25 @@ def test_remove_duplicates_data():
     }
     return input_data, expected_output
 
+# Sample data for testing
+sample_data = {
+    'Threshold': 0.2,
+    'Frames': 1000,
+    'Unique_Columns_Rings_Grouped': {
+        'group1': ['A', 'B', 'C'],
+        'group2': ['B', 'C', 'D'],
+    }
+}
+
+def test_filtering_values():
+    # Create a sample DataFrame
+    df = pd.DataFrame({'column1': [1, 2, 3], 'column2': [4, 5, 6]})
+
+    # Call the function and store the result
+    result = filtering_values(sample_data['Threshold'], sample_data['Frames'], df, sample_data['Unique_Columns_Rings_Grouped'])
+
+    # Assert that the result is a list
+    assert isinstance(result, list)
     
 # Define a test case that uses the fixture
 def test_remove_duplicate_values(test_remove_duplicates_data):
