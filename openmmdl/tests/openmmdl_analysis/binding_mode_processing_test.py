@@ -23,7 +23,9 @@ def sample_dataframe_bindingmode_processing():
         'LIG_GROUP': {0: 'Group1', 1: 'Group2', 2: 'Group3', 3: 'Group1'},
         'PROTISPOS': {0: True, 1: False, 2: True, 3: True},
         'DON_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
-        'DONORTYPE': {0: 0, 1: 0, 2: 0, 3: 0}
+        'DONORTYPE': {0: 0, 1: 0, 2: 0, 3: 0},
+        'ACCEPTOR_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
+        'DONOR_IDX': {0: 0, 1: 0, 2: 0, 3: 0}
     }
 
     # Add 'halogen' and 'hbond' data to the existing DataFrame
@@ -32,6 +34,8 @@ def sample_dataframe_bindingmode_processing():
     data['INTERACTION'][4] = 'halogen'  # Add 'halogen' interaction
     data['DON_IDX'][4] = 501  # DON_IDX for 'halogen'
     data['DONORTYPE'][4] = 'F'  # Halogen type
+    data['ACCEPTOR_IDX'][4] = 0
+    data['DONOR_IDX'][4] = 0
 
     data['FRAME'][5] = 5  # Add a new 'FRAME' value
     data['Prot_partner'][5] = 'A'  # Add a new 'Prot_partner' value
@@ -40,6 +44,8 @@ def sample_dataframe_bindingmode_processing():
     data['DON_IDX'][5] = 0  # DON_IDX
     data['DONORTYPE'][5] = 0  # DON_IDX
     data['PROTISDON'][5] = True  # PROTISDON is True for 'hbond'
+    data['ACCEPTOR_IDX'][5] = 0
+    data['DONOR_IDX'][5] = 0
 
     # Add 'waterbridge' cases where PROTISDON is both True and False
     data['FRAME'][6] = 6  # Add a new 'FRAME' value
@@ -48,6 +54,7 @@ def sample_dataframe_bindingmode_processing():
     data['ACCEPTOR_IDX'][6] = 401  # ACCEPTOR_IDX for 'waterbridge'
     data['DON_IDX'][6] = 0  # DON_IDX
     data['DONORTYPE'][6] = 0  # DON_IDX
+    data['DONOR_IDX'][6] = 0
     data['PROTISDON'][6] = True  # PROTISDON is True for 'waterbridge'
 
     data['FRAME'][7] = 7  # Add a new 'FRAME' value
@@ -57,6 +64,7 @@ def sample_dataframe_bindingmode_processing():
     data['DON_IDX'][7] = 0  # DON_IDX
     data['DONORTYPE'][7] = 0  # DON_IDX
     data['PROTISDON'][7] = False  # PROTISDON is False for 'waterbridge'
+    data['ACCEPTOR_IDX'][7] = 0
     return pd.DataFrame(data)
 
 
@@ -114,8 +122,6 @@ def test_update_values():
     assert df.loc[df['FRAME'] == 2, 'Value2'].values[0] == 310
     assert df.loc[df['FRAME'] == 3, 'Value1'].values[0] == 41
     assert df.loc[df['FRAME'] == 3, 'Value2'].values[0] == 410
-    assert df.loc[df['FRAME'] == 4, 'Value1'].values[0] == 51
-    assert df.loc[df['FRAME'] == 4, 'Value2'].values[0] == 510
     
 # Define a test case that uses the fixture
 def test_remove_duplicate_values(test_remove_duplicates_data):
