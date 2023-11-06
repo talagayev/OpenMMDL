@@ -4,7 +4,7 @@ import time
 import shutil
 from PIL import Image
 from pathlib import Path
-from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction_data, highlight_numbers, update_dict, create_and_merge_images, arranged_figure_generation
+from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction_data, highlight_numbers, update_dict, create_and_merge_images, arranged_figure_generation, generate_interaction_dict
 
 test_data_directory = Path("openmmdl/tests/data/in")
 current_directory = os.getcwd() 
@@ -67,6 +67,18 @@ def test_update_dict():
     target_dict = {1: '1', 2: '2'}
     update_dict(target_dict)  # No source dictionaries provided
     assert target_dict == {1: '1', 2: '2'}
+
+def test_generate_interaction_dict():
+    # Test with a known interaction type 'hydrophobic'
+    interaction_type = 'hydrophobic'
+    keys = [1, 2, 3]
+    expected_result = {
+        1: (1.0, 1.0, 0.0),
+        2: (1.0, 1.0, 0.0),
+        3: (1.0, 1.0, 0.0)
+    }
+    result = generate_interaction_dict(interaction_type, keys)
+    assert result == expected_result
 
 # Run the tests
 if __name__ == '__main__':
