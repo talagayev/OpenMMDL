@@ -224,3 +224,42 @@ def test_combine_subdict_values():
     result = combine_subdict_values(data)
     assert result == {'all': [1, 'text', [1, 2, 3], None, 5.5]}
 
+# Define a sample DataFrame for testing
+sample_data = {
+    'A': [1, 2, 3, 4, 5],
+    'B': [2, 3, 4, 5, 6],
+    'C': [3, 4, 5, 6, 7],
+    'D': [4, 5, 6, 7, 8],
+}
+sample_df = pd.DataFrame(sample_data)
+
+# Define the provided 'unique_columns_rings_grouped' data for testing
+unique_columns_rings_grouped = {
+    1: {0: 'A_101_hydrophobic'},
+    2: {1: 'B_202_Donor_hbond', 3: 'A_102_hydrophobic'},
+    3: {2: 'C_[5, 6]_Group3_NI_saltbridge'},
+    4: {4: 'A_501_F_halogen'},
+    5: {5: 'A_301_Acceptor_hbond'},
+    6: {6: 'A_401_Acceptor_waterbridge'},
+    7: {7: 'B_501_Donor_waterbridge'},
+    8: {8: 'A_[7, 8]_pistacking'},
+    9: {9: 'A_[9_ 10]_Group4_pication'},
+    10: {10: 'A_401_Fe_site1_metal'},
+    11: {11: 'A_[7, 8]_Group4_PI_saltbridge'},
+    12: {12: 'C_104_hydrophobic'}
+}
+
+def test_filtering_values_with_provided_data():
+    # Test case 1: Check if the function returns a list of filtered values
+    threshold = 0.2  # 20% threshold
+    frames = 1000  # Some arbitrary number of frames
+    df = pd.DataFrame()  # Create an empty DataFrame for testing
+    result = filtering_values(threshold, frames, df, unique_columns_rings_grouped)
+
+    assert isinstance(result, list)
+
+    # Test case 2: Check if the filtered values are correctly appended to the DataFrame
+    assert 'A_101_hydrophobic' not in df.columns  # This value should not meet the threshold
+    assert 'B_202_Donor_hbond' in df.columns  # This value should meet the threshold
+    assert 'A_102_hydrophobic' in df.columns  # This value should meet the threshold
+    # Add more assertions for other values based on the provided data
