@@ -26,7 +26,6 @@ def sample_dataframe_bindingmode_processing():
         'DONORTYPE': {0: 0, 1: 0, 2: 0, 3: 0},
         'ACCEPTOR_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'DONOR_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
-        'LIG_GROUP': {0: 0, 1: 0, 2: 0, 3: 0},
     }
 
     # Add 'halogen' and 'hbond' data to the existing DataFrame
