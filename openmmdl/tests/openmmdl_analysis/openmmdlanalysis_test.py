@@ -48,7 +48,7 @@ def test_script_execution(test_data_dir):
     ligand_sdf_file = os.path.join(input_data_path, "lig.sdf")
     ligand_name = "UNK"
     
-    cmd = f" openmmdl_analysis -t {topology_file} -d {trajectory_file} -l {ligand_sdf_file} -n {ligand_name} -b 40 -c 2"
+    cmd = f" openmmdl_analysis -t {topology_file} -d {trajectory_file} -l {ligand_sdf_file} -n {ligand_name} -b 10 -c 2"
     
     result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=test_data_dir)
     
@@ -58,4 +58,22 @@ def test_script_execution(test_data_dir):
     assert os.path.exists(os.path.join(test_data_dir, "complex.pdb"))
     assert os.path.exists(os.path.join(test_data_dir, "lig.pdb"))
     assert os.path.exists(os.path.join(test_data_dir, "df_all.csv"))
+
+    # Check for the presence of "Barcodes" folder
+    barcodes_folder = os.path.join(test_data_dir, "Barcodes")
+    assert os.path.exists(barcodes_folder), "The 'Barcodes' folder is missing."
+
+    # Check for the existence of "hydrophobic_barcodes.png" inside "Barcodes"
+    hydro_file_path = os.path.join(barcodes_folder, "hydrophobic_barcodes.png")
+    assert os.path.exists(hydro_file_path), "The 'hydrophobic_barcodes.png' file is missing inside 'Barcodes'."
+
+
+    # Check for the presence of "Binding_Modes_Markov_States" folder
+    markov_states_folder = os.path.join(test_data_dir, "Binding_Modes_Markov_States")
+    assert os.path.exists(markov_states_folder), "The 'Binding_Modes_Markov_States' folder is missing."
+
+    # Check for the existence of "all_binding_modes_arranged.png" inside "Binding_Modes_Markov_States"
+    png_file_path = os.path.join(markov_states_folder, "all_binding_modes_arranged.png")
+    assert os.path.exists(png_file_path), "The 'all_binding_modes_arranged.png' file is missing inside 'Binding_Modes_Markov_States'."
+
     # Add more checks for other output files as needed
