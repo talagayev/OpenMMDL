@@ -173,4 +173,35 @@ def test_remove_duplicates_data():
 def test_remove_duplicate_values(test_remove_duplicates_data):
     input_data, expected_output = test_remove_duplicates_data
     assert remove_duplicate_values(input_data) == expected_output
-    
+
+def test_combine_subdict_values():
+    # Test case 1: Empty input dictionary
+    data = {}
+    result = combine_subdict_values(data)
+    assert result == {'all': []}
+
+    # Test case 2: Input dictionary with sub-dictionaries
+    data = {
+        'dict1': {'a': 1, 'b': 2},
+        'dict2': {'c': 3, 'd': 4},
+        'dict3': {'e': 5, 'f': 6},
+    }
+    result = combine_subdict_values(data)
+    assert result == {'all': [1, 2, 3, 4, 5, 6]}
+
+    # Test case 3: Input dictionary with empty sub-dictionaries
+    data = {
+        'dict1': {},
+        'dict2': {},
+    }
+    result = combine_subdict_values(data)
+    assert result == {'all': []}
+
+    # Test case 4: Input dictionary with sub-dictionaries containing various data types
+    data = {
+        'dict1': {'a': 1, 'b': 'text', 'c': [1, 2, 3]},
+        'dict2': {'d': None, 'e': 5.5},
+    }
+    result = combine_subdict_values(data)
+    assert result == {'all': [1, 'text', [1, 2, 3], None, 5.5]}
+
