@@ -1,11 +1,20 @@
 import numpy as np
 import pandas as pd
+import rdkit
+import MDAnalysis as mda
 import re
 import os
 import matplotlib.pyplot as plt
 import pytest
 
 from openmmdl.openmmdl_analysis.binding_mode_processing import *
+
+novel = mda.Universe("complex.pdb")
+novel_lig = novel.select_atoms(f"resname {ligand}")
+for atom in novel_lig:
+    lig_index = atom.id
+    break
+ligand_rings = []
 
 
 # binding_mode_processing tests
@@ -168,25 +177,22 @@ def test_remove_duplicates_data():
     }
     return input_data, expected_output
 
-# Sample data for testing
-sample_data = {
-    'Threshold': 0.2,
-    'Frames': 1000,
-    'Unique_Columns_Rings_Grouped': [
-        {'group1': ['A', 'B', 'C']},
-        {'group2': ['B', 'C', 'D']},
-    ]
-}
+def test_unique_data_generation():
+    # Test case 1: Check if the function returns an empty dictionary for an empty list
+    result = unique_data_generation([])
+    assert result == {}
 
-def test_filtering_values():
-    # Create a sample DataFrame
-    df = pd.DataFrame({'column1': [1, 2, 3], 'column2': [4, 5, 6]})
+    # Test case 2: Check if the function correctly identifies and stores unique values
+    input_list = [1, 2, 2, 3, 3, 4, 5, 5]
+    result = unique_data_generation(input_list)
+    expected_result = {1: 1, 2: 2, 3: 3, 4: 4, 5: 5}
+    assert result == expected_result
 
-    # Call the function and store the result
-    result = filtering_values(sample_data['Threshold'], sample_data['Frames'], df, sample_data['Unique_Columns_Rings_Grouped'])
-
-    # Assert that the result is a list
-    assert isinstance(result, list)
+    # Test case 3: Check if the function handles strings
+    input_list = ["apple", "banana", "apple", "cherry"]
+    result = unique_data_generation(input_list)
+    expected_result = {"apple": "apple", "banana": "banana", "cherry": "cherry"}
+    assert result == expected_result
 
     
 # Define a test case that uses the fixture
