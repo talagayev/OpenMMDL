@@ -11,12 +11,13 @@ import unittest
 from unittest.mock import Mock, patch
 from plip.structure.preparation import PDBComplex, LigandFinder, Mol, PLInteraction
 
-from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame, process_trajectory, fill_missing_frames
+from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame, process_trajectory, fill_missing_frames, process_trajectory
 
 
 test_data_directory = Path("openmmdl/tests/data/in")
 topology_file = f"{test_data_directory}/complex.pdb"
 frame_file = f"{test_data_directory}/processing_frame_1.pdb"
+
 binding_site_id = "UNK:X:0"
 lig_name = "UNK"
 
@@ -84,6 +85,22 @@ def test_process_frame_with_sample_data():
     # Check if all expected columns are present in the result
     for column in expected_columns:
         assert column in result.columns
+
+def test_process_trajectory():
+    topology_file = f"{test_data_directory}/complex.pdb"
+    trajectory_file = f"{test_data_directory}/all_50.dcd"
+    pdb_md = mda.Universe(topology_file,trajectory_file)
+    dataframe = None
+    num_processes = 2
+    lig_name = "UNK"
+
+    interaction_list = pd.DataFrame(columns=["RESNR", "RESTYPE", "RESCHAIN", "RESNR_LIG", "RESTYPE_LIG", "RESCHAIN_LIG", "DIST", "LIGCARBONIDX", "PROTCARBONIDX", "LIGCOO", "PROTCOO"])
+
+    interaction_list = process_trajectory(pdb_md, dataframe, num_processes, lig_name)
+
+    assert interaction_list is not None
+    assert len(interaction_list) > 10
+    
 
 
 def test_fill_missing_frames():
