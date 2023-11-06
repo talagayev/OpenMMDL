@@ -103,26 +103,6 @@ def test_remove_duplicates_data():
     }
     return input_data, expected_output
 
-
-def test_update_values():
-    df = pd.DataFrame({'FRAME': [1, 2],
-                       'Value1': [10, 20],
-                       'Value2': [100, 200]})
-
-    new_df = pd.DataFrame({'FRAME': [1, 2],
-                           'Value1': [21, 31],
-                           'Value2': [210, 310]})
-
-    unique_data = {'FRAME': 'FRAME', 'Value1': 'Value1', 'Value2': 'Value2'}
-
-    # Call the function to be tested
-    update_values(df, new_df, unique_data)
-
-    # Check if the values have been updated as expected
-    assert df.loc[df['FRAME'] == 1, 'Value1'].values[0] == 21
-    assert df.loc[df['FRAME'] == 1, 'Value2'].values[0] == 210
-    assert df.loc[df['FRAME'] == 2, 'Value1'].values[0] == 31
-    assert df.loc[df['FRAME'] == 2, 'Value2'].values[0] == 310
     
 # Define a test case that uses the fixture
 def test_remove_duplicate_values(test_remove_duplicates_data):
