@@ -87,7 +87,7 @@ def test_process_frame_with_sample_data():
         assert column in result.columns
 
 def test_process_trajectory():
-    topology_file = f"{test_data_directory}/complex.pdb"
+    topology_file = f"{test_data_directory}/0_unk_hoh.pdb"
     trajectory_file = f"{test_data_directory}/all_50.dcd"
     pdb_md = mda.Universe(topology_file,trajectory_file)
     dataframe = None
