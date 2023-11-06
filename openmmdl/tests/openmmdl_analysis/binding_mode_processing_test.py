@@ -81,6 +81,11 @@ def sample_dataframe_bindingmode_processing():
     data['INTERACTION'][8] = 'pistacking'  # Add 'pistacking' interaction
     data['LIG_IDX_LIST'][8] = [7, 8]  # LIG_IDX_LIST for 'pistacking'
     data['LIG_GROUP'][8] = 0  # LIG_GROUP for 'pication
+    data['ACCEPTOR_IDX'][8] = 0
+    data['DON_IDX'][8] = 0  # DON_IDX
+    data['DONOR_IDX'][8] = 0 
+    data['PROTISDON'][8] = False
+    data['DONORTYPE'][8] = 0  # DON_IDX
 
     # Add 'pication' case
     data['FRAME'][9] = 9  # Add a new 'FRAME' value
@@ -88,6 +93,11 @@ def sample_dataframe_bindingmode_processing():
     data['INTERACTION'][9] = 'pication'  # Add 'pication' interaction
     data['LIG_IDX_LIST'][9] = [9, 10]  # LIG_IDX_LIST for 'pication'
     data['LIG_GROUP'][9] = 'Group4'  # LIG_GROUP for 'pication'
+    data['ACCEPTOR_IDX'][9] = 0
+    data['DON_IDX'][9] = 0  # DON_IDX
+    data['PROTISDON'][9] = False
+    data['DONOR_IDX'][9] = 0 
+    data['DONORTYPE'][9] = 0  # DON_IDX
     return pd.DataFrame(data)
 
 
