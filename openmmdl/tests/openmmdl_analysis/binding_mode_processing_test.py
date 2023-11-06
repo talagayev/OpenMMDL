@@ -75,10 +75,11 @@ def test_gather_interactions(sample_dataframe_bindingmode_processing):
     result = gather_interactions(df, ligand_rings)
 
     # Assert that the result is a dictionary
+    
     assert isinstance(result, dict)
 
     # Check specific values in the generated dictionary for known interactions based on the updated fixture
-expected_result = {
+    expected_result = {
     1: {0: 'A_101_hydrophobic'},
     2: {1: 'B_202_Donor_hbond', 3: 'A_102_hydrophobic'},
     3: {2: 'C_[5, 6]_Group3_NI_saltbridge'},
