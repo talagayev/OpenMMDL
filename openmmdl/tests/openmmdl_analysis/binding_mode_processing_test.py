@@ -9,13 +9,6 @@ import pytest
 
 from openmmdl.openmmdl_analysis.binding_mode_processing import *
 
-novel = mda.Universe("complex.pdb")
-novel_lig = novel.select_atoms(f"resname {ligand}")
-for atom in novel_lig:
-    lig_index = atom.id
-    break
-ligand_rings = []
-
 
 # binding_mode_processing tests
 @pytest.fixture
