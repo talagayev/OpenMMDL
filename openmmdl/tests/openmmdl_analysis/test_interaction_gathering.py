@@ -91,16 +91,19 @@ def test_fill_missing_frames():
     data = {'FRAME': [1, 2, 4, 5],
             'Value1': ['A', 'B', 'C', 'D']}
     df = pd.DataFrame(data)
+    md_len = 6
 
 
     # Call the fill_missing_frames function
-    filled_df = fill_missing_frames(df, 6)  # md_len = 6, should include frames 1 to 5
+    filled_df = fill_missing_frames(df, md_len)  # md_len = 6, should include frames 1 to 5
 
     # Assert that all frame numbers from 1 to 5 are present in the 'FRAME' column
     assert all(filled_df['FRAME'] == [1, 2, 3, 4, 5])
 
     # Assert that missing frames have 'Value1' column set to "skip"
     assert all(filled_df.loc[filled_df['FRAME'] == 3, 'Value1'] == 'skip')
+
+    assert isinstance(filled_df, pd.DataFrame)
 
 
 
