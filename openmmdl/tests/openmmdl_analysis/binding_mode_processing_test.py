@@ -26,6 +26,9 @@ def sample_dataframe_bindingmode_processing():
         'DONORTYPE': {0: 0, 1: 0, 2: 0, 3: 0},
         'ACCEPTOR_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'DONOR_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
+        'LOCATION': {0: 0, 1: 0, 2: 0, 3: 0},
+        'METAL_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
+        'METAL_TYPE': {0: 0, 1: 0, 2: 0, 3: 0}
     }
 
     # Add 'halogen' and 'hbond' data to the existing DataFrame
@@ -97,6 +100,16 @@ def sample_dataframe_bindingmode_processing():
     data['PROTISDON'][9] = False
     data['DONOR_IDX'][9] = 0 
     data['DONORTYPE'][9] = 0  # DON_IDX
+    
+    # Add 'metal' interaction case
+    data['FRAME'][10] = 10  # Add a new 'FRAME' value
+    data['Prot_partner'][10] = 'A'  # Add a new 'Prot_partner' value
+    data['INTERACTION'][10] = 'metal'  # Add 'metal' interaction
+    data['METAL_IDX'][10] = 401  # METAL_IDX for 'metal'
+    data['METAL_TYPE'][10] = 'Fe'  # Metal type
+    data['LOCATION'][10] = 'site1'  # Location
+    data['ACCEPTOR_IDX'][10] = 0
+    data['DONOR_IDX'][10] = 0
     return pd.DataFrame(data)
 
 
@@ -121,7 +134,8 @@ def test_gather_interactions(sample_dataframe_bindingmode_processing):
     6: {6: 'A_401_Acceptor_waterbridge'},
     7: {7: 'B_501_Donor_waterbridge'},
     8: {8: 'A_[7, 8]_pistacking'},
-    9: {9: 'A_[9_ 10]_Group4_pication'}
+    9: {9: 'A_[9_ 10]_Group4_pication'},
+    10: {10: 'A_401_Fe_site1_metal'}
 }
     # Check if the actual result matches the expected result
     assert result == expected_result
