@@ -22,10 +22,6 @@ def test_process_pdb_file(temp_pdb_file):
     # Load the modified PDB file
     u = mda.Universe(input_pdb_filename)
 
-    # Check that all residues are now named "HOH"
-    for atom in u.atoms:
-        assert atom.residue.resname == "HOH"
-
     # Check that the residue name "*" is changed to "UNK"
     for atom in u.atoms:
         if atom.residue.resname == "UNK":
