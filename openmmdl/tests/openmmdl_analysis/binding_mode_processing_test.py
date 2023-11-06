@@ -110,6 +110,20 @@ def sample_dataframe_bindingmode_processing():
     data['LOCATION'][10] = 'site1'  # Location
     data['ACCEPTOR_IDX'][10] = 0
     data['DONOR_IDX'][10] = 0
+
+    data['FRAME'][11] = 11  # Add a new 'FRAME' value
+    data['Prot_partner'][11] = 'A'  # Add a new 'Prot_partner' value
+    data['INTERACTION'][11] = 'saltbridge'  # Add 'saltbridge' interaction
+    data['LIG_IDX_LIST'][11] = [7, 8]  # Ligand index list for 'saltbridge PI'
+    data['LIG_GROUP'][11] = 'Group4'  # Ligand group for 'saltbridge PI'
+    data['PROTISPOS'][11] = False  # PROTISPOS is False for 'saltbridge PI'
+
+    # Add 'hydrophobic' case where 'ring_found' is False
+    data['FRAME'][12] = 12  # Add a new 'FRAME' value
+    data['Prot_partner'][12] = 'C'  # Add a new 'Prot_partner' value
+    data['INTERACTION'][12] = 'hydrophobic'  # Add 'hydrophobic' interaction
+    data['LIGCARBONIDX'][12] = 104  # LIGCARBONIDX for 'hydrophobic' (not in any ring)
+
     return pd.DataFrame(data)
 
 
@@ -135,7 +149,9 @@ def test_gather_interactions(sample_dataframe_bindingmode_processing):
     7: {7: 'B_501_Donor_waterbridge'},
     8: {8: 'A_[7, 8]_pistacking'},
     9: {9: 'A_[9_ 10]_Group4_pication'},
-    10: {10: 'A_401_Fe_site1_metal'}
+    10: {10: 'A_401_Fe_site1_metal'},
+    11: {11: 'A_[7, 8]_Group4_PI_saltbridge'},
+    12: {12: 'C_104_hydrophobic'}
 }
     # Check if the actual result matches the expected result
     assert result == expected_result
