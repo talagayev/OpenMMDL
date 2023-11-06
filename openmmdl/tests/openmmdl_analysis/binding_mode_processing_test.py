@@ -25,7 +25,8 @@ def sample_dataframe_bindingmode_processing():
         'DON_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'DONORTYPE': {0: 0, 1: 0, 2: 0, 3: 0},
         'ACCEPTOR_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
-        'DONOR_IDX': {0: 0, 1: 0, 2: 0, 3: 0}
+        'DONOR_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
+        'LIG_GROUP': {0: 0, 1: 0, 2: 0, 3: 0},
     }
 
     # Add 'halogen' and 'hbond' data to the existing DataFrame
@@ -36,6 +37,8 @@ def sample_dataframe_bindingmode_processing():
     data['DONORTYPE'][4] = 'F'  # Halogen type
     data['ACCEPTOR_IDX'][4] = 0
     data['DONOR_IDX'][4] = 0
+    data['LIG_IDX_LIST'][4] = 0
+    data['LIG_GROUP'][4] = 0  # LIG_GROUP for 'pication
 
     data['FRAME'][5] = 5  # Add a new 'FRAME' value
     data['Prot_partner'][5] = 'A'  # Add a new 'Prot_partner' value
@@ -45,7 +48,9 @@ def sample_dataframe_bindingmode_processing():
     data['DONORTYPE'][5] = 0  # DON_IDX
     data['PROTISDON'][5] = True  # PROTISDON is True for 'hbond'
     data['ACCEPTOR_IDX'][5] = 0
+    data['LIG_IDX_LIST'][5] = 0
     data['DONOR_IDX'][5] = 0
+    data['LIG_GROUP'][5] = 0  # LIG_GROUP for 'pication
 
     # Add 'waterbridge' cases where PROTISDON is both True and False
     data['FRAME'][6] = 6  # Add a new 'FRAME' value
@@ -55,7 +60,9 @@ def sample_dataframe_bindingmode_processing():
     data['DON_IDX'][6] = 0  # DON_IDX
     data['DONORTYPE'][6] = 0  # DON_IDX
     data['DONOR_IDX'][6] = 0
+    data['LIG_IDX_LIST'][6] = 0
     data['PROTISDON'][6] = True  # PROTISDON is True for 'waterbridge'
+    data['LIG_GROUP'][6] = 0  # LIG_GROUP for 'pication
 
     data['FRAME'][7] = 7  # Add a new 'FRAME' value
     data['Prot_partner'][7] = 'B'  # Add a new 'Prot_partner' value
@@ -65,7 +72,24 @@ def sample_dataframe_bindingmode_processing():
     data['DONORTYPE'][7] = 0  # DON_IDX
     data['PROTISDON'][7] = False  # PROTISDON is False for 'waterbridge'
     data['ACCEPTOR_IDX'][7] = 0
+    data['LIG_IDX_LIST'][7] = 0 # LIG_IDX_LIST for 'pication'
+    data['LIG_GROUP'][7] = 0  # LIG_GROUP for 'pication
+
+    # Add 'pistacking' case
+    data['FRAME'][8] = 8  # Add a new 'FRAME' value
+    data['Prot_partner'][8] = 'A'  # Add a new 'Prot_partner' value
+    data['INTERACTION'][8] = 'pistacking'  # Add 'pistacking' interaction
+    data['LIG_IDX_LIST'][8] = [7, 8]  # LIG_IDX_LIST for 'pistacking'
+    data['LIG_GROUP'][8] = 0  # LIG_GROUP for 'pication
+
+    # Add 'pication' case
+    data['FRAME'][9] = 9  # Add a new 'FRAME' value
+    data['Prot_partner'][9] = 'A'  # Add a new 'Prot_partner' value
+    data['INTERACTION'][9] = 'pication'  # Add 'pication' interaction
+    data['LIG_IDX_LIST'][9] = [9, 10]  # LIG_IDX_LIST for 'pication'
+    data['LIG_GROUP'][9] = 'Group4'  # LIG_GROUP for 'pication'
     return pd.DataFrame(data)
+
 
 
 def test_gather_interactions(sample_dataframe_bindingmode_processing):
@@ -86,7 +110,9 @@ def test_gather_interactions(sample_dataframe_bindingmode_processing):
     4: {4: 'A_501_F_halogen'},
     5: {5: 'A_301_Acceptor_hbond'},
     6: {6: 'A_401_Acceptor_waterbridge'},
-    7: {7: 'B_501_Donor_waterbridge'}
+    7: {7: 'B_501_Donor_waterbridge'},
+    8: {8: 'A_[7, 8]_pistacking'},
+    9: {9: 'A_[9, 10]_Group4_pication'}
 }
     # Check if the actual result matches the expected result
     assert result == expected_result
