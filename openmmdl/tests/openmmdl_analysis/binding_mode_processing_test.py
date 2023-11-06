@@ -121,7 +121,7 @@ def test_gather_interactions(sample_dataframe_bindingmode_processing):
     6: {6: 'A_401_Acceptor_waterbridge'},
     7: {7: 'B_501_Donor_waterbridge'},
     8: {8: 'A_[7, 8]_pistacking'},
-    9: {9: 'A_[9_ 10]]_Group4_pication'}
+    9: {9: 'A_[9_ 10]_Group4_pication'}
 }
     # Check if the actual result matches the expected result
     assert result == expected_result
