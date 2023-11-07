@@ -282,45 +282,24 @@ def test_df_iteration_numbering():
     df = pd.DataFrame(data)
 
     interactions = [
-    'Acceptor_waterbridge',
-    'Acceptor_hbond',
-    'Carboxylate_NI_saltbridge',
     'hydrophobic',
-    'Aromatic_pication',
-    'Acceptor_hbond',
-    'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
+    'waterbridge',
+    'hbond',
+    'hbond',
+    'hbond',
+    'hbond',
+    'hbond',
+    'saltbridge',
     'hydrophobic',
     'hydrophobic',
     'hydrophobic',
     'hydrophobic',
     'hydrophobic',
     'hydrophobic',
-    'Aromatic_pication'
+    'hydrophobic',
+    'hydrophobic',
+    'pication'
 ]
-
-    interactions = [
-    'Acceptor_waterbridge',
-    'Acceptor_hbond',
-    'Carboxylate_NI_saltbridge',
-    'hydrophobic',
-    'Aromatic_pication',
-    'Acceptor_hbond',
-    'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
-    'Aromatic_pication'
-]
-
     df['INTERACTION'] = interactions
 
     
@@ -363,3 +342,10 @@ def test_df_iteration_numbering():
 
     expected_98PHEA_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     assert (df['98PHEA_4194_hydrophobic'] == expected_98PHEA_values).all()
+
+    expected_166ARGA_4220_Acceptor_hbond_values = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert (df['166ARGA_4220_Acceptor_hbond'] == expected_166ARGA_4220_Acceptor_hbond_values).all()
+
+
+    expected_63ARGA_4201_Acceptor_waterbridge_values = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert (df['63ARGA_4201_Acceptor_waterbridge'] == expected_63ARGA_4201_Acceptor_waterbridge_values).all()
