@@ -257,56 +257,109 @@ def test_filtering_values_with_provided_data():
     result = filtering_values(threshold, frames, df, unique_columns_rings_grouped)
 
     assert isinstance(result, list)
+    
 
 def test_df_iteration_numbering():
     # Sample DataFrame for testing
     data = {
-        'FRAME': {0: 1, 1: 2, 2: 3},
-        'Prot_partner': {0: '166ARGA', 1: '125TYRA', 2: '161PHEA'},
-        'INTERACTION': {
-            0: '4220,4221_Carboxylate_NI_saltbridge',
-            1: '4192_Acceptor_hbond',
-            2: '4221_Acceptor_hbond'
-        },
-        'LIGCARBONIDX': {0: 4220, 1: 4192, 2: 4221},
-        'DONORIDX': {0: 4220, 1: 4192, 2: 4221},
-        'ACCEPTORIDX': {0: 4221, 1: 4192, 2: 4221},
-        'PROTISDON': {0: True, 1: False, 2: True},
-        'LIG_IDX_LIST': {0: [4220, 4221], 1: [4192], 2: [4221]},
-        'LIG_GROUP': {0: 'Carboxylate_NI_saltbridge', 1: 'Acceptor_hbond', 2: 'Acceptor_hbond'},
-        'PROTISPOS': {0: True, 1: False, 2: True},
-        'DON_IDX': {0: 0, 1: 0, 2: 0},
-        'DONORTYPE': {0: 0, 1: 0, 2: 0},
-        'ACCEPTOR_IDX': {0: 0, 1: 0, 2: 0},
-        'DONOR_IDX': {0: 0, 1: 0, 2: 0},
-        'LOCATION': {0: 0, 1: 0, 2: 0},
-        'METAL_IDX': {0: 0, 1: 0, 2: 0},
-        'METAL_TYPE': {0: 0, 1: 0, 2: 0}
+        'Unnamed: 0': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+        'RESNR': [98, 63, 162, 161, 166, 165, 125, 166, 211, 227, 223, 165, 162, 161, 98, 207, 164],
+        'RESTYPE': ['PHE', 'ARG', 'ALA', 'PHE', 'ARG', 'ASP', 'TYR', 'ARG', 'PHE', 'LEU', 'THR', 'ASP', 'ALA', 'PHE', 'PHE', 'ILE', 'LYS'],
+        'RESCHAIN': ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
+        'RESNR_LIG': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'RESTYPE_LIG': ['UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK'],
+        'RESCHAIN_LIG': ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
+        'DIST': [3.46, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 3.36, 3.61, 3.84, 3.62, 3.72, 3.62, 3.99, 3.65, 3.70, 5.16],
+        'LIGCARBONIDX': [4196.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4206.0, 4207.0, 4207.0, 4215.0, 4217.0, 4217.0, 4194.0, 4208.0, 0.0],
+        '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '166ARGA_4220,4221_Carboxylate_NI_saltbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '98PHEA_4194_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '63ARGA_4201_Acceptor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '166ARGA_4220_Acceptor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
+
     df = pd.DataFrame(data)
 
-    # Sample unique_data dictionary with updated column names
+    interactions = [
+    'Acceptor_waterbridge',
+    'Acceptor_hbond',
+    'Carboxylate_NI_saltbridge',
+    'hydrophobic',
+    'Aromatic_pication',
+    'Acceptor_hbond',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'Aromatic_pication'
+]
+
+    interactions = [
+    'Acceptor_waterbridge',
+    'Acceptor_hbond',
+    'Carboxylate_NI_saltbridge',
+    'hydrophobic',
+    'Aromatic_pication',
+    'Acceptor_hbond',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'hydrophobic',
+    'Aromatic_pication'
+]
+
+    df['INTERACTION'] = interactions
+
+    
+    # Define the values for the "PROTISDON" column
+    protisdon_values = [0, True, True, True, True, True, True, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    # Update the "PROTISDON" column in the DataFrame
+    df['PROTISDON'] = protisdon_values
+
+    # Define the values for the "Prot_partner" column
+    prot_partner_values = ['98PHEA', '63ARGA', '162ALAA', '161PHEA', '166ARGA', '165ASPA', '125TYRA', '166ARGA', '211PHEA', '227LEUA', '223THRA', '165ASPA', '162ALAA', '161PHEA', '98PHEA', '207ILEA', '164LYSA']
+
+    # Update the "Prot_partner" column in the DataFrame
+    df['Prot_partner'] = prot_partner_values
+
+    # Define the values for the "ACCEPTORIDX" column
+    acceptoridx_values = [0.0, 0.0, 4221.0, 4221.0, 4220.0, 4220.0, 4192.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+    # Update the "ACCEPTORIDX" column in the DataFrame
+    df['ACCEPTORIDX'] = acceptoridx_values
+
+    # Define the values for the "ACCEPTOR_IDX" column
+    acceptor_idx_values = [0.0, 4201.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+    # Add the "ACCEPTOR_IDX" column to the DataFrame
+    df['ACCEPTOR_IDX'] = acceptor_idx_values
+    
+    # Updated unique_data dictionary
     unique_data = {
+        '63ARGA_4201_Acceptor_waterbridge': '63ARGA_4201_Acceptor_waterbridge',
+        '166ARGA_4220_Acceptor_hbond': '166ARGA_4220_Acceptor_hbond',
         '166ARGA_4220,4221_Carboxylate_NI_saltbridge': '166ARGA_4220,4221_Carboxylate_NI_saltbridge',
-        '125TYRA_4192_Acceptor_hbond': '125TYRA_4192_Acceptor_hbond',
-        '161PHEA_4221_Acceptor_hbond': '161PHEA_4221_Acceptor_hbond',
-        '207ILEA_4205_4206_4207_4208_4209_4204_hydrophobic': '207ILEA_4205_4206_4207_4208_4209_4204_hydrophobic',
-        '227LEUA_4205_4206_4207_4208_4209_4204_hydrophobic': '227LEUA_4205_4206_4207_4208_4209_4204_hydrophobic',
-        '223THRA_4205_4206_4207_4208_4209_4204_hydrophobic': '223THRA_4205_4206_4207_4208_4209_4204_hydrophobic',
         '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic': '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic',
-        '161PHEA_4214_4215_4216_4217_4218_4213_hydrophobic': '161PHEA_4214_4215_4216_4217_4218_4213_hydrophobic',
-        '98PHEA_4194_hydrophobic': '98PHEA_4194_hydrophobic',
-        '210ARGA_4203_hydrophobic': '210ARGA_4203_hydrophobic',
-        '164LYSA_4214_4215_4216_4217_4218_4213_hydrophobic': '164LYSA_4214_4215_4216_4217_4218_4213_hydrophobic',
-        '163GLYA_4220_Acceptor_hbond': '163GLYA_4220_Acceptor_hbond',
-        '162ALAA_4220_Acceptor_hbond': '162ALAA_4220_Acceptor_hbond',
-        '164LYSA_4220_Acceptor_hbond': '164LYSA_4220_Acceptor_hbond'
+        '98PHEA_4194_hydrophobic': '98PHEA_4194_hydrophobic'
     }
+
 
     # Call the function with the sample DataFrame and unique_data
     df_iteration_numbering(df, unique_data)
 
-    # Check if the DataFrame has been updated correctly
-    assert df.loc[0, '166ARGA_4220,4221_Carboxylate_NI_saltbridge'] == 0
-    assert df.loc[1, '125TYRA_4192_Acceptor_hbond'] == 0
-    assert df.loc[2, '161PHEA_4221_Acceptor_hbond'] == 1  # Updated to 1
+    expected_98PHEA_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+    assert (df['98PHEA_4194_hydrophobic'] == expected_98PHEA_values).all()
