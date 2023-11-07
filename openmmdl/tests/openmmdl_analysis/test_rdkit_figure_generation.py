@@ -118,7 +118,8 @@ def test_arranged_figure_generation():
     # Check if the output file was created
     print(destination_path_all)
     print(output_path)
-    assert os.path.exists(destination_path_all)
+    
+    assert output_path == destination_path_all
 
 
 
