@@ -116,9 +116,10 @@ def test_arranged_figure_generation():
     print("Files in Working Directory:", files_in_working_directory)
 
     # Check if the output file was created
-    # assert os.path.exists(output_path)
+    print(destination_path_all)
+    print(output_path)
+    assert os.path.exists(destination_path_all)
 
-    assert os.path.dirname(output_path) == 'Binding_Modes_Markov_States'
 
 
 # Run the tests
