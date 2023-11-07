@@ -106,7 +106,7 @@ def test_create_and_merge_images(prepare_resources):
     existing_image_path = "Binding_Mode_1.png"
 
     # Call the function with the test data
-    merged_image_paths = create_and_merge_images(binding_mode, occurrence_percent, split_data, merged_image_paths)
+    merged_image_paths = create_and_merge_images(binding_mode, occurrence_percent, split_data)
 
     # Assert that the function returns a list of image paths
     assert isinstance(merged_image_paths, list)
