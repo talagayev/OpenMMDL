@@ -8,6 +8,7 @@ from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction
 
 test_data_directory = Path("openmmdl/tests/data/in")
 current_directory = os.getcwd() 
+output_path = 'all_binding_modes.png'
 
 @pytest.mark.parametrize("input_data, expected_output", [
     (["60GLUA_4206_4207_4216_4217_4218_4205_hydrophobic"], ['60GLUA 4206 4207 4216 4217 4218 4205 hydrophobic']),
@@ -94,11 +95,12 @@ def test_arranged_figure_generation(cleanup):
     working_directory = os.getcwd()
     destination_path_1 = os.path.join(working_directory, os.path.basename(binding_mode1_path))
     destination_path_2 = os.path.join(working_directory, os.path.basename(binding_mode2_path))
-    shutil.copy(source_file_path, destination_path_1)
-    shutil.copy(source_file_path, destination_path_2)
+    shutil.copy(binding_mode1_path, destination_path_1)
+    shutil.copy(binding_mode2_path, destination_path_2)
     
     merged_image_paths = ['Binding_Mode_1_merged.png', 'Binding_Mode_2_merged.png']
     output_path = 'all_binding_modes.png'  # A temporary output path for testing
+
     # Run the function
     arranged_figure_generation(merged_image_paths, output_path)
 
