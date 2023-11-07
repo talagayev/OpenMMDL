@@ -81,6 +81,38 @@ def test_generate_interaction_dict():
     result = generate_interaction_dict(interaction_type, keys)
     assert result == expected_result
 
+@pytest.fixture
+def cleanup():
+    yield
+    # Clean up after the test by removing the temporary output file
+    if os.path.exists(output_path):
+        os.remove(output_path)
+
+def test_arranged_figure_generation(cleanup):
+    binding_mode1_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_1_merged.png'
+    binding_mode2_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_2_merged.png'
+    working_directory = os.getcwd()
+    destination_path_1 = os.path.join(working_directory, os.path.basename(binding_mode1_path))
+    destination_path_2 = os.path.join(working_directory, os.path.basename(binding_mode2_path))
+    shutil.copy(source_file_path, destination_path_1)
+    shutil.copy(source_file_path, destination_path_2)
+    
+    merged_image_paths = ['Binding_Mode_1_merged.png', 'Binding_Mode_2_merged.png']
+    output_path = 'all_binding_modes.png'  # A temporary output path for testing
+    # Run the function
+    arranged_figure_generation(merged_image_paths, output_path)
+
+    # Check if the output file was created
+    assert os.path.exists(output_path)
+
+    # Check if the output file is a valid image
+    try:
+        with Image.open(output_path) as img:
+            img.verify()
+    except Exception as e:
+        pytest.fail(f"Output file is not a valid image: {e}")
+
+
 # Run the tests
 if __name__ == '__main__':
     pytest.main()
