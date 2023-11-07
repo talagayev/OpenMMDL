@@ -80,6 +80,48 @@ def test_generate_interaction_dict():
     result = generate_interaction_dict(interaction_type, keys)
     assert result == expected_result
 
+# Define test data
+binding_mode = "Binding_Mode_1"
+occurrence_percent = 92.0
+split_data = [
+    '161PHEA 4221 Acceptor hbond',
+    'FRAME  FRAME',
+    '207ILEA 4205 4206 4207 4208 4209 4204 hydrophobic',
+    '166ARGA 4220,4221 Carboxylate NI saltbridge'
+]
+merged_image_paths = []
+
+# Create a fixture to prepare any necessary resources (e.g., test images)
+@pytest.fixture
+def prepare_resources():
+    # Copy the image from the specified path to the working directory
+    working_directory = os.getcwd()
+    existing_image_path = "openmmdl/tests/data/in/Binding_Mode_1.png"
+    copied_image_path = os.path.join(working_directory, "Binding_Mode_1.png")
+    shutil.copy(existing_image_path, copied_image_path)
+
+# Define the test function
+def test_create_and_merge_images(prepare_resources):
+    # Path to the existing image in the working directory
+    existing_image_path = "Binding_Mode_1.png"
+
+    # Call the function with the test data
+    merged_image_paths = create_and_merge_images(binding_mode, occurrence_percent, split_data, merged_image_paths)
+
+    # Assert that the function returns a list of image paths
+    assert isinstance(merged_image_paths, list)
+    assert all(isinstance(path, str) for path in merged_image_paths)
+
+    # Assert that the created images exist and can be opened
+    for image_path in merged_image_paths:
+        with Image.open(image_path) as img:
+            assert img is not None
+
+    # Assert that the existing image can be opened
+    with Image.open(existing_image_path) as existing_img:
+        assert existing_img is not None
+
+
 # Run the tests
 if __name__ == '__main__':
     pytest.main()
