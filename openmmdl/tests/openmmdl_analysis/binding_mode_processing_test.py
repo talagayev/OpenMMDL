@@ -276,13 +276,14 @@ def test_df_iteration_numbering():
         '98PHEA_4194_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         '63ARGA_4201_Acceptor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '166ARGA_4220_Acceptor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        '166ARGA_4220_Acceptor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '98PHEA_4225_Donor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
 
     df = pd.DataFrame(data)
 
     interactions = [
-    'hydrophobic',
+    'hbond',
     'waterbridge',
     'hbond',
     'hbond',
@@ -304,7 +305,7 @@ def test_df_iteration_numbering():
 
     
     # Define the values for the "PROTISDON" column
-    protisdon_values = [0, True, True, True, True, True, True, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    protisdon_values = [False, True, True, True, True, True, True, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     # Update the "PROTISDON" column in the DataFrame
     df['PROTISDON'] = protisdon_values
@@ -321,6 +322,12 @@ def test_df_iteration_numbering():
     # Update the "ACCEPTORIDX" column in the DataFrame
     df['ACCEPTORIDX'] = acceptoridx_values
 
+    # Define the values for the "DONORIDX" column
+    donoridx_values = [4225.0, 0.0, 2417.0, 2397.0, 2468.0, 2456.0, 1828.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+    # Update the "ACCEPTORIDX" column in the DataFrame
+    df['DONORIDX'] = donoridx_values
+
     # Define the values for the "ACCEPTOR_IDX" column
     acceptor_idx_values = [0.0, 4201.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
@@ -333,7 +340,8 @@ def test_df_iteration_numbering():
         '166ARGA_4220_Acceptor_hbond': '166ARGA_4220_Acceptor_hbond',
         '166ARGA_4220,4221_Carboxylate_NI_saltbridge': '166ARGA_4220,4221_Carboxylate_NI_saltbridge',
         '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic': '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic',
-        '98PHEA_4194_hydrophobic': '98PHEA_4194_hydrophobic'
+        '98PHEA_4194_hydrophobic': '98PHEA_4194_hydrophobic',
+        '98PHEA_4225_Donor_hbond': '98PHEA_4225_Donor_hbond',
     }
 
 
@@ -349,3 +357,6 @@ def test_df_iteration_numbering():
 
     expected_63ARGA_4201_Acceptor_waterbridge_values = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (df['63ARGA_4201_Acceptor_waterbridge'] == expected_63ARGA_4201_Acceptor_waterbridge_values).all()
+
+    expected_98PHEA_4225_Donor_hbond_values = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert (df['98PHEA_4225_Donor_hbond'] == expected_98PHEA_4225_Donor_hbond_values).all()
