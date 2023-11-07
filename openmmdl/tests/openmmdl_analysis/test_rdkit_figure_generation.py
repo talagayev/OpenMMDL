@@ -105,7 +105,8 @@ def test_arranged_figure_generation():
     shutil.copy(all_modes_path, destination_path_all)
     
     merged_image_paths = ['Binding_Mode_1_merged.png', 'Binding_Mode_2_merged.png']
-    output_path = 'all_binding_modes_arranged.png'  # A temporary output path for testing
+    output_path = 'all_binding_modes_arranged.png'
+    output_path = os.path.join(working_directory, output_path)
 
     # Run the function
     arranged_figure_generation(merged_image_paths, output_path)
