@@ -8,7 +8,7 @@ from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction
 
 test_data_directory = Path("openmmdl/tests/data/in")
 current_directory = os.getcwd() 
-output_path = 'all_binding_modes.png'
+output_path = 'all_binding_modes_arranged.png'
 
 @pytest.mark.parametrize("input_data, expected_output", [
     (["60GLUA_4206_4207_4216_4217_4218_4205_hydrophobic"], ['60GLUA 4206 4207 4216 4217 4218 4205 hydrophobic']),
@@ -82,24 +82,20 @@ def test_generate_interaction_dict():
     result = generate_interaction_dict(interaction_type, keys)
     assert result == expected_result
 
-@pytest.fixture
-def cleanup():
-    yield
-    # Clean up after the test by removing the temporary output file
-    if os.path.exists(output_path):
-        os.remove(output_path)
-
-def test_arranged_figure_generation(cleanup):
+def test_arranged_figure_generation():
     binding_mode1_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_1_merged.png'
     binding_mode2_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_2_merged.png'
+    all_modes_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/all_binding_modes_arranged.png'
     working_directory = os.getcwd()
     destination_path_1 = os.path.join(working_directory, os.path.basename(binding_mode1_path))
     destination_path_2 = os.path.join(working_directory, os.path.basename(binding_mode2_path))
+    destination_path_all = os.path.join(working_directory, os.path.basename(all_modes_path))
     shutil.copy(binding_mode1_path, destination_path_1)
     shutil.copy(binding_mode2_path, destination_path_2)
+    shutil.copy(all_modes_path, destination_path_all)
     
     merged_image_paths = ['Binding_Mode_1_merged.png', 'Binding_Mode_2_merged.png']
-    output_path = 'all_binding_modes.png'  # A temporary output path for testing
+    output_path = 'all_binding_modes_arranged.png'  # A temporary output path for testing
 
     # Run the function
     arranged_figure_generation(merged_image_paths, output_path)
