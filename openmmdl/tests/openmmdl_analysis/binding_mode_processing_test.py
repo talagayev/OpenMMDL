@@ -263,8 +263,8 @@ def test_df_iteration_numbering():
     # Sample DataFrame for testing
     data = {
         'Unnamed: 0': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-        'RESNR': [98, 63, 162, 161, 166, 165, 125, 166, 211, 227, 223, 165, 162, 161, 98, 207, 164],
-        'RESTYPE': ['PHE', 'ARG', 'ALA', 'PHE', 'ARG', 'ASP', 'TYR', 'ARG', 'PHE', 'LEU', 'THR', 'ASP', 'ALA', 'PHE', 'PHE', 'PHE', 'LYS'],
+        'RESNR': [98, 63, 162, 161, 166, 165, 125, 166, 211, 227, 223, 165, 100, 59, 98, 207, 164],
+        'RESTYPE': ['PHE', 'ARG', 'ALA', 'PHE', 'ARG', 'ASP', 'TYR', 'ARG', 'PHE', 'LEU', 'THR', 'ASP', 'ASP', 'ARG', 'PHE', 'PHE', 'LYS'],
         'RESCHAIN': ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
         'RESNR_LIG': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         'RESTYPE_LIG': ['UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK'],
@@ -278,7 +278,9 @@ def test_df_iteration_numbering():
         '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         '166ARGA_4220_Acceptor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         '98PHEA_4225_Donor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '207PHEA_4213_4214_4215_4216_4217_4218_pistacking': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        '207PHEA_4213_4214_4215_4216_4217_4218_pistacking': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '100ASPA_4005_Donor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '59ARGA_4222_Acceptor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
 
     df = pd.DataFrame(data)
@@ -296,8 +298,8 @@ def test_df_iteration_numbering():
     'hydrophobic',
     'hydrophobic',
     'hydrophobic',
-    'hydrophobic',
-    'hydrophobic',
+    'waterbridge',
+    'waterbridge',
     'hydrophobic',
     'pistacking',
     'pication'
@@ -306,13 +308,13 @@ def test_df_iteration_numbering():
 
     
     # Define the values for the "PROTISDON" column
-    protisdon_values = [False, True, True, True, True, True, True, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    protisdon_values = [False, True, True, True, True, True, True, 0, 0, 0, 0, 0, False, True, 0, 0, 0]
 
     # Update the "PROTISDON" column in the DataFrame
     df['PROTISDON'] = protisdon_values
 
     # Define the values for the "Prot_partner" column
-    prot_partner_values = ['98PHEA', '63ARGA', '162ALAA', '161PHEA', '166ARGA', '165ASPA', '125TYRA', '166ARGA', '211PHEA', '227LEUA', '223THRA', '165ASPA', '162ALAA', '161PHEA', '98PHEA', '207PHEA', '164LYSA']
+    prot_partner_values = ['98PHEA', '63ARGA', '162ALAA', '161PHEA', '166ARGA', '165ASPA', '125TYRA', '166ARGA', '211PHEA', '227LEUA', '223THRA', '165ASPA', '100ASPA', '59ARGA', '98PHEA', '207PHEA', '164LYSA']
 
     # Update the "Prot_partner" column in the DataFrame
     df['Prot_partner'] = prot_partner_values
@@ -330,11 +332,17 @@ def test_df_iteration_numbering():
     df['DONORIDX'] = donoridx_values
 
     # Define the values for the "ACCEPTOR_IDX" column
-    acceptor_idx_values = [0.0, 4201.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    acceptor_idx_values = [0.0, 4201.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4222.0, 0.0, 0.0, 0.0]
 
     # Add the "ACCEPTOR_IDX" column to the DataFrame
     df['ACCEPTOR_IDX'] = acceptor_idx_values
 
+    # Define the values for the "DONOR_IDX" column
+    donor_idx_values = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4005.0, 0.0, 0.0, 0.0, 0.0]
+
+    # Add the "ACCEPTOR_IDX" column to the DataFrame
+    df['DONOR_IDX'] = acceptor_idx_values
+    
     # Define the values for the "LIG_IDX_LIST" column
     lig_idx_list_values = [0, 0, 0, 0, 0, 0, 0, "4220,4221", 0, 0, 0, 0, 0, 0, 0, "4213,4214,4215,4216,4217,4218", "4213,4214,4215,4216,4217,4218"]
 
@@ -356,7 +364,9 @@ def test_df_iteration_numbering():
         '98PHEA_4194_hydrophobic': '98PHEA_4194_hydrophobic',
         '98PHEA_4225_Donor_hbond': '98PHEA_4225_Donor_hbond',
         '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication': '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication',
-        '207PHEA_4213_4214_4215_4216_4217_4218_pistacking': '207PHEA_4213_4214_4215_4216_4217_4218_pistacking'
+        '207PHEA_4213_4214_4215_4216_4217_4218_pistacking': '207PHEA_4213_4214_4215_4216_4217_4218_pistacking',
+        '59ARGA_4222_Acceptor_waterbridge': '59ARGA_4222_Acceptor_waterbridge',
+        '100ASPA_4005_Donor_waterbridge': '100ASPA_4005_Donor_waterbridge',
     }
 
 
@@ -381,3 +391,9 @@ def test_df_iteration_numbering():
 
     expected_207PHEA_4213_4214_4215_4216_4217_4218_pistacking_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
     assert (df['207PHEA_4213_4214_4215_4216_4217_4218_pistacking'] == expected_207PHEA_4213_4214_4215_4216_4217_4218_pistacking_values).all()
+
+    expected_59ARGA_4222_Acceptor_waterbridge_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert (df['59ARGA_4222_Acceptor_waterbridge'] == expected_59ARGA_4222_Acceptor_waterbridge_values).all()
+
+    expected_100ASPA_4005_Donor_waterbridge_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+    assert (df['100ASPA_4005_Donor_waterbridge'] == expected_100ASPA_4005_Donor_waterbridge_values).all()
