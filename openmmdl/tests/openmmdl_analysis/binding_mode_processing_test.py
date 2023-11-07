@@ -341,7 +341,7 @@ def test_df_iteration_numbering():
     donor_idx_values = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4005.0, 0.0, 0.0, 0.0, 0.0]
 
     # Add the "ACCEPTOR_IDX" column to the DataFrame
-    df['DONOR_IDX'] = acceptor_idx_values
+    df['DONOR_IDX'] = donor_idx_values
     
     # Define the values for the "LIG_IDX_LIST" column
     lig_idx_list_values = [0, 0, 0, 0, 0, 0, 0, "4220,4221", 0, 0, 0, 0, 0, 0, 0, "4213,4214,4215,4216,4217,4218", "4213,4214,4215,4216,4217,4218"]
@@ -366,7 +366,7 @@ def test_df_iteration_numbering():
         '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication': '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication',
         '207PHEA_4213,4214,4215,4216,4217,4218_pistacking': '207PHEA_4213,4214,4215,4216,4217,4218_pistacking',
         '59ARGA_4222_Acceptor_waterbridge': '59ARGA_4222_Acceptor_waterbridge',
-        '100ASPA_4005_Donor_waterbridge': '100ASPA_4005_Donor_waterbridge',
+        '100ASPA_4005_Donor_waterbridge': '100ASPA_4005_Donor_waterbridge'
     }
 
 
@@ -378,7 +378,6 @@ def test_df_iteration_numbering():
 
     expected_166ARGA_4220_Acceptor_hbond_values = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (df['166ARGA_4220_Acceptor_hbond'] == expected_166ARGA_4220_Acceptor_hbond_values).all()
-
 
     expected_63ARGA_4201_Acceptor_waterbridge_values = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (df['63ARGA_4201_Acceptor_waterbridge'] == expected_63ARGA_4201_Acceptor_waterbridge_values).all()
