@@ -258,3 +258,55 @@ def test_filtering_values_with_provided_data():
 
     assert isinstance(result, list)
 
+def test_df_iteration_numbering():
+    # Sample DataFrame for testing
+    data = {
+        'FRAME': {0: 1, 1: 2, 2: 3},
+        'Prot_partner': {0: '166ARGA', 1: '125TYRA', 2: '161PHEA'},
+        'INTERACTION': {
+            0: '4220,4221_Carboxylate_NI_saltbridge',
+            1: '4192_Acceptor_hbond',
+            2: '4221_Acceptor_hbond'
+        },
+        'LIGCARBONIDX': {0: 4220, 1: 4192, 2: 4221},
+        'DONORIDX': {0: 4220, 1: 4192, 2: 4221},
+        'ACCEPTORIDX': {0: 4221, 1: 4192, 2: 4221},
+        'PROTISDON': {0: True, 1: False, 2: True},
+        'LIG_IDX_LIST': {0: [4220, 4221], 1: [4192], 2: [4221]},
+        'LIG_GROUP': {0: 'Carboxylate_NI_saltbridge', 1: 'Acceptor_hbond', 2: 'Acceptor_hbond'},
+        'PROTISPOS': {0: True, 1: False, 2: True},
+        'DON_IDX': {0: 0, 1: 0, 2: 0},
+        'DONORTYPE': {0: 0, 1: 0, 2: 0},
+        'ACCEPTOR_IDX': {0: 0, 1: 0, 2: 0},
+        'DONOR_IDX': {0: 0, 1: 0, 2: 0},
+        'LOCATION': {0: 0, 1: 0, 2: 0},
+        'METAL_IDX': {0: 0, 1: 0, 2: 0},
+        'METAL_TYPE': {0: 0, 1: 0, 2: 0}
+    }
+    df = pd.DataFrame(data)
+
+    # Sample unique_data dictionary with updated column names
+    unique_data = {
+        '166ARGA_4220,4221_Carboxylate_NI_saltbridge': '166ARGA_4220,4221_Carboxylate_NI_saltbridge',
+        '125TYRA_4192_Acceptor_hbond': '125TYRA_4192_Acceptor_hbond',
+        '161PHEA_4221_Acceptor_hbond': '161PHEA_4221_Acceptor_hbond',
+        '207ILEA_4205_4206_4207_4208_4209_4204_hydrophobic': '207ILEA_4205_4206_4207_4208_4209_4204_hydrophobic',
+        '227LEUA_4205_4206_4207_4208_4209_4204_hydrophobic': '227LEUA_4205_4206_4207_4208_4209_4204_hydrophobic',
+        '223THRA_4205_4206_4207_4208_4209_4204_hydrophobic': '223THRA_4205_4206_4207_4208_4209_4204_hydrophobic',
+        '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic': '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic',
+        '161PHEA_4214_4215_4216_4217_4218_4213_hydrophobic': '161PHEA_4214_4215_4216_4217_4218_4213_hydrophobic',
+        '98PHEA_4194_hydrophobic': '98PHEA_4194_hydrophobic',
+        '210ARGA_4203_hydrophobic': '210ARGA_4203_hydrophobic',
+        '164LYSA_4214_4215_4216_4217_4218_4213_hydrophobic': '164LYSA_4214_4215_4216_4217_4218_4213_hydrophobic',
+        '163GLYA_4220_Acceptor_hbond': '163GLYA_4220_Acceptor_hbond',
+        '162ALAA_4220_Acceptor_hbond': '162ALAA_4220_Acceptor_hbond',
+        '164LYSA_4220_Acceptor_hbond': '164LYSA_4220_Acceptor_hbond'
+    }
+
+    # Call the function with the sample DataFrame and unique_data
+    df_iteration_numbering(df, unique_data)
+
+    # Check if the DataFrame has been updated correctly
+    assert df.loc[0, '166ARGA_4220,4221_Carboxylate_NI_saltbridge'] == 0
+    assert df.loc[1, '125TYRA_4192_Acceptor_hbond'] == 0
+    assert df.loc[2, '161PHEA_4221_Acceptor_hbond'] == 1  # Updated to 1
