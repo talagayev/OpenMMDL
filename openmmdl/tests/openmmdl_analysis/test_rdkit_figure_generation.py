@@ -96,17 +96,24 @@ merged_image_paths = []
 def prepare_resources():
     # Copy the image from the specified path to the working directory
     working_directory = os.getcwd()
-    existing_image_path = "openmmdl/tests/data/in/Binding_Mode_1.png"
-    copied_image_path = os.path.join(working_directory, "Binding_Mode_1.png")
-    shutil.copy(existing_image_path, copied_image_path)
+    existing_image_path_1 = "openmmdl/tests/data/in/Binding_Mode_1.png"
+    existing_image_path_2 = "openmmdl/tests/data/in/Binding_Mode_2.png"
+    copied_image_path = os.path.join(working_directory, "Binding_Mode_2.png")
+    shutil.copy(existing_image_path_1, copied_image_path)
+    shutil.copy(existing_image_path_2, copied_image_path)
 
 # Define the test function
 def test_create_and_merge_images(prepare_resources):
     # Path to the existing image in the working directory
-    existing_image_path = "Binding_Mode_1.png"
+    working_directory = os.getcwd()
+    existing_image_path_1 = "openmmdl/tests/data/in/Binding_Mode_1.png"
+    existing_image_path_2 = "openmmdl/tests/data/in/Binding_Mode_2.png"
+    copied_image_path = os.path.join(working_directory, "Binding_Mode_2.png")
+    shutil.copy(existing_image_path_1, copied_image_path)
+    shutil.copy(existing_image_path_2, copied_image_path)
 
     # Call the function with the test data
-    merged_image_paths = create_and_merge_images(binding_mode, occurrence_percent, split_data)
+    merged_image_paths = create_and_merge_images(binding_mode, occurrence_percent, split_data, working_directory)
 
     # Assert that the function returns a list of image paths
     assert isinstance(merged_image_paths, list)
