@@ -111,7 +111,7 @@ def test_arranged_figure_generation():
     # Run the function
     arranged_figure_generation(merged_image_paths, output_path)
 
-    # Print the current files in the working directory for debugging
+    ## Print the current files in the working directory for debugging
     files_in_working_directory = os.listdir(working_directory)
     print("Files in Working Directory:", files_in_working_directory)
 
