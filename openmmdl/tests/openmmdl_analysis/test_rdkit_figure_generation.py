@@ -26,6 +26,7 @@ def test_highlight_numbers():
         "165ASPA 4222 Donor hbond",
         "165ASPA 4203 Acceptor hbond",
         "125TYRA 4192 Acceptor waterbridge",
+        "165ASPA 4222 Donor waterbridge",
         "161PHEA 4211 4212 4213 4214 4215 4210 hydrophobic",
         "59ARGA 4205 4206 4207 4216 4217 4218 Aromatic pication",
         "59ARGA 4194 F halogen",
