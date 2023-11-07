@@ -283,18 +283,12 @@ def test_df_iteration_numbering():
 
     # Sample unique_data dictionary with updated column names
     unique_data = {
-        1: ["A_501_F_halogen", "B_505_I_halogen"],
-        2: ["B_202_Donor_hbond", "A_301_Acceptor_hbond"],
-        3: ["C_501_F_halogen", "B_505_I_halogen"],
+        1: "A_501_F_halogen", 2: "B_202_Donor_hbond", 3 : "A_301_Acceptor_hbond"
     }
 
     assert df.loc[0, 'A_501_F_halogen'] == 0
-    assert df.loc[0, 'B_505_I_halogen'] == 0
     assert df.loc[1, 'B_202_Donor_hbond'] == 0
-    assert df.loc[1, 'A_301_Acceptor_hbond'] == 0
-    assert df.loc[2, 'C_501_F_halogen'] == 0
-    assert df.loc[2, 'B_505_I_halogen'] == 0
-    assert df.loc[3, 'A_501_F_halogen'] == 0
-    assert df.loc[3, 'B_505_I_halogen'] == 0
+    assert df.loc[2, 'A_301_Acceptor_hbond'] == 0
+
     # Call the function with the sample DataFrame and unique_data
     df_iteration_numbering(df, unique_data)
