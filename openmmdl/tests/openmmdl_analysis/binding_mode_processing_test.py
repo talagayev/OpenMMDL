@@ -333,6 +333,18 @@ def test_df_iteration_numbering():
 
     # Add the "ACCEPTOR_IDX" column to the DataFrame
     df['ACCEPTOR_IDX'] = acceptor_idx_values
+
+    # Define the values for the "LIG_IDX_LIST" column
+    lig_idx_list_values = [0, 0, 0, 0, 0, 0, 0, "4220,4221", 0, 0, 0, 0, 0, 0, 0, 0, "4213,4214,4215,4216,4217,4218"]
+
+    # Add the "LIG_IDX_LIST" column to the DataFrame
+    df['LIG_IDX_LIST'] = lig_idx_list_values
+
+    # Define the values for the "LIG_GROUP" column
+    lig_group_values = [0, 0, 0, 0, 0, 0, 0, "Carboxylate", 0, 0, 0, 0, 0, 0, 0, 0, "Aromatic"]
+
+    # Add the "LIG_GROUP" column to the DataFrame
+    df['LIG_GROUP'] = lig_group_values
     
     # Updated unique_data dictionary
     unique_data = {
@@ -342,6 +354,7 @@ def test_df_iteration_numbering():
         '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic': '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic',
         '98PHEA_4194_hydrophobic': '98PHEA_4194_hydrophobic',
         '98PHEA_4225_Donor_hbond': '98PHEA_4225_Donor_hbond',
+        '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication': '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication'
     }
 
 
@@ -360,3 +373,6 @@ def test_df_iteration_numbering():
 
     expected_98PHEA_4225_Donor_hbond_values = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (df['98PHEA_4225_Donor_hbond'] == expected_98PHEA_4225_Donor_hbond_values).all()
+
+    expected_164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    assert (df['164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication'] == expected_164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication_values).all()
