@@ -49,11 +49,11 @@ def test_plot_barcodes():
         "Barcode 2": np.array([0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]),
         # Include more barcodes as needed
     }
-    save_path = working_directory / "multiple_barcodes.png"
     plot_barcodes(barcodes, "multiple_barcodes.png")
 
     files_in_working_directory = os.listdir(working_directory)
     print("Files in Working Directory before:", files_in_working_directory)
+    save_path = "multiple_barcodes.png"
     
     assert save_path.is_file()
 
