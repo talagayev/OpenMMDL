@@ -38,19 +38,20 @@ def test_waterids_barcode_generator(sample_dataframe_barcode_generation):
     assert waterid_barcode == expected_waterid_barcode
 
 def test_plot_barcodes(tmp_path):
-    # Test case : Single barcode
+    # Test case 2: Single barcode
     barcode = np.random.randint(0, 2, 100)
     save_path = tmp_path / "single_barcode.png"
-    plot_barcodes([("Barcode 1", barcode)], save_path)
+    plot_barcodes([barcode], "single_barcode.png")
 
     assert save_path.is_file()
     
-    # Test case : Multiple barcodes
-    barcodes = [("Barcode 1", np.random.randint(0, 2, 100)),
-                ("Barcode 2", np.random.randint(0, 2, 100)),
-                ("Barcode 3", np.random.randint(0, 2, 100))]
+    # Test case 3: Multiple barcodes
+    barcodes = [np.random.randint(0, 2, 100),
+                np.random.randint(0, 2, 100),
+                np.random.randint(0, 2, 100)]
     save_path = tmp_path / "multiple_barcodes.png"
-    plot_barcodes(barcodes, save_path)
+    plot_barcodes(barcodes, "multiple_barcodes.png")
+    
     
     assert save_path.is_file()
 
