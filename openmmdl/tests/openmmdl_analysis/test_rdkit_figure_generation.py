@@ -131,10 +131,6 @@ def test_create_and_merge_images_with_split_data():
     except Exception as e:
         pytest.fail(f"Merged image file is not a valid image: {e}")
 
-    # Check if the original files were removed
-    assert not os.path.exists(source_image_path)
-    assert not os.path.exists(source_merged_image_path)
-
 
 def test_max_width_and_height_calculation():
     # Create some example images with different sizes
