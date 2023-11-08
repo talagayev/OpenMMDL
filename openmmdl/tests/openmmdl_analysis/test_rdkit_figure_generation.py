@@ -6,7 +6,7 @@ from PIL import Image
 from pathlib import Path
 from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction_data, highlight_numbers, update_dict, create_and_merge_images, arranged_figure_generation, generate_interaction_dict
 
-test_data_directory = Path("openmmdl/tests/data/in")
+test_data_directory = Path("openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation")
 current_directory = os.getcwd() 
 output_path = 'all_binding_modes_arranged.png'
 
@@ -85,24 +85,26 @@ def test_generate_interaction_dict():
 def test_create_and_merge_images_with_split_data():
     # Define test data
     binding_mode = 'Binding_Mode_1'
-    occurrence_percent = 75
+    occurrence_percent = 92
     split_data = [
-        "163GLYA 4202 Acceptor hbond",
-        "165ASPA 4203 Donor hbond",
-        "165ASPA 4222 Donor hbond",
-        "165ASPA 4203 Acceptor hbond"
+        "166ARGA 4220,4221 Carboxylate NI saltbridge",
+        "161PHEA 4221 Acceptor hbond",
+        "207ILEA 4205 4206 4207 4208 4209 4204 hydrophobic"
     ]
     merged_image_paths = []
 
     # Define source image paths
-    source_image_path = 'openmmdl/tests/data/in/Binding_Mode_1.png'
+    source_image_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_1.png'
+    source_svg_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_1.svg'
     source_merged_image_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_1_merged.png'
 
     # Copy source image files to the working directory
     working_directory = os.getcwd()
     destination_image_path = os.path.join(working_directory, os.path.basename(source_image_path))
+    destination_svg_path = os.path.join(working_directory, os.path.basename(source_svg_path))
     destination_merged_image_path = os.path.join(working_directory, os.path.basename(source_merged_image_path))
     shutil.copy(source_image_path, destination_image_path)
+    shutil.copy(source_svg_path, destination_svg_path)
     shutil.copy(source_merged_image_path, destination_merged_image_path)
 
 
