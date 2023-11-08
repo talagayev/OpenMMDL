@@ -20,7 +20,7 @@ def test_split_interaction_data(input_data, expected_output):
     assert result == expected_output
 
 def test_highlight_numbers():
-    ## Input data
+    # Input data
     split_data = [
         "163GLYA 4202 Acceptor hbond",
         "165ASPA 4203 Donor hbond",
