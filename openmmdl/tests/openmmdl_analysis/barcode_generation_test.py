@@ -30,7 +30,7 @@ def test_waterids_barcode_generator(sample_dataframe_barcode_generation):
     interaction = 'Interaction2'
     waterid_barcode = waterids_barcode_generator(sample_dataframe_barcode_generation, interaction)
     
-    ## Test if the output is a list
+    # Test if the output is a list
     assert isinstance(waterid_barcode, list)
     
     # Test the expected waterid barcode for the sample dataframe and interaction
