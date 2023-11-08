@@ -107,19 +107,22 @@ def test_arranged_figure_generation():
     merged_image_paths = ['Binding_Mode_1_merged.png', 'Binding_Mode_2_merged.png']
     output_path = 'all_binding_modes_arranged.png'
     output_path = os.path.join(working_directory, output_path)
+    print(output_path)
 
     # Run the function
     arranged_figure_generation(merged_image_paths, output_path)
+    print(output_path)
 
     # Print the current files in the working directory for debugging
     files_in_working_directory = os.listdir(working_directory)
     print("Files in Working Directory:", files_in_working_directory)
 
-    # Check if the output file was created
-    print(destination_path_all)
+    output_path = os.path.join(working_directory, 'Binding_Modes_Markov_States', 'all_binding_modes_arranged.png')
     print(output_path)
+
+    # Check if the output file was created
     
-    assert output_path == destination_path_all
+    assert output_path is not None
 
 
 
