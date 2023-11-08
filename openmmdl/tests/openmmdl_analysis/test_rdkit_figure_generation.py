@@ -30,8 +30,10 @@ def test_highlight_numbers():
         "165ASPA 4222 Donor waterbridge",
         "161PHEA 4211 4212 4213 4214 4215 4210 hydrophobic",
         "59ARGA 4205 4206 4207 4216 4217 4218 Aromatic pication",
+        "155PHEA 4205 4206 4207 4216 4217 4218 pistacking",
         "59ARGA 4194 F halogen",
-        "166ARGA 4202,4203 Carboxylate NI saltbridge"
+        "166ARGA 4202,4203 Carboxylate NI saltbridge",
+        "165ASPA 4202 Amine PI saltbridge"
     ]
 
     starting_idx = 1  # Updated starting index
