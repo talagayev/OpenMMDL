@@ -82,6 +82,58 @@ def test_generate_interaction_dict():
     result = generate_interaction_dict(interaction_type, keys)
     assert result == expected_result
 
+def test_create_and_merge_images_with_split_data():
+    # Define test data
+    binding_mode = 'Binding_Mode_1'
+    occurrence_percent = 75
+    split_data = [
+        "163GLYA 4202 Acceptor hbond",
+        "165ASPA 4203 Donor hbond",
+        "165ASPA 4222 Donor hbond",
+        "165ASPA 4203 Acceptor hbond"
+    ]
+    merged_image_paths = []
+
+    # Define source image paths
+    source_image_path = 'openmmdl/tests/data/in/Binding_Mode_1.png'
+    source_merged_image_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_1_merged.png'
+
+    # Copy source image files to the working directory
+    working_directory = os.getcwd()
+    destination_image_path = os.path.join(working_directory, os.path.basename(source_image_path))
+    destination_merged_image_path = os.path.join(working_directory, os.path.basename(source_merged_image_path))
+    shutil.copy(source_image_path, destination_image_path)
+    shutil.copy(source_merged_image_path, destination_merged_image_path)
+
+
+    # Print the current files in the working directory for debugging
+    files_in_working_directory = os.listdir(working_directory)
+    print("Files in Working Directory before:", files_in_working_directory)
+
+    # Run the function
+    merged_image_paths = create_and_merge_images(binding_mode, occurrence_percent, split_data, merged_image_paths)
+
+
+    # Print the current files in the working directory for debugging
+    files_in_working_directory = os.listdir(working_directory)
+    print("Files in Working Directory after:", files_in_working_directory)
+
+    # Check if the merged image file was created
+    assert len(merged_image_paths) == 1
+
+    # Check if the merged image file is a valid image
+    merged_image_path = merged_image_paths[0]
+    try:
+        with Image.open(merged_image_path) as img:
+            img.verify()
+    except Exception as e:
+        pytest.fail(f"Merged image file is not a valid image: {e}")
+
+    # Check if the original files were removed
+    assert not os.path.exists(source_image_path)
+    assert not os.path.exists(source_merged_image_path)
+
+
 def test_max_width_and_height_calculation():
     # Create some example images with different sizes
     image1 = Image.new('RGB', (100, 200), (255, 255, 255))
