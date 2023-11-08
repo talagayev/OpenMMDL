@@ -37,16 +37,23 @@ def test_waterids_barcode_generator(sample_dataframe_barcode_generation):
     expected_waterid_barcode = [0, 104, 105]
     assert waterid_barcode == expected_waterid_barcode
 
-def test_plot_barcodes(tmp_path):
+def test_plot_barcodes():
     # create barcode data
+    working_directory = os.getcwd()
+    # Print the current files in the working directory for debugging
+    files_in_working_directory = os.listdir(working_directory)
+    print("Files in Working Directory before:", files_in_working_directory)
+    
     barcodes = {
         "Barcode 1": np.array([1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]),
         "Barcode 2": np.array([0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]),
         # Include more barcodes as needed
     }
-    save_path = tmp_path / "multiple_barcodes.png"
+    save_path = working_directory / "multiple_barcodes.png"
     plot_barcodes(barcodes, "multiple_barcodes.png")
-    
+
+    files_in_working_directory = os.listdir(working_directory)
+    print("Files in Working Directory before:", files_in_working_directory)
     
     assert save_path.is_file()
 
