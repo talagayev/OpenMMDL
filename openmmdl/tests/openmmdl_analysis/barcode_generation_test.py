@@ -46,7 +46,7 @@ def test_plot_barcodes():
 
     # Test case 1: No barcode
     plot_barcodes({}, "no_barcodes.png")
-    assert "no_barcodes.png" is None
+    assert not os.path.isfile("no_barcodes.png")
 
     # Test case 2: Single barcode
     barcode_data = {'166ARGA_4220,4221_Carboxylate_NI_saltbridge': np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])}
