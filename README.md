@@ -5,7 +5,7 @@
 
 # OpenMMDL @ Molecular Design Lab
 
-Interface to OpenMM for easy setup of molecular dynamic simulations of
+Interface to OpenMM for easy setup of molecular dynamic simulations ofs
 protein-ligand complexes
 
 http://openmmdl.readthedocs.io/
