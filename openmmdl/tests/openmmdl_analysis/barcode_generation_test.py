@@ -43,6 +43,16 @@ def test_plot_barcodes():
     # Print the current files in the working directory for debugging
     files_in_working_directory = os.listdir(working_directory)
     print("Files in Working Directory before:", files_in_working_directory)
+
+    # Test case 1: No barcode
+    plot_barcodes({}, "no_barcodes.png")
+    assert "no_barcodes.png" is None
+
+    # Test case 2: Single barcode
+    barcode_data = {'166ARGA_4220,4221_Carboxylate_NI_saltbridge': np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])}
+    plot_barcodes(barcode_data, "single_barcode.png")
+    single_barcode = "single_barcode.png"
+    assert single_barcode is not None
     
     barcodes = {
         "Barcode 1": np.array([1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]),
