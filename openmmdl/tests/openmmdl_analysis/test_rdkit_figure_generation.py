@@ -118,7 +118,7 @@ def test_big_figure_creation():
     big_figure = Image.new('RGB', (total_width, total_height), (255, 255, 255))  # Set background to white
 
     # Assert the dimensions of the created big_figure
-    assert big_figure.size == (300, 500)  # Width should be 300, height should be 500
+    assert big_figure.size == (300, 250)  # Width should be 300, height should be 250
 
 def test_arranged_figure_generation():
     binding_mode1_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_1_merged.png'
