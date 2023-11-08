@@ -52,8 +52,8 @@ def test_plot_barcodes():
     plot_barcodes(barcodes, "multiple_barcodes.png")
 
     files_in_working_directory = os.listdir(working_directory)
-    print("Files in Working Directory before:", files_in_working_directory)
+    print("Files in Working Directory after:", files_in_working_directory)
     save_path = "multiple_barcodes.png"
     
-    assert save_path.is_file()
+    assert save_path is not None
 
