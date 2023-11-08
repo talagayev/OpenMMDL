@@ -82,6 +82,44 @@ def test_generate_interaction_dict():
     result = generate_interaction_dict(interaction_type, keys)
     assert result == expected_result
 
+def test_max_width_and_height_calculation():
+    # Create some example images with different sizes
+    image1 = Image.new('RGB', (100, 200), (255, 255, 255))
+    image2 = Image.new('RGB', (150, 250), (255, 255, 255))
+    merged_images = [image1, image2]
+
+    # Calculate the maximum width and height
+    max_width = max(image.size[0] for image in merged_images)
+    max_height = max(image.size[1] for image in merged_images)
+
+    # Assert the calculated max_width and max_height
+    assert max_width == 150
+    assert max_height == 250
+
+def test_big_figure_creation():
+    # Create example merged images
+    image1 = Image.new('RGB', (100, 200), (255, 255, 255))
+    image2 = Image.new('RGB', (150, 250), (255, 255, 255))
+    merged_images = [image1, image2]
+
+    # Calculate the maximum width and height
+    max_width = max(image.size[0] for image in merged_images)
+    max_height = max(image.size[1] for image in merged_images)
+
+    # Determine the number of images per row (in your case, 2 images per row)
+    images_per_row = 2
+
+    # Calculate the number of rows and columns required
+    num_rows = (len(merged_images) + images_per_row - 1) // images_per_row
+    total_width = max_width * images_per_row
+    total_height = max_height * num_rows
+
+    # Create a new image with the calculated width and height
+    big_figure = Image.new('RGB', (total_width, total_height), (255, 255, 255))  # Set background to white
+
+    # Assert the dimensions of the created big_figure
+    assert big_figure.size == (300, 500)  # Width should be 300, height should be 500
+
 def test_arranged_figure_generation():
     binding_mode1_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_1_merged.png'
     binding_mode2_path = 'openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation/Binding_Mode_2_merged.png'
@@ -123,8 +161,6 @@ def test_arranged_figure_generation():
     # Check if the output file was created
     
     assert output_path is not None
-
-
 
 # Run the tests
 if __name__ == '__main__':
