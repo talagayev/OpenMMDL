@@ -2,9 +2,6 @@
 
 <img src="https://github.com/talagayev/OpenMMDL/blob/main/openmmdl/openmmdl_setup/static/OpenMMDL_Logo_new.svg" height="300">
 
-
-# OpenMMDL @ Molecular Design Lab
-
 Interface to OpenMM for easy setup of molecular dynamic simulations of
 protein-ligand complexes
 
