@@ -1,6 +1,6 @@
 [![codecov](https://codecov.io/gh/talagayev/OpenMMDL/graph/badge.svg?token=950HZ93CKS)](https://codecov.io/gh/talagayev/OpenMMDL)
 
-<img src="https://github.com/wolberlab/OpenMMDL/blob/main/openmmdl/openmmdl_setup/static/OpenMMDL_Logo_new.svg" height="300">
+<img src="https://github.com/talagayev/OpenMMDL/blob/main/openmmdl/openmmdl_setup/static/OpenMMDL_Logo_new.svg" height="300">
 
 
 # OpenMMDL @ Molecular Design Lab
