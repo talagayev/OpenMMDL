@@ -2,6 +2,8 @@
 
 <img src="https://github.com/talagayev/OpenMMDL/blob/main/openmmdl/openmmdl_setup/static/OpenMMDL_Logo_new.svg" height="300">
 
+<img src="https://github.com/talagayev/OpenMMDL/blob/main/openmmdl/openmmdl_setup/static/OpenMMDL_simulation.svg" height="300">
+
 Interface to OpenMM for easy setup of molecular dynamic simulations of
 protein-ligand complexes
 
@@ -11,7 +13,7 @@ http://openmmdl.readthedocs.io/
 
 #### Clone this repository
 
-<img src="https://github.com/talagayev/OpenMMDL/blob/main/openmmdl/openmmdl_setup/static/OpenMMDL_simulation.svg" height="300">
+
 
 Open a new terminal and clone this repository
 
