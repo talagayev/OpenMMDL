@@ -23,15 +23,21 @@ def test_rmsd_for_atomgroups():
     assert isinstance(rmsd_df, pd.DataFrame)
     assert rmsd_df.index.name == "frame"
     
+    # Define file paths
+    csv_path = os.path.join("RMSD", "RMSD_over_time.csv")
+    plot_path = os.path.join("RMSD", "RMSD_over_time.png")
+
+    print("Checking CSV file:", csv_path)
     # Check if the CSV file exists
-    assert os.path.exists("RMSD_over_time.csv")
+    assert os.path.exists(csv_path), f"CSV file does not exist at {csv_path}"
     
+    print("Checking plot file:", plot_path)
     # Check if the plot file exists
-    assert os.path.exists("RMSD_over_time.png")
+    assert os.path.exists(plot_path), f"Plot file does not exist at {plot_path}"
     
     # Cleanup created files after the test
-    os.remove("RMSD_over_time.csv")
-    os.remove("RMSD_over_time.png")
+    os.remove(csv_path)
+    os.remove(plot_path)
 
 def test_rmsd_dist_frames():
 
