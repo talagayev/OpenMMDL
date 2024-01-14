@@ -96,7 +96,7 @@ def test_process_trajectory():
 
     interaction_list = pd.DataFrame(columns=["RESNR", "RESTYPE", "RESCHAIN", "RESNR_LIG", "RESTYPE_LIG", "RESCHAIN_LIG", "DIST", "LIGCARBONIDX", "PROTCARBONIDX", "LIGCOO", "PROTCOO"])
 
-    interaction_list = process_trajectory(pdb_md, dataframe, num_processes, lig_name)
+    interaction_list = process_trajectory(pdb_md, dataframe, num_processes, lig_name, special_ligand=None, peptide=None)
 
     assert interaction_list is not None
     assert len(interaction_list) > 10
