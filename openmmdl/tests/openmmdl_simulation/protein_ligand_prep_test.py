@@ -32,7 +32,6 @@ ligand = 'CVV.sdf'
 ligand_name = "UNK"
 minimization = False
 sanitization = False
-protein_pdb = pdbfixer.PDBFixer(str(protein))
 ff = 'AMBER14'
 water = 'SPC/E'
 add_membrane = False
@@ -63,6 +62,8 @@ TEST_LIGAND_FILE = f"{test_data_directory}/CVV.sdf"
 TEST_MOL_FILE = f"{test_data_directory}/CVV.mol"
 TEST_MOL2_FILE = f"{test_data_directory}/CVV.mol2"
 TEST_PROTEIN = f"{test_data_directory}/6b73.pdb"
+
+protein_pdb = pdbfixer.PDBFixer(str(TEST_PROTEIN))
 
 
 ligand_prepared = prepare_ligand(TEST_LIGAND_FILE,minimize_molecule=minimization)
