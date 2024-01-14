@@ -23,7 +23,7 @@ import simtk.openmm as mm
 
 
 from openmmdl.openmmdl_simulation.scripts.forcefield_water import ff_selection, water_forcefield_selection, water_model_selection, generate_forcefield, generate_transitional_forcefield
-from openmmdl.openmmdl_simulation.scripts.protein_ligand_prep import protein_choice, prepare_ligand, rdkit_to_openmm, merge_protein_and_ligand, water_padding_solvent_builder, water_absolute_solvent_builder, membrane_builder, water_conversion
+from openmmdl.openmmdl_simulation.scripts.protein_ligand_prep import prepare_ligand, rdkit_to_openmm, merge_protein_and_ligand, water_padding_solvent_builder, water_absolute_solvent_builder, membrane_builder, water_conversion
 from openmmdl.openmmdl_simulation.scripts.post_md_conversions import mdtraj_conversion, MDanalysis_conversion
 
 
@@ -74,11 +74,6 @@ model_water = water_model_selection(water=water,forcefield_selection=ff_selectio
 forcefield = generate_forcefield(protein_ff=forcefield_selected, solvent_ff=water_selected, add_membrane=add_membrane, rdkit_mol=ligand_prepared)
 complex_topology, complex_positions = merge_protein_and_ligand(protein_pdb, omm_ligand)
 modeller = app.Modeller(complex_topology, complex_positions)
-
-# Test the protein_choice function
-def test_protein_choice():
-    prepared_protein = protein_choice("Yes", TEST_PROTEIN)
-    assert isinstance(prepared_protein, pdbfixer.PDBFixer)
 
 # Test the prepare_ligand function
 def test_prepare_ligand():
