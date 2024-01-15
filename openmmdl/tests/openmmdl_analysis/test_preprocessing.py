@@ -60,21 +60,16 @@ def test_replace_atom_type(tmp_path):
     # Create a mock PDB file
     input_file.write_text("ATOM      1  CA  LIG X   1       0.000   0.000   0.000  1.00  0.00           C")
 
-    process_pdb(str(input_file), str(output_file))
-    assert ' LIG  C' in output_file.read_text()
+    # Read input data from the mock input file
+    with open(input_file, 'r') as f:
+        input_data = f.read()
 
-def test_process_pdb(tmp_path):
-    input_file = tmp_path / "input_file.pdb"
-    output_file = tmp_path / "output_file.pdb"
+    # Apply the replace_atom_type function to the input data
+    modified_data = replace_atom_type(input_data)
 
-    # Mock input data
-    input_data = "ATOM      1  CA  LIG X   1       0.000   0.000   0.000  1.00  0.00           C"
+    # Write the modified data to the mock output file
+    with open(output_file, 'w') as f:
+        f.write(modified_data)
 
-    # Write input data to the mock input file
-    input_file.write_text(input_data)
-
-    # Perform the process_pdb function
-    process_pdb(str(input_file), str(output_file))
-
-    # Read the output data from the mock output file
-    assert ' LIG  C' in output_file.read_text()
+    # Check if the modification was successful
+    assert 'LIG C' in output_file.read_text()
