@@ -140,7 +140,6 @@ ATOM     33  N3  UNK A 454      38.981  47.235  41.740  1.00  0.00      A    N""
     assert output_sdf_filename.exists()
 
 def test_renumber_atoms_in_residues(sample_pdb_data, tmp_path):
-    input_pdb_filename = tmp_path / "input.pdb"
     output_pdb_filename = tmp_path / "output.pdb"
 
     # Create a mock PDB file
@@ -177,9 +176,6 @@ ATOM     30  H6  UNK A 454      38.833  48.310  38.406  1.00  0.00      A    H
 ATOM     31  C12 UNK A 454      40.466  48.125  39.823  1.00  0.00      A    C  
 ATOM     32  C15 UNK A 454      39.627  47.605  40.833  1.00  0.00      A    C  
 ATOM     33  N3  UNK A 454      38.981  47.235  41.740  1.00  0.00      A    N""")
-    
-    # Create a mock PDB file
-    input_pdb_filename.write_text(input_pdb_filename)
 
     renumber_atoms_in_residues(str(input_pdb_filename), str(output_pdb_filename), 'UNK')
     assert output_pdb_filename.exists()
