@@ -134,6 +134,7 @@ def test_post_md_file_movement():
     checkpoints_dir = Path("Checkpoints")
 
     assert os.path.exists(input_files_dir)
+    assert os.path.exists(md_files_dir / "Pre_MD")
     assert os.path.exists("MD_Files" / "Pre_MD" / "prepared_no_solvent_6b73.pdb")
     assert os.path.exists(md_files_dir / "Minimization_Equilibration" / "Energyminimization_6b73.pdb")
     assert os.path.exists(md_files_dir / "MD_Output" / "output_6b73")
