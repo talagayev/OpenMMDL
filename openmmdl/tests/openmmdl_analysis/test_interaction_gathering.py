@@ -89,12 +89,11 @@ def test_change_lig_to_residue():
     # Change ligand to residue
     change_lig_to_residue(str(topology_file), 'UNK', 'NEW')
 
-with open(topology_file, 'r') as output_file:
-    modified_content = output_file.read()
-    
-# Check if residues are modified
-assert 'NEW' in modified_content
-assert 'UNK' not in modified_content
+    # Read the output PDB file and check if residues are modified
+    with open(topology_file, 'r') as output_file:
+        modified_lines = output_file.readlines()
+        assert any('NEW' in line for line in modified_lines)
+        assert all('UNK' not in line for line in modified_lines)
 
 
 def test_process_frame_with_sample_data():
