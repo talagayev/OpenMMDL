@@ -89,12 +89,13 @@ def temp_pdb_file(tmp_path):
         dest_pdb.write(src_pdb.read())
     return input_pdb_filename
 
-def test_process_pdb_file(input_pdb_filename, tmp_path):
-    # Create a copy of the input file
+def test_process_pdb_file(tmp_path):
+    # Define the input and output file paths
+    input_pdb_filename = os.path.join(TEST_DATA_DIR, "0_unk_hoh.pdb")
     output_pdb_filename = tmp_path / "output.pdb"
 
-    # Process the PDB file
-    process_pdb_file(str(input_pdb_filename))
+    # Process the provided PDB file
+    process_pdb_file(input_pdb_filename)
 
     # Check if the output file exists
     assert output_pdb_filename.exists()
