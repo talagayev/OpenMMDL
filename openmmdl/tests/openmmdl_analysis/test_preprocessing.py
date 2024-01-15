@@ -92,10 +92,9 @@ def temp_pdb_file(tmp_path):
 def test_process_pdb_file(input_pdb_filename, tmp_path):
     # Create a copy of the input file
     output_pdb_filename = tmp_path / "output.pdb"
-    input_pdb_filename.copy(output_pdb_filename)
 
     # Process the PDB file
-    process_pdb_file(str(output_pdb_filename))
+    process_pdb_file(str(input_pdb_filename))
 
     # Check if the output file exists
     assert output_pdb_filename.exists()
