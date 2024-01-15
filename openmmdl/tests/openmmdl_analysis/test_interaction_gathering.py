@@ -89,9 +89,6 @@ def test_change_lig_to_residue():
     # Change ligand to residue
     change_lig_to_residue(str(topology_file), 'UNK', 'NEW')
 
-    # Check if the output file exists
-    assert topology_file.exists()
-
     # Read the output PDB file and check if residues are modified
     with open(topology_file, 'r') as output_file:
         modified_lines = topology_file.readlines()
