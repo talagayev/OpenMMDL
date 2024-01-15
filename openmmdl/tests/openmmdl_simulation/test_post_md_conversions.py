@@ -48,7 +48,15 @@ def test_mdanalysis_conversion():
     prot_lig_file_xtc_unaligned = 'prot_lig_traj_unaligned.xtc'
     prot_lig_file_gro = 'prot_lig_top.gro'
 
-    MDanalysis_conversion(pdb_file, dcd_file, ligand_name, "pdb_dcd_gro_xtc", "mda_prot_lig_all")
+
+    post_mdtraj_pdb_file = "centered_old_coordinates_top.pdb"
+    post_mdtraj_dcd_file = "centered_old_coordinates.dcd"
+    ligand_name = "UNK"
+    mda_output = "pdb_dcd_gro_xtc"
+    output_selection = "mda_prot_lig_all"
+
+    #MDanalysis_conversion(pdb_file, dcd_file, ligand_name, "pdb_dcd_gro_xtc", "mda_prot_lig_all")
+    MDanalysis_conversion(post_mdtraj_pdb_file, post_mdtraj_dcd_file, mda_output, output_selection, ligand_name, special_ligname)
 
     assert all_file_dcd is not None
     assert all_file_dcd_unaligned is not None
@@ -62,3 +70,33 @@ def test_mdanalysis_conversion():
     assert prot_lig_file_xtc is not None
     assert prot_lig_file_xtc_unaligned is not None
     assert prot_lig_file_gro is not None
+
+    # Assertions or checks to verify the correctness of the results
+    if "pdb" in mda_output:
+        if output_selection != "mda_all":
+            # Check if the expected PDB file exists
+            pdb_file_path = "prot_lig_top.pdb"
+            assert pdb_file_path.is_file()
+
+            # Check if the expected DCD file exists
+            dcd_file_path = "prot_lig_traj.dcd"
+            assert dcd_file_path.is_file()
+
+            # Check if the DCD file is not empty
+            traj = md.load(dcd_file_path, top=pdb_file_path)
+            assert traj.n_frames > 0
+
+    if "gro" in mda_output:
+        if output_selection != "mda_all":
+            # Check if the expected GRO file exists
+            gro_file_path = "prot_lig_top.gro"
+            assert gro_file_path.is_file()
+
+            # Check if the expected XTC file exists
+            xtc_file_path = "prot_lig_traj.xtc"
+            assert xtc_file_path.is_file()
+
+            # Check if the XTC file is not empty
+            traj = md.load(xtc_file_path, top=gro_file_path)
+            assert traj.n_frames > 0
+
