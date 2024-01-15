@@ -122,6 +122,8 @@ def test_post_md_file_movement():
     assert os.path.exists(protein_no_solvent)
 
     shutil.copy(str(protein_no_solvent), '.')
+    shutil.copy(str(protein_name), '.')
+    protein_name = '6b73.pdb'
 
     # Call the post_md_file_movement function
     post_md_file_movement(str(protein_name), str(prmtop), str(inpcrd), [str(ligand)])
