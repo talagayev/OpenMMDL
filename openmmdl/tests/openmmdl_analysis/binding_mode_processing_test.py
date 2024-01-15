@@ -127,8 +127,8 @@ def sample_dataframe_bindingmode_processing():
     data['LOCATION'][10] = 'site1'  # Location
     data['ACCEPTOR_IDX'][10] = 0
     data['DONOR_IDX'][10] = 0
-    data['RESTYPE_LIG'][10] = 0 
-    data['TARGET_IDX'][10] = 0
+    data['RESTYPE_LIG'][10] = 'A' 
+    data['TARGET_IDX'][10] = 401
     data['COORDINATION'][10] = "site1"
 
     data['FRAME'][11] = 11  # Add a new 'FRAME' value
