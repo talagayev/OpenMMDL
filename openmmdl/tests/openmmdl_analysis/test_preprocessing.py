@@ -1,5 +1,6 @@
 import os
 import pytest
+import shutil
 from Bio import PDB
 import numpy as np
 from pathlib import Path
