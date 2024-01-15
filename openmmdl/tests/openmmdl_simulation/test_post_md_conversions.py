@@ -6,14 +6,10 @@ import mdtraj as md
 
 from openmmdl.openmmdl_simulation.scripts.post_md_conversions import mdtraj_conversion, MDanalysis_conversion
 
-
-
 test_data_directory = Path("openmmdl/tests/data/in")
 pdb_file = "0_unk_hoh.pdb"
 dcd_file = "trajectory.dcd"
 ligand_name = 'UNK'
-post_mdtraj_pdb_file = test_data_directory / "centered_old_coordinates_top.pdb"
-post_mdtraj_dcd_file = test_data_directory / "centered_old_coordinates.dcd"
 
 def test_mdtraj_conversion():
     original_cwd = os.getcwd()
@@ -34,9 +30,10 @@ def test_mdtraj_conversion():
     os.chdir(original_cwd)
 
 def test_mdanalysis_conversion():
-    original_cwd = Path(os.getcwd()) 
-    
-    
+    original_cwd = Path(os.getcwd())
+    test_data_directory = Path("openmmdl/tests/data/in")
+    post_mdtraj_pdb_file = test_data_directory / "centered_old_coordinates_top.pdb"
+    post_mdtraj_dcd_file = test_data_directory / "centered_old_coordinates.dcd"
     
     # Create temporary directories to save the output files
     all_file_dcd = "centered_traj.dcd"
