@@ -3,6 +3,7 @@ import pytest
 import shutil
 from Bio import PDB
 import numpy as np
+import mdtraj as md
 from pathlib import Path
 import MDAnalysis as mda
 from openmmdl.openmmdl_analysis.preprocessing import process_pdb_file, convert_pdb_to_sdf, renumber_atoms_in_residues, replace_atom_type, process_pdb, move_hydrogens_to_end
