@@ -112,12 +112,14 @@ def test_post_md_file_movement():
     protein_name = test_data_directory / '6b73.pdb'
     prmtop = test_data_directory / '6b73.prmtop'
     inpcrd = test_data_directory / '6b73.inpcrd'
+    protein_no_solvent = test_data_directory / 'prepared_no_solvent_6b73.pdb'
     
     # Assert that the input files exist before moving
     assert os.path.exists(ligand)
     assert os.path.exists(protein_name)
     assert os.path.exists(prmtop)
     assert os.path.exists(inpcrd)
+    assert os.path.exists(protein_no_solvent)
 
     # Call the post_md_file_movement function
     post_md_file_movement(str(protein_name), str(prmtop), str(inpcrd), [str(ligand)])
