@@ -111,6 +111,7 @@ def test_water_absolute_solvent_builder():
     assert protein_absolute_solved is not None
 
 def test_membrane_builder():
+    add_membrane = True
     transitional_forcefield = generate_transitional_forcefield(protein_ff=forcefield_selected, solvent_ff=water_selected, add_membrane=add_membrane, rdkit_mol=None) 
     protein_membrane_solved = membrane_builder(ff, model_water, forcefield, transitional_forcefield, protein_pdb, modeller, membrane_lipid_type, membrane_padding, membrane_positive_ion, membrane_negative_ion, membrane_ionicstrength, protein)
     assert protein_membrane_solved is not None
