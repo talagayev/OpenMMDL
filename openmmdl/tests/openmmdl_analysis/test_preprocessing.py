@@ -58,7 +58,7 @@ def test_replace_atom_type(tmp_path):
     output_file = tmp_path / "output.pdb"
 
     # Create a mock PDB file
-    input_file.write_text("ATOM      1  CA  LIG X   1       0.000   0.000   0.000  1.00  0.00           C")
+    input_file.write_text("ATOM   4194  C   LIG X   0      -0.791  -2.640 -10.238  0.00  0.00      LIG X")
 
     # Read input data from the mock input file
     with open(input_file, 'r') as f:
