@@ -75,11 +75,11 @@ def test_mdanalysis_conversion():
     if "pdb" in mda_output:
         if output_selection != "mda_all":
             # Check if the expected PDB file exists
-            pdb_file_path = "prot_lig_top.pdb"
+            pdb_file_path = original_cwd / "prot_lig_top.pdb"
             assert pdb_file_path.is_file()
 
             # Check if the expected DCD file exists
-            dcd_file_path = "prot_lig_traj.dcd"
+            dcd_file_path = original_cwd / "prot_lig_traj.dcd"
             assert dcd_file_path.is_file()
 
             # Check if the DCD file is not empty
@@ -89,11 +89,11 @@ def test_mdanalysis_conversion():
     if "gro" in mda_output:
         if output_selection != "mda_all":
             # Check if the expected GRO file exists
-            gro_file_path = "prot_lig_top.gro"
+            gro_file_path = original_cwd / "prot_lig_top.gro"
             assert gro_file_path.is_file()
 
             # Check if the expected XTC file exists
-            xtc_file_path = "prot_lig_traj.xtc"
+            xtc_file_path = original_cwd / "prot_lig_traj.xtc"
             assert xtc_file_path.is_file()
 
             # Check if the XTC file is not empty
