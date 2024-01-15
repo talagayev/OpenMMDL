@@ -33,6 +33,7 @@ def sample_dataframe_bindingmode_processing():
         'METAL_TYPE': {0: 0, 1: 0, 2: 0, 3: 0},
         'RESTYPE_LIG': {0: 0, 1: 0, 2: 0, 3: 0},
         'TARGET_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
+        'COORDINATION': {0: 0, 1: 0, 2: 0, 3: 0}
     }
 
     # Add 'halogen' and 'hbond' data to the existing DataFrame
