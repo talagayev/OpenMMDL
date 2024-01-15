@@ -31,7 +31,7 @@ def test_mdtraj_conversion():
     os.chdir(original_cwd)
 
 def test_mdanalysis_conversion():
-    original_cwd = os.getcwd()
+    original_cwd = Path(os.getcwd()) 
     os.chdir(test_data_directory)
     
     # Create temporary directories to save the output files
