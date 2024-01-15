@@ -195,8 +195,6 @@ ATOM     33  N3  UNK A 454      38.981  47.235  41.740  1.00  0.00      A    N""
 def test_move_hydrogens_to_end():
     # Set up the test environment
     original_cwd = Path(os.getcwd())
-    os.chdir(tmp_path)
-
     # Copy the input PDB file to the current directory
     input_pdb_filename = test_data_directory / "0_unk_hoh.pdb"
     shutil.copy(str(input_pdb_filename), '.')
@@ -217,7 +215,4 @@ def test_move_hydrogens_to_end():
                 if residue.resname == target_residue_name:
                     hydrogen_atoms = [atom for atom in residue if atom.element == 'H']
                     assert all(hydrogen_atom.name.startswith('H') for hydrogen_atom in hydrogen_atoms)
-
-    # Restore the original working directory
-    os.chdir(original_cwd)
 
