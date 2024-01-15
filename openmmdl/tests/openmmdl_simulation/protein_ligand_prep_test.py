@@ -46,6 +46,12 @@ water_box_x = 6.873
 water_box_y = 7.0
 water_box_z = 9.132
 
+membrane_lipid_type = 'POPC'
+membrane_padding = 0.2
+membrane_ionicstrength = 0.15
+membrane_positive_ion = 'Na+'
+membrane_negative_ion = 'Cl-'
+
 # Print current working directory
 print("Current working directory:", os.getcwd())
 
@@ -103,6 +109,11 @@ def test_water_padding_solvent_builder():
 def test_water_absolute_solvent_builder():
     protein_absolute_solved = water_absolute_solvent_builder(model_water, forcefield, water_box_x, water_box_y, water_box_z, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, protein)
     assert protein_absolute_solved is not None
+
+def test_membrane_builder():
+    transitional_forcefield = generate_transitional_forcefield(protein_ff=forcefield_selected, solvent_ff=water_selected, add_membrane=add_membrane, rdkit_mol=None) 
+    protein_membrane_solved = membrane_builder(ff, model_water, forcefield, transitional_forcefield, protein_pdb, modeller, membrane_lipid_type, membrane_padding, membrane_positive_ion, membrane_negative_ion, membrane_ionicstrength, protein)
+    assert protein_membrane_solved is not None
 
 
 if __name__ == '__main__':
