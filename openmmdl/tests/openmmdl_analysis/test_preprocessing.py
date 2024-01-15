@@ -93,18 +93,14 @@ def test_process_pdb_file():
     # Define the input and output file paths
     original_cwd = Path(os.getcwd())
     input_pdb_filename = test_data_directory / "0_unk_hoh.pdb"
-    output_pdb_filename = "output.pdb"
 
     shutil.copy(str(input_pdb_filename), '.')
 
     # Process the provided PDB file
     process_pdb_file(input_pdb_filename)
 
-    # Check if the output file exists
-    assert output_pdb_filename.exists()
-
     # Read the modified output PDB file
-    with open(output_pdb_filename, 'r') as f:
+    with open(input_pdb_filename, 'r') as f:
         modified_data = f.read()
 
     # Check if the modified data contains the expected residues
