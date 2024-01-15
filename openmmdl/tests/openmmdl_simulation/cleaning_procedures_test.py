@@ -113,6 +113,11 @@ def test_post_md_file_movement():
     prmtop = test_data_directory / '6b73.prmtop'
     inpcrd = test_data_directory / '6b73.inpcrd'
     protein_no_solvent = test_data_directory / 'prepared_no_solvent_6b73.pdb'
+    protein_solvent = test_data_directory / 'solvent_padding_6b73.pdb'
+    protein_equilibration = test_data_directory / 'Equilibration_6b73.pdb'
+    protein_minimization = test_data_directory / 'Energyminimization_6b73.pdb'
+    checkpoint = test_data_directory / 'checkpoint.chk'
+    checkpoint_10x = test_data_directory / '10x_checkpoint.chk'
     
     # Assert that the input files exist before moving
     assert os.path.exists(ligand)
@@ -138,6 +143,8 @@ def test_post_md_file_movement():
     assert os.path.exists(input_files_dir)
     assert os.path.exists(md_files_dir / "Pre_MD")
     assert os.path.exists(md_files_dir / "Pre_MD" / "prepared_no_solvent_6b73.pdb")
+    assert os.path.exists(md_files_dir / "Pre_MD" / "solvent_padding_6b73.pdb")
+    assert os.path.exists(md_files_dir / "Minimization_Equilibration" / "Equilibration_6b73.pdb")
     assert os.path.exists(md_files_dir / "Minimization_Equilibration" / "Energyminimization_6b73.pdb")
     assert os.path.exists(md_files_dir / "MD_Output" / "output_6b73")
     assert os.path.exists(md_postprocessing_dir / "centered_old_coordinates_top.pdb")
@@ -145,7 +152,6 @@ def test_post_md_file_movement():
     assert os.path.exists(final_output_dir / "Prot_Lig" / "prot_lig_top.pdb")
     assert os.path.exists(checkpoints_dir / "checkpoint.chk")
     assert os.path.exists(checkpoints_dir / "10x_checkpoint.chk")
-    assert os.path.exists(checkpoints_dir / "100x_checkpoint.chk")
 
 # Run the tests
 if __name__ == "__main__":
