@@ -121,6 +121,8 @@ def test_post_md_file_movement():
     assert os.path.exists(inpcrd)
     assert os.path.exists(protein_no_solvent)
 
+    shutil.copy(str(protein_no_solvent), '.')
+
     # Call the post_md_file_movement function
     post_md_file_movement(str(protein_name), str(prmtop), str(inpcrd), [str(ligand)])
     
