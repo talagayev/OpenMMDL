@@ -81,18 +81,20 @@ ATOM     10  C4  UNK A 454      43.545  51.052  34.671  1.00  0.00      A    C""
     input_pdb_filename.write_text(input_pdb_content)
     return input_pdb_filename
 
-def test_change_lig_to_residue(input_pdb_filename, tmp_path):
-    output_pdb_filename = tmp_path / "output.pdb"
+def test_change_lig_to_residue():
+    topology_file = f"{test_data_directory}/complex.pdb"
+    shutil.copy(str(topology_file), '.')
+    topology_file = "complex.pdb"
 
     # Change ligand to residue
-    change_lig_to_residue(str(input_pdb_filename), 'UNK', 'NEW')
+    change_lig_to_residue(str(topology_file), 'UNK', 'NEW')
 
     # Check if the output file exists
-    assert output_pdb_filename.exists()
+    assert topology_file.exists()
 
     # Read the output PDB file and check if residues are modified
-    with open(output_pdb_filename, 'r') as output_file:
-        modified_lines = output_file.readlines()
+    with open(topology_file, 'r') as output_file:
+        modified_lines = topology_file.readlines()
         assert any('NEW' in line for line in modified_lines)
         assert all('UNK' not in line for line in modified_lines)
 
