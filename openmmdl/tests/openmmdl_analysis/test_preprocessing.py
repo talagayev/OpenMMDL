@@ -199,9 +199,10 @@ def test_move_hydrogens_to_end():
     # Copy the input PDB file to the current directory
     input_pdb_filename = test_data_directory / "0_unk_hoh.pdb"
     shutil.copy(str(input_pdb_filename), '.')
+    input_pdb_filename = "0_unk_hoh.pdb"
 
     # Load the input PDB file
-    structure = md.load(str(input_pdb_filename))
+    structure = mda.Universe(input_pdb_filename)
 
     # Specify the target residue name
     target_residue_name = "UNK"
