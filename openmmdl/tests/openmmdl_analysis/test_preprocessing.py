@@ -209,11 +209,18 @@ def test_move_hydrogens_to_end():
     # Apply the move_hydrogens_to_end function
     move_hydrogens_to_end(structure, target_residue_name)
 
+    # Read the modified PDB file
+    with open(input_pdb_filename, 'r') as f:
+        lines = f.readlines()
+
     # Check if the hydrogens are moved to the end of the specified residues
-    for model in structure:
-        for chain in model:
-            for residue in chain:
-                if residue.resname == target_residue_name:
-                    hydrogen_atoms = [atom for atom in residue if atom.element == 'H']
-                    assert all(hydrogen_atom.name.startswith('H') for hydrogen_atom in hydrogen_atoms)
+    within_target_residue = False
+    for line in lines:
+        if line.startswith("ATOM"):
+            resname = line[17:20].strip()
+            if resname == target_residue_name:
+                within_target_residue = True
+            elif within_target_residue and line[12:16].strip().startswith('H'):
+                assert line[13:16].strip().isdigit()  # Check if hydrogen atom has a numeric identifier
+
 
