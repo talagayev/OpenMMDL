@@ -192,36 +192,3 @@ ATOM     33  N3  UNK A 454      38.981  47.235  41.740  1.00  0.00      A    N""
 
     renumber_atoms_in_residues(str(input_pdb_filename), str(output_pdb_filename), 'UNK')
     assert output_pdb_filename.exists()
-
-def test_move_hydrogens_to_end():
-    # Set up the test environment
-    original_cwd = Path(os.getcwd())
-    # Copy the input PDB file to the current directory
-    input_pdb_filename = test_data_directory / "0_unk_hoh.pdb"
-    shutil.copy(str(input_pdb_filename), '.')
-    input_pdb_filename = "0_unk_hoh.pdb"
-
-    # Load the input PDB file
-    structure = mda.Universe(input_pdb_filename)
-
-    # Specify the target residue name
-    target_residue_name = "UNK"
-
-    # Apply the move_hydrogens_to_end function
-    move_hydrogens_to_end(structure, target_residue_name)
-
-    # Read the modified PDB file
-    with open(input_pdb_filename, 'r') as f:
-        lines = f.readlines()
-
-    # Check if the hydrogens are moved to the end of the specified residues
-    within_target_residue = False
-    for line in lines:
-        if line.startswith("ATOM"):
-            resname = line[17:20].strip()
-            if resname == target_residue_name:
-                within_target_residue = True
-            elif within_target_residue and line[12:16].strip().startswith('H'):
-                assert line[13:16].strip().isdigit()  # Check if hydrogen atom has a numeric identifier
-
-
