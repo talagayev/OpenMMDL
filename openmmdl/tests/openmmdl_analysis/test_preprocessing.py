@@ -8,10 +8,8 @@ from openmmdl.openmmdl_analysis.preprocessing import process_pdb_file, convert_p
 pdb_file_path = 'openmmdl/tests/data/in/0_unk_hoh.pdb' 
 
 # Define test data paths
-TEST_DATA_DIR = "openmmdl/tests/data/in"
-INPUT_PDB_FILENAME = os.path.join(TEST_DATA_DIR, "0_unk_hoh.pdb")
-OUTPUT_SDF_FILENAME = os.path.join(TEST_DATA_DIR, "lig.sdf")
-OUTPUT_PDB_FILENAME = os.path.join(TEST_DATA_DIR, "0_unk_hoh.pdb")
+test_data_directory =  Path("openmmdl/tests/data/in")
+pdb_file = test_data_directory / "0_unk_hoh.pdb"
 
 
 @pytest.fixture
@@ -89,10 +87,13 @@ def temp_pdb_file(tmp_path):
         dest_pdb.write(src_pdb.read())
     return input_pdb_filename
 
-def test_process_pdb_file(tmp_path):
+def test_process_pdb_file():
     # Define the input and output file paths
-    input_pdb_filename = os.path.join(TEST_DATA_DIR, "0_unk_hoh.pdb")
-    output_pdb_filename = tmp_path / "output.pdb"
+    original_cwd = Path(os.getcwd())
+    input_pdb_filename = test_data_directory / "0_unk_hoh.pdb"
+    output_pdb_filename = "output.pdb"
+
+    shutil.copy(str(input_pdb_filename), '.')
 
     # Process the provided PDB file
     process_pdb_file(input_pdb_filename)
