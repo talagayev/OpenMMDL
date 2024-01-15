@@ -27,7 +27,7 @@ from plip.basic import config
 from MDAnalysis.analysis import rms
 from tqdm import tqdm
 
-from openmmdl.openmmdl_analysis.preprocessing import process_pdb_file, convert_pdb_to_sdf, renumber_atoms_in_residues, replace_atom_type, process_pdb, move_hydrogens_to_end
+from openmmdl.openmmdl_analysis.preprocessing import process_pdb_file, convert_pdb_to_sdf, renumber_atoms_in_residues, replace_atom_type, process_pdb
 from openmmdl.openmmdl_analysis.rmsd_calculation import rmsd_for_atomgroups, RMSD_dist_frames
 from openmmdl.openmmdl_analysis.ligand_processing import increase_ring_indices, convert_ligand_to_smiles
 from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame, process_trajectory, fill_missing_frames
