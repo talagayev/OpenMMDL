@@ -1,0 +1,74 @@
+HEADER                                                        0_unk_ho
+REMARK  99                                                                      
+REMARK  99 MOE v2022.02 (Chemical Computing Group ULC) Mon Jan 15 14:37:33 2024 
+HETATM    1  S1  UNK X   0      -2.254  -2.900 -11.079  0.00  0.00           S  
+HETATM    2  C1  UNK X   0      -0.791  -2.640 -10.238  0.00  0.00           C  
+HETATM    3  O1  UNK X   0       0.006  -3.576 -10.180  0.00  0.00           O  
+HETATM    4  N1  UNK X   0      -0.619  -1.447  -9.716  0.00  0.00           N  
+HETATM    5  C2  UNK X   0      -1.680  -0.646  -9.919  0.00  0.00           C  
+HETATM    6  O2  UNK X   0      -1.724   0.516  -9.497  0.00  0.00           O  
+HETATM    7  C3  UNK X   0      -2.710  -1.218 -10.765  0.00  0.00           C  
+HETATM    8  C4  UNK X   0      -3.908  -0.628 -10.922  0.00  0.00           C  
+HETATM    9  C5  UNK X   0      -5.116  -1.010 -11.705  0.00  0.00           C  
+HETATM   10  C6  UNK X   0      -5.676  -0.035 -12.468  0.00  0.00           C  
+HETATM   11  C7  UNK X   0      -6.909  -0.251 -13.095  0.00  0.00           C  
+HETATM   12  O3  UNK X   0      -7.644   0.735 -13.731  0.00  0.00           O  
+HETATM   13  C8  UNK X   0      -7.267   2.033 -13.658  0.00  0.00           C  
+HETATM   14  C9  UNK X   0      -7.619  -1.475 -12.992  0.00  0.00           C  
+HETATM   15  O4  UNK X   0      -8.785  -1.666 -13.613  0.00  0.00           O  
+HETATM   16  C10 UNK X   0      -9.663  -2.776 -13.360  0.00  0.00           C  
+HETATM   17  C11 UNK X   0      -9.559  -3.814 -14.446  0.00  0.00           C  
+HETATM   18  C12 UNK X   0      -8.091  -4.373 -14.787  0.00  0.00           C  
+HETATM   19  C13 UNK X   0      -7.356  -3.672 -15.768  0.00  0.00           C  
+HETATM   20  C14 UNK X   0      -6.035  -4.085 -16.078  0.00  0.00           C  
+HETATM   21  C15 UNK X   0      -5.442  -5.142 -15.377  0.00  0.00           C  
+HETATM   22  C16 UNK X   0      -6.180  -5.893 -14.423  0.00  0.00           C  
+HETATM   23  C17 UNK X   0      -7.550  -5.504 -14.095  0.00  0.00           C  
+HETATM   24  C18 UNK X   0      -7.007  -2.502 -12.283  0.00  0.00           C  
+HETATM   25  C19 UNK X   0      -5.722  -2.284 -11.599  0.00  0.00           C  
+HETATM   26  C20 UNK X   0       0.634  -0.960  -8.986  0.00  0.00           C  
+HETATM   27  C21 UNK X   0       0.308  -0.866  -7.526  0.00  0.00           C  
+HETATM   28  C22 UNK X   0       0.629   0.293  -6.786  0.00  0.00           C  
+HETATM   29  C23 UNK X   0       0.219   0.438  -5.415  0.00  0.00           C  
+HETATM   30  C24 UNK X   0      -0.547  -0.538  -4.738  0.00  0.00           C  
+HETATM   31  C25 UNK X   0      -0.808  -1.674  -5.497  0.00  0.00           C  
+HETATM   32  C26 UNK X   0      -0.400  -1.873  -6.854  0.00  0.00           C  
+HETATM   33  C27 UNK X   0      -0.968  -0.473  -3.245  0.00  0.00           C  
+HETATM   34  O5 UNK X   0      -0.668   0.388  -2.434  0.00  0.00           O  
+HETATM   35  O6  UNK X   0      -1.937  -1.229  -2.919  0.00  0.00           O1-
+CONECT    1    2    7
+CONECT    2    1    3    3    4
+CONECT    3    2    2
+CONECT    4    2    5   26
+CONECT    5    4    6    6    7
+CONECT    6    5    5
+CONECT    7    1    5    8    8
+CONECT    8    7    7    9
+CONECT    9    8   10   25   25
+CONECT   10    9   11   11
+CONECT   11   10   10   12   14
+CONECT   12   11   13
+CONECT   13   12
+CONECT   14   11   15   24   24
+CONECT   15   14   16
+CONECT   16   15   17
+CONECT   17   16   18
+CONECT   18   17   19   23   23
+CONECT   19   18   20   20
+CONECT   20   19   19   21
+CONECT   21   20   22   22
+CONECT   22   21   21   23
+CONECT   23   18   18   22
+CONECT   24   14   14   25
+CONECT   25    9    9   24
+CONECT   26    4   27
+CONECT   27   26   28   32   32
+CONECT   28   27   29   29
+CONECT   29   28   28   30
+CONECT   30   29   31   31   33
+CONECT   31   30   30   32
+CONECT   32   27   27   31
+CONECT   33   30   34   34   35
+CONECT   34   33   33
+CONECT   35   33
+END
