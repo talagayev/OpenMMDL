@@ -1,5 +1,6 @@
 import pytest
 import os
+import shutil
 from pathlib import Path
 import mdtraj as md
 
@@ -11,6 +12,8 @@ test_data_directory = Path("openmmdl/tests/data/in")
 pdb_file = "0_unk_hoh.pdb"
 dcd_file = "trajectory.dcd"
 ligand_name = 'UNK'
+post_mdtraj_pdb_file = test_data_directory / "centered_old_coordinates_top.pdb"
+post_mdtraj_dcd_file = test_data_directory / "centered_old_coordinates.dcd"
 
 def test_mdtraj_conversion():
     original_cwd = os.getcwd()
@@ -32,7 +35,8 @@ def test_mdtraj_conversion():
 
 def test_mdanalysis_conversion():
     original_cwd = Path(os.getcwd()) 
-    os.chdir(test_data_directory)
+    
+    
     
     # Create temporary directories to save the output files
     all_file_dcd = "centered_traj.dcd"
@@ -48,12 +52,15 @@ def test_mdanalysis_conversion():
     prot_lig_file_xtc_unaligned = 'prot_lig_traj_unaligned.xtc'
     prot_lig_file_gro = 'prot_lig_top.gro'
 
+    shutil.copy(str(post_mdtraj_pdb_file), '.')
+    shutil.copy(str(post_mdtraj_dcd_file), '.')
 
     post_mdtraj_pdb_file = "centered_old_coordinates_top.pdb"
     post_mdtraj_dcd_file = "centered_old_coordinates.dcd"
     ligand_name = "UNK"
     mda_output = "pdb_dcd_gro_xtc"
     output_selection = "mda_prot_lig_all"
+    
 
     #MDanalysis_conversion(pdb_file, dcd_file, ligand_name, "pdb_dcd_gro_xtc", "mda_prot_lig_all")
     MDanalysis_conversion(post_mdtraj_pdb_file, post_mdtraj_dcd_file, mda_output, output_selection, ligand_name)
