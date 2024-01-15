@@ -192,7 +192,7 @@ ATOM     33  N3  UNK A 454      38.981  47.235  41.740  1.00  0.00      A    N""
     renumber_atoms_in_residues(str(input_pdb_filename), str(output_pdb_filename), 'UNK')
     assert output_pdb_filename.exists()
 
-def test_move_hydrogens_to_end(tmp_path, test_data_directory):
+def test_move_hydrogens_to_end():
     # Set up the test environment
     original_cwd = Path(os.getcwd())
     os.chdir(tmp_path)
