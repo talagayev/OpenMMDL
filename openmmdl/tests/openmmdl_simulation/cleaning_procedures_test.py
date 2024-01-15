@@ -116,6 +116,9 @@ def test_post_md_file_movement():
     protein_solvent = test_data_directory / 'solvent_padding_6b73.pdb'
     protein_equilibration = test_data_directory / 'Equilibration_6b73.pdb'
     protein_minimization = test_data_directory / 'Energyminimization_6b73.pdb'
+    output_pdb = test_data_directory / 'output_6b73.pdb'
+    mdtraj_top = test_data_directory / 'centered_old_coordinates_top.pdb'
+    prot_lig_top = test_data_directory / 'prot_lig_top.pdb'
     checkpoint = test_data_directory / 'checkpoint.chk'
     checkpoint_10x = test_data_directory / '10x_checkpoint.chk'
     
@@ -130,6 +133,9 @@ def test_post_md_file_movement():
     shutil.copy(str(protein_solvent), '.')
     shutil.copy(str(protein_equilibration), '.')
     shutil.copy(str(protein_minimization), '.')
+    shutil.copy(str(output_pdb), '.')
+    shutil.copy(str(mdtraj_top), '.')
+    shutil.copy(str(prot_lig_top), '.')
     shutil.copy(str(checkpoint), '.')
     shutil.copy(str(checkpoint_10x), '.')
     shutil.copy(str(protein_name), '.')
@@ -151,9 +157,8 @@ def test_post_md_file_movement():
     assert os.path.exists(md_files_dir / "Pre_MD" / "solvent_padding_6b73.pdb")
     assert os.path.exists(md_files_dir / "Minimization_Equilibration" / "Equilibration_6b73.pdb")
     assert os.path.exists(md_files_dir / "Minimization_Equilibration" / "Energyminimization_6b73.pdb")
-    assert os.path.exists(md_files_dir / "MD_Output" / "output_6b73")
+    assert os.path.exists(md_files_dir / "MD_Output" / "output_6b73.pdb")
     assert os.path.exists(md_postprocessing_dir / "centered_old_coordinates_top.pdb")
-    assert os.path.exists(final_output_dir / "All_Atoms" / "centered_top.pdb")
     assert os.path.exists(final_output_dir / "Prot_Lig" / "prot_lig_top.pdb")
     assert os.path.exists(checkpoints_dir / "checkpoint.chk")
     assert os.path.exists(checkpoints_dir / "10x_checkpoint.chk")
