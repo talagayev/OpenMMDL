@@ -17,34 +17,23 @@ def sample_dataframe_barcode_generation():
     }
     return pd.DataFrame(data)
 
-@pytest.fixture
-def sample_waterbridge_data():
-    # Define some sample data for testing
+def test_plot_waterbridge_piechart():
+    # Sample data for the DataFrame
     data = {
-        'column1': [1, 2, 3, 4, 5],
-        'column2': [5, 4, 3, 2, 1]
-        # Add more columns if needed
+        'interaction1': [1, 0, 1, 2, 1],
+        'interaction2': [0, 2, 1, 1, 0],
     }
+
     df = pd.DataFrame(data)
-    
-    # Add sample barcodes
-    waterbridge_barcodes = [
-        np.array([1, 2, 3, 4, 5]),
-        np.array([5, 4, 3, 2, 1])
-        # Add more barcodes if needed
-    ]
-    
-    waterbridge_interactions = ["interaction1", "interaction2"]  # Add sample interactions
-    return df, waterbridge_barcodes, waterbridge_interactions
 
-def test_plot_waterbridge_piechart(sample_waterbridge_data):
-    df, waterbridge_barcodes, waterbridge_interactions = sample_waterbridge_data
+    # Convert DataFrame columns to NumPy arrays
+    waterbridge_barcodes = [df[col].to_numpy() for col in df.columns]
 
-    # Ensure the function does not raise any exceptions
+    # Sample waterbridge interactions
+    waterbridge_interactions = ["interaction1", "interaction2"]
+
+    # Now you can call your function with this sample data
     plot_waterbridge_piechart(df, waterbridge_barcodes, waterbridge_interactions)
-
-    # Add more specific assertions if needed
-    # For example, you can check if the output files are generated, or if the plots are correct.
 
     # Check if the files are created
     for interaction in waterbridge_interactions:
