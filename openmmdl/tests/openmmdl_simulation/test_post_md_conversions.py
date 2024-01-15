@@ -56,7 +56,7 @@ def test_mdanalysis_conversion():
     output_selection = "mda_prot_lig_all"
 
     #MDanalysis_conversion(pdb_file, dcd_file, ligand_name, "pdb_dcd_gro_xtc", "mda_prot_lig_all")
-    MDanalysis_conversion(post_mdtraj_pdb_file, post_mdtraj_dcd_file, mda_output, output_selection, ligand_name, special_ligname)
+    MDanalysis_conversion(post_mdtraj_pdb_file, post_mdtraj_dcd_file, mda_output, output_selection, ligand_name)
 
     assert all_file_dcd is not None
     assert all_file_dcd_unaligned is not None
