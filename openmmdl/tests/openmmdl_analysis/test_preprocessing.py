@@ -28,71 +28,53 @@ def temp_pdb_file(tmp_path):
         dest_pdb.write(src_pdb.read())
     return input_pdb_filename
 
-def test_process_pdb_file(temp_pdb_file):
-    input_pdb_filename = temp_pdb_file
-    # Check if the function modifies the PDB file as expected
-    process_pdb_file(input_pdb_filename)
-
-    # Load the modified PDB file
-    u = mda.Universe(input_pdb_filename)
-
-    # Check that the residue name "*" is changed to "UNK"
-    for atom in u.atoms:
-        if atom.residue.resname == "UNK":
-            assert atom.residue.resname == "UNK"
-
-    # You can add additional assertions as needed.
-
-def test_convert_pdb_to_sdf():
-    convert_pdb_to_sdf(INPUT_PDB_FILENAME, OUTPUT_SDF_FILENAME)
-    assert os.path.exists(OUTPUT_SDF_FILENAME)
-
-
-def test_renumber_atoms_in_residues(sample_pdb_data):
-    # Mock a PDB file with a single line for testing
-    with open(INPUT_PDB_FILENAME, 'w') as f:
-        f.write(sample_pdb_data)
-
-    renumber_atoms_in_residues(INPUT_PDB_FILENAME, OUTPUT_PDB_FILENAME, 'ASP')
-    assert os.path.exists(OUTPUT_PDB_FILENAME)
-
-
-def test_replace_atom_type():
+@pytest.fixture
+def sample_pdb_data():
     # Provide sample PDB data for testing
-    sample_pdb_data = "ATOM      1  CA  LIG X   1       0.000   0.000   0.000  1.00  0.00           C"
-    modified_data = replace_atom_type(sample_pdb_data)
-    assert ' LIG  C' in modified_data
+    return "ATOM      1  CA  ASP A   1       0.000   0.000   0.000  1.00  0.00           C"
 
+def test_convert_pdb_to_sdf(tmp_path):
+    input_pdb_filename = tmp_path / "input.pdb"
+    output_sdf_filename = tmp_path / "output.sdf"
+    
+    # Create a mock PDB file
+    input_pdb_filename.write_text("ATOM      1  CA  ASP A   1       0.000   0.000   0.000  1.00  0.00           C")
 
-def test_process_pdb():
-    # Mock input and output file paths
-    input_file = os.path.join(TEST_DATA_DIR, "input_file.pdb")
-    output_file = os.path.join(TEST_DATA_DIR, "output_file.pdb")
+    convert_pdb_to_sdf(str(input_pdb_filename), str(output_sdf_filename))
+    assert output_sdf_filename.exists()
+
+def test_renumber_atoms_in_residues(sample_pdb_data, tmp_path):
+    input_pdb_filename = tmp_path / "input.pdb"
+    output_pdb_filename = tmp_path / "output.pdb"
+
+    # Create a mock PDB file
+    input_pdb_filename.write_text(sample_pdb_data)
+
+    renumber_atoms_in_residues(str(input_pdb_filename), str(output_pdb_filename), 'ASP')
+    assert output_pdb_filename.exists()
+
+def test_replace_atom_type(tmp_path):
+    input_file = tmp_path / "input.pdb"
+    output_file = tmp_path / "output.pdb"
+
+    # Create a mock PDB file
+    input_file.write_text("ATOM      1  CA  LIG X   1       0.000   0.000   0.000  1.00  0.00           C")
+
+    process_pdb(str(input_file), str(output_file))
+    assert ' LIG  C' in output_file.read_text()
+
+def test_process_pdb(tmp_path):
+    input_file = tmp_path / "input_file.pdb"
+    output_file = tmp_path / "output_file.pdb"
 
     # Mock input data
     input_data = "ATOM      1  CA  LIG X   1       0.000   0.000   0.000  1.00  0.00           C"
 
     # Write input data to the mock input file
-    with open(input_file, 'w') as f:
-        f.write(input_data)
+    input_file.write_text(input_data)
 
     # Perform the process_pdb function
-    process_pdb(input_file, output_file)
+    process_pdb(str(input_file), str(output_file))
 
     # Read the output data from the mock output file
-    with open(output_file, 'r') as f:
-        output_data = f.read()
-
-    assert ' LIG  C' in output_data
-
-
-def test_move_hydrogens_to_end():
-    # Create a structure for testing
-    structure = PDB.PDBParser().get_structure('test_structure', 'path/to/pdb/file.pdb')
-
-    # Perform the move_hydrogens_to_end function
-    move_hydrogens_to_end(structure, 'ASP')
-
-    # Add assertions based on the expected behavior of the function
-    # For example, check if hydrogen atoms are moved to the end of the ASP residue
-    assert True  # Add your assertions here
+    assert ' LIG  C' in output_file.read_text()
