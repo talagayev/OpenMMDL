@@ -107,142 +107,47 @@ def test_generate_md_pharmacophore_cloudcenters(tmp_path):
     except ET.ParseError:
         pytest.fail(f"Invalid XML in {output_filename}")
 
-def test_generate_bindingmode_pharmacophore():
+def test_generate_bindingmode_pharmacophore(tmp_path):
+    # Sample data for testing
     dict_bindingmode = {
-        "Acceptor_hbond_1": {
-            "PROTCOO": [[7.0, 6.0, 5.0]],
-            "LIGCOO": [[1.0, 2.0, 3.0]]
-        },
-        "hydrophobic_1": {
-            "LIGCOO": [[4.0, 5.0, 6.0]]
-        }
+        'Acceptor_hbond_1': {'PROTCOO': [(1.0, 2.0, 3.0)], 'LIGCOO': [(7.0, 6.0, 5.0)]},
+        'hydrophobic_1': {'LIGCOO': [(4.0, 5.0, 6.0)]}
     }
-    core_compound = "Ligand1"
-    sysname = "System1"
-    outname = "output_test"
+    core_compound = 'Ligand1'
+    sysname = 'System1'
+    outname = 'output'
+    id_num = 0
 
-    feature_types = {
-        "Acceptor_hbond": "HBA",
-        "Donor_hbond": "HBD",
-        "pistacking": "AR",
-        "hydrophobic": "H",
-        "PI_saltbridge": "PI",
-        "NI_saltbridge": "NI"
-    }
-    feature_id_counter = 0
-    root = ET.Element("MolecularEnvironment", version="0.0", id=f"OpennMMDL_Analysis0", name=sysname)
-    pharmacophore = ET.SubElement(root, "pharmacophore", name=sysname, id="pharmacophore0", pharmacophoreType="LIGAND_SCOUT")
+    # Create a temporary directory for the output file
+    output_dir = tmp_path / "output"
+    output_dir.mkdir()
 
-    for interaction in dict_bindingmode.keys():
-        # get feature type
-        for interactiontype in feature_types.keys():
-            if interactiontype in interaction:
-                feature_type = feature_types[interactiontype]
-                break
-        # generate vector features
-        if feature_type in ["HBA", "HBD"]:
-            if feature_type == "HBA":
-                orig_loc = dict_bindingmode[interaction]['PROTCOO'][0]
-                targ_loc = dict_bindingmode[interaction]['LIGCOO'][0]
-            elif feature_type == "HBD":
-                orig_loc = dict_bindingmode[interaction]['LIGCOO'][0]
-                targ_loc = dict_bindingmode[interaction]['PROTCOO'][0]
-            feature_id_counter += 1
-            points_to_lig = "true" if feature_type == "HBA" else "false"
-            hasSyntheticProjectedPoint = "false"
-            vector = ET.SubElement(
-                pharmacophore,
-                "vector",
-                name=feature_type,
-                featureId=interaction,
-                pointsToLigand=points_to_lig,
-                hasSyntheticProjectedPoint=hasSyntheticProjectedPoint,
-                optional="false",
-                disabled="false",
-                weight="1.0",
-                coreCompound=core_compound,
-                id=f"feature{str(feature_id_counter)}"
-            )
-            origin = ET.SubElement(
-                vector,
-                "origin",
-                x3=str(orig_loc[0]),
-                y3=str(orig_loc[1]),
-                z3=str(orig_loc[2]),
-                tolerance="1.9499999"
-            )
-            target = ET.SubElement(
-                vector,
-                "target",
-                x3=str(targ_loc[0]),
-                y3=str(targ_loc[1]),
-                z3=str(targ_loc[2]),
-                tolerance="1.5"
-            )
-        # generate point features
-        elif feature_type in ["H", "PI", "NI"]:
-            position = dict_bindingmode[interaction]['LIGCOO'][0]
-            feature_id_counter += 1
-            point = ET.SubElement(
-                pharmacophore,
-                "point",
-                name=feature_type,
-                featureId=interaction,
-                optional="false",
-                disabled="false",
-                weight="1.0",
-                coreCompound=core_compound,
-                id=f"feature{str(feature_id_counter)}"
-            )
-            position = ET.SubElement(
-                point,
-                "position",
-                x3=str(position[0]),
-                y3=str(position[1]),
-                z3=str(position[2]),
-                tolerance="1.5"
-            )
-        # generate plane features
-        elif feature_type == "AR":
-            feature_id_counter += 1
-            lig_loc = dict_bindingmode[interaction]['LIGCOO'][0]
-            prot_loc = dict_bindingmode[interaction]['PROTCOO'][0]
+    # Call the function
+    generate_bindingmode_pharmacophore(
+        dict_bindingmode, core_compound, sysname, outname, id_num=id_num, output_dir=output_dir
+    )
 
-            # normalize vector of plane
-            vector = np.array(lig_loc) - np.array(prot_loc)
-            normal_vector = vector / np.linalg.norm(vector)
-            x, y, z = normal_vector
+    # Define the expected XML structure
+    expected_xml = f"""<MolecularEnvironment version='0.0' id='OpennMMDL_Analysis{id_num}' name='{sysname}'>
+  <pharmacophore name='{sysname}' id='pharmacophore{id_num}' pharmacophoreType='LIGAND_SCOUT'>
+    <vector name='HBA' featureId='Acceptor_hbond_1' pointsToLigand='true' hasSyntheticProjectedPoint='false' optional='false' disabled='false' weight='1.0' coreCompound='{core_compound}' id='feature1'>
+      <origin x3='1.0' y3='2.0' z3='3.0' tolerance='1.9499999' />
+      <target x3='7.0' y3='6.0' z3='5.0' tolerance='1.5' />
+    </vector>
+    <point name='H' featureId='hydrophobic_1' optional='false' disabled='false' weight='1.0' coreCompound='{core_compound}' id='feature2'>
+      <position x3='4.0' y3='5.0' z3='6.0' tolerance='1.5' />
+    </point>
+  </pharmacophore>
+</MolecularEnvironment>"""
 
-            plane = ET.SubElement(pharmacophore,
-                                  "plane",
-                                  name=feature_type,
-                                  featureId=interaction,
-                                  optional="false",
-                                  disabled="false",
-                                  weight="1.0",
-                                  coreCompound=core_compound,
-                                  id=f"feature{str(feature_id_counter)}")
-            position = ET.SubElement(plane,
-                                     "position",
-                                     x3=str(lig_loc[0]),
-                                     y3=str(lig_loc[1]),
-                                     z3=str(lig_loc[2]),
-                                     tolerance="0.9")
-            normal = ET.SubElement(plane,
-                                   "normal",
-                                   x3=str(x),
-                                   y3=str(y),
-                                   z3=str(z),
-                                   tolerance="0.43633232")
+    # Check if the generated XML file matches the expected structure
+    output_file = output_dir / f"{outname}.pml"
+    assert output_file.is_file(), "Output file not found"
+    
+    with open(output_file, 'r') as f:
+        actual_xml = f.read()
 
-    tree = ET.ElementTree(root)
-    tree_str = ET.tostring(root, encoding="unicode")
-    print(f"XML Structure:\n{tree_str}")
-
-    hydrophobic_point = root.find(".//point[@name='hydrophobic']")
-    print(f"Found hydrophobic_point: {hydrophobic_point}")
-    assert hydrophobic_point is not None, "Hydrophobic point not found"
-
+    assert actual_xml.strip() == expected_xml.strip(), "Generated XML structure does not match expected"
 
 
 def test_generate_pharmacophore_centers_all_points():
