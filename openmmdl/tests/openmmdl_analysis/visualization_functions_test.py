@@ -117,33 +117,19 @@ def sample_dataframe_cloud_json_generation():
 #
 #    assert result == expected_clouds
 
-def test_run_visualization(tmp_path, monkeypatch):
-    # tmp_path is a pytest fixture that provides a temporary directory
+def test_run_visualization():
+    # Set up the paths
+    package_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'openmmdl/openmmdl_analysis'))
+    notebook_path = os.path.join(package_dir, 'visualization.ipynb')
     
-    # Set up the temporary directory
-    tmp_dir = tmp_path / "test_dir"
-    tmp_dir.mkdir()
+    # Run the visualization function
+    run_visualization()
     
-    # Create a mock visualization notebook for testing
-    mock_notebook_path = tmp_dir / 'visualization.ipynb'
-    mock_notebook_content = "Mock notebook content"
-    with open(mock_notebook_path, 'w') as mock_notebook:
-        mock_notebook.write(mock_notebook_content)
+    # Check if the notebook was copied to the current directory with the correct name
+    copied_notebook_path = os.path.join(os.getcwd(), 'visualization.ipynb')
+    assert os.path.isfile(copied_notebook_path)
     
-    # Mock the os.path.dirname function to return the temporary directory
-    monkeypatch.setattr(os.path, 'dirname', lambda path: str(tmp_dir))
-    
-    # Mock the os.getcwd function to return the temporary directory
-    monkeypatch.setattr(os, 'getcwd', lambda: str(tmp_dir))
-    
-    # Mock the subprocess.run function to check if it is called with the correct arguments
-    with pytest.raises(subprocess.CalledProcessError):
-        run_visualization()
-
-    # Check if the notebook was copied to the current directory
-    copied_notebook_path = tmp_dir / 'visualization.ipynb'
-    assert copied_notebook_path.is_file()
-    
-    # Check if the content of the copied notebook is the same as the mock notebook
+    # Check if the content of the copied notebook is the same as the original notebook
     with open(copied_notebook_path, 'r') as copied_notebook:
-        assert copied_notebook.read() == mock_notebook_content
+        with open(notebook_path, 'r') as original_notebook:
+            assert copied_notebook.read() == original_notebook.read()
