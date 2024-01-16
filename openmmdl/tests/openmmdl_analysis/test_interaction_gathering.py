@@ -165,6 +165,32 @@ def test_fill_missing_frames():
     assert isinstance(filled_df, pd.DataFrame)
 
 
+def test_process_frame_special():
+    frame_idx = 1
+    lig_name = "UNK"
+    special_ligand = "UNK"
+    sample_pdb_md = mda.Universe(topology_file,frame_file)
+    
+    result = process_frame_special(frame_idx, sample_pdb_md, lig_name, special_ligand)
+    
+    # Add your assertions based on the expected behavior of the function
+    assert isinstance(result, list)
+    assert len(result) == 3  # Assuming you have three res_renaming
+
+
+def test_process_frame_wrapper():
+    frame_idx = 1
+    lig_name = "UNK"
+    special_ligand = "UNK"
+    sample_pdb_md = mda.Universe(topology_file,frame_file)
+
+    result = process_frame_wrapper((frame_idx, topology_file, lig_name, special_ligand))
+
+    # Add your assertions based on the expected behavior of the function
+    assert isinstance(result, tuple)
+    assert len(result) == 2
+    assert isinstance(result[0], int)
+    assert isinstance(result[1], pd.DataFrame)
 
 if __name__ == "__main":
     pytest.main()
