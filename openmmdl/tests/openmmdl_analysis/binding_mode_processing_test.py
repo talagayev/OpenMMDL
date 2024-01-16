@@ -171,7 +171,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
         'LOCATION': {0: 0, 1: 0, 2: 0, 3: 0},
         'METAL_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'METAL_TYPE': {0: 0, 1: 0, 2: 0, 3: 0},
-        'RESTYPE_LIG': {0: 0, 1: 0, 2: 0, 3: 0},
+        'RESTYPE_LIG': {0: '0', 1: '0', 2: '0', 3: '0'},
         'TARGET_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'COORDINATION': {0: 0, 1: 0, 2: 0, 3: 0},
         'RESNR_LIG' : {0: '501', 1: '501', 2: '501', 3: '501'}
@@ -187,7 +187,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['DONOR_IDX'][4] = 0
     data['LIG_IDX_LIST'][4] = 0
     data['LIG_GROUP'][4] = 0
-    data['RESTYPE_LIG'][4] = 0
+    data['RESTYPE_LIG'][4] = '0'
     data['TARGET_IDX'][4] = 0
     data['RESNR_LIG'][4] = '501'
 
@@ -202,7 +202,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['LIG_IDX_LIST'][5] = 0
     data['DONOR_IDX'][5] = 0
     data['LIG_GROUP'][5] = 0
-    data['RESTYPE_LIG'][5] = 0
+    data['RESTYPE_LIG'][5] = '0'
     data['TARGET_IDX'][5] = 0
     data['RESNR_LIG'][5] = '501'
 
@@ -216,7 +216,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['LIG_IDX_LIST'][6] = 0
     data['PROTISDON'][6] = True
     data['LIG_GROUP'][6] = 0
-    data['RESTYPE_LIG'][6] = 0
+    data['RESTYPE_LIG'][6] = '0'
     data['TARGET_IDX'][6] = 0
     data['RESNR_LIG'][6] = '501'
 
@@ -230,7 +230,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['ACCEPTOR_IDX'][7] = 0
     data['LIG_IDX_LIST'][7] = 0
     data['LIG_GROUP'][7] = 0
-    data['RESTYPE_LIG'][7] = 0
+    data['RESTYPE_LIG'][7] = '0'
     data['TARGET_IDX'][7] = 0
     data['RESNR_LIG'][7] = '501'
 
@@ -244,7 +244,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['DONOR_IDX'][8] = 0
     data['PROTISDON'][8] = False
     data['DONORTYPE'][8] = 0
-    data['RESTYPE_LIG'][8] = 0
+    data['RESTYPE_LIG'][8] = '0'
     data['TARGET_IDX'][8] = 0
     data['RESNR_LIG'][8] = '501'
 
@@ -258,7 +258,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['PROTISDON'][9] = False
     data['DONOR_IDX'][9] = 0
     data['DONORTYPE'][9] = 0
-    data['RESTYPE_LIG'][9] = 0
+    data['RESTYPE_LIG'][9] = '0'
     data['TARGET_IDX'][9] = 0
     data['RESNR_LIG'][9] = '501'
     
