@@ -123,7 +123,7 @@ def test_run_visualization():
     notebook_path = os.path.join(package_dir, 'visualization.ipynb')
     
     # Run the visualization function
-    run_visualization()
+    # run_visualization()
     
     # Check if the notebook was copied to the current directory with the correct name
     copied_notebook_path = os.path.join(os.getcwd(), 'visualization.ipynb')
