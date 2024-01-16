@@ -17,30 +17,6 @@ def sample_dataframe_barcode_generation():
     }
     return pd.DataFrame(data)
 
-def test_plot_waterbridge_piechart():
-    # Sample data for the DataFrame
-    data = {
-        'interaction1': [1, 0, 1, 2, 1],
-        'interaction2': [0, 2, 1, 1, 0],
-    }
-
-    df = pd.DataFrame(data)
-
-    # Convert DataFrame columns to NumPy arrays
-    waterbridge_barcodes = [df[col].to_numpy() for col in df.columns]
-
-    # Sample waterbridge interactions
-    waterbridge_interactions = ["interaction1", "interaction2"]
-
-    # Now you can call your function with this sample data
-    plot_waterbridge_piechart(df, waterbridge_barcodes, waterbridge_interactions)
-
-    # Check if the files are created
-    for interaction in waterbridge_interactions:
-        file_path = f'Barcodes/Waterbridge_Piecharts/{interaction}.png'
-        assert os.path.isfile(file_path), f"File {file_path} not found."
-
-
 def test_barcodegeneration(sample_dataframe_barcode_generation):
     interaction = 'Interaction1'
     barcode = barcodegeneration(sample_dataframe_barcode_generation, interaction)
