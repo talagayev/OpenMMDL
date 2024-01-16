@@ -594,3 +594,39 @@ def test_df_iteration_numbering():
 
     expected_100ASPA_4005_Donor_waterbridge_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
     assert (df['100ASPA_4005_Donor_waterbridge'] == expected_100ASPA_4005_Donor_waterbridge_values).all()
+
+
+@pytest.fixture
+def sample_data():
+    # Create sample data for testing
+    df = pd.DataFrame({
+        'FRAME': [1, 2, 3],
+        'Column1': [10, 20, 30],
+        'Column2': [40, 50, 60]
+    })
+
+    new_df = pd.DataFrame({
+        'FRAME': [1, 2, 3],
+        'Column1': [100, 200, 300],
+        'Column2': [400, 500, 600]
+    })
+
+    unique_data = {'Column1': 'Updated_Column1', 'Column2': 'Updated_Column2'}
+
+    return df, new_df, unique_data
+
+def test_update_values(sample_data):
+    # Arrange
+    df, new_df, unique_data = sample_data.copy(), sample_data[1].copy(), sample_data[2]
+
+    # Act
+    update_values(df, new_df, unique_data)
+
+    # Assert
+    expected_df = pd.DataFrame({
+        'FRAME': [1, 2, 3],
+        'Updated_Column1': [100, 200, 300],
+        'Updated_Column2': [400, 500, 600]
+    })
+
+    pd.testing.assert_frame_equal(df, expected_df)
