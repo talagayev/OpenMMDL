@@ -133,14 +133,15 @@ def test_generate_bindingmode_pharmacophore():
         actual_xml = f.read()
 
     # Define the expected XML structure
-    expected_xml = f"""<MolecularEnvironment version='0.0' id='OpennMMDL_Analysis{id_num}' name='{sysname}'>
-  <pharmacophore name='{sysname}' id='pharmacophore{id_num}' pharmacophoreType='LIGAND_SCOUT'>
-    <vector name='HBA' featureId='Acceptor_hbond_1' pointsToLigand='true' hasSyntheticProjectedPoint='false' optional='false' disabled='false' weight='1.0' coreCompound='{core_compound}' id='feature1'>
-      <origin x3='1.0' y3='2.0' z3='3.0' tolerance='1.9499999' />
-      <target x3='7.0' y3='6.0' z3='5.0' tolerance='1.5' />
+    expected_xml = f"""<?xml version='1.0' encoding='UTF-8'?>
+<MolecularEnvironment version="0.0" id="OpennMMDL_Analysis0" name="System1">
+  <pharmacophore name="System1" id="pharmacophore0" pharmacophoreType="LIGAND_SCOUT">
+    <vector name="HBA" featureId="Acceptor_hbond_1" pointsToLigand="true" hasSyntheticProjectedPoint="false" optional="false" disabled="false" weight="1.0" coreCompound="Ligand1" id="feature1">
+      <origin x3="1.0" y3="2.0" z3="3.0" tolerance="1.9499999" />
+      <target x3="7.0" y3="6.0" z3="5.0" tolerance="1.5" />
     </vector>
-    <point name='H' featureId='hydrophobic_1' optional='false' disabled='false' weight='1.0' coreCompound='{core_compound}' id='feature2'>
-      <position x3='4.0' y3='5.0' z3='6.0' tolerance='1.5' />
+    <point name="H" featureId="hydrophobic_1" optional="false" disabled="false" weight="1.0" coreCompound="Ligand1" id="feature2">
+      <position x3="4.0" y3="5.0" z3="6.0" tolerance="1.5" />
     </point>
   </pharmacophore>
 </MolecularEnvironment>"""
