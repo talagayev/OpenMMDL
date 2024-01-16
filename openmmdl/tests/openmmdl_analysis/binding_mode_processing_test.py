@@ -173,7 +173,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
         'METAL_TYPE': {0: 0, 1: 0, 2: 0, 3: 0},
         'RESTYPE_LIG': {0: 0, 1: 0, 2: 0, 3: 0},
         'TARGET_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
-        'COORDINATION': {0: 0, 1: 0, 2: 0, 3: 0}
+        'COORDINATION': {0: 0, 1: 0, 2: 0, 3: 0},
         'RESNR_LIG' : {0: 501, 1: 501, 2: 501, 3: 501}
     }
     
