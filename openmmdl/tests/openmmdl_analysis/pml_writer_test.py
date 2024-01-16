@@ -87,6 +87,7 @@ def test_generate_md_pharmacophore_cloudcenters(tmp_path):
         'PI_saltbridge_1': [1, 0, 1, 0, 1],
         'NI_saltbridge_1': [0, 1, 0, 1, 0],
         'LIGCOO': ['(1.0, 2.0, 3.0)', '(2.0, 3.0, 4.0)', '(3.0, 4.0, 5.0)', '(4.0, 5.0, 6.0)', '(5.0, 6.0, 7.0)'],
+        'PROTCOO': ['(7.0, 6.0, 5.0)', '(6.0, 5.0, 4.0)', '(5.0, 4.0, 3.0)', '(4.0, 3.0, 2.0)', '(3.0, 2.0, 1.0)'],
     }
 
     df = pd.DataFrame(data)
