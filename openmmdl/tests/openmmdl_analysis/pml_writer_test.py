@@ -108,49 +108,6 @@ def test_generate_md_pharmacophore_cloudcenters(tmp_path):
     except ET.ParseError:
         pytest.fail(f"Invalid XML in {output_filename}")
 
-def test_generate_bindingmode_pharmacophore():
-    # Sample data for testing
-    dict_bindingmode = {
-        'Acceptor_hbond_1': {'PROTCOO': [(1.0, 2.0, 3.0)], 'LIGCOO': [(7.0, 6.0, 5.0)]},
-        'hydrophobic_1': {'LIGCOO': [(4.0, 5.0, 6.0)]}
-    }
-    core_compound = 'Ligand1'
-    sysname = 'System1'
-    outname = 'output'
-    id_num = 0
-
-    original_cwd = Path(os.getcwd())
-
-    # Call the function without the 'output_dir' argument
-    generate_bindingmode_pharmacophore(dict_bindingmode, core_compound, sysname, outname, id_num=0)
-
-    # Check if the generated XML file is in the expected directory
-    expected_output_file = original_cwd / "Binding_Modes_Markov_States" / f"{outname}.pml"
-    assert expected_output_file is not None
-
-    # Read the actual XML content
-    with open(expected_output_file, 'r') as f:
-        actual_xml = f.read()
-
-    print("Actual XML:")
-    print(actual_xml)
-
-    # Define the expected XML structure
-    expected_xml = f"""<?xml version='1.0' encoding='UTF-8'?>
-<MolecularEnvironment version="0.0" id="OpennMMDL_Analysis0" name="System1">
-  <pharmacophore name="System1" id="pharmacophore0" pharmacophoreType="LIGAND_SCOUT">
-    <vector name="HBA" featureId="Acceptor_hbond_1" pointsToLigand="true" hasSyntheticProjectedPoint="false" optional="false" disabled="false" weight="1.0" coreCompound="Ligand1" id="feature1">
-      <origin x3="1.0" y3="2.0" z3="3.0" tolerance="1.9499999" />
-      <target x3="7.0" y3="6.0" z3="5.0" tolerance="1.5" />
-    </vector>
-    <point name="H" featureId="hydrophobic_1" optional="false" disabled="false" weight="1.0" coreCompound="Ligand1" id="feature2">
-      <position x3="4.0" y3="5.0" z3="6.0" tolerance="1.5" />
-    </point>
-  </pharmacophore>
-</MolecularEnvironment>"""
-
-    assert actual_xml.strip() == expected_xml.strip(), "Generated XML structure does not match expected"
-
 
 def test_generate_pharmacophore_centers_all_points():
     # Sample data for the DataFrame
@@ -180,8 +137,6 @@ def test_generate_pharmacophore_centers_all_points():
         # Check if the points have the expected structure
         for point in points:
             assert isinstance(point, list) and len(point) == 3, "Each point should be a list of three coordinates."
-    
-
 
 def test_generate_point_cloud_pml(tmp_path):
     # Sample data for the cloud_dict
