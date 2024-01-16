@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import pytest
 from openmmdl.openmmdl_analysis.visualization_functions import *
 
-
+package_path = Path("openmmdl/openmmdl_analysis")
 
 # visualization_functions tests
 @pytest.fixture
