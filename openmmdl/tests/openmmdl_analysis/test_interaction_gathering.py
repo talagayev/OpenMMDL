@@ -172,6 +172,26 @@ def test_process_frame_special_with_files():
         if os.path.exists(temp_file):
             os.remove(temp_file)
 
+ef test_process_frame_wrapper():
+    test_data_directory = "path/to/your/test/data"  # Replace with the actual path to your test data directory
+    topology_metal = f"{test_data_directory}/metal_top.pdb"
+    trajetory_metal = f"{test_data_directory}/metal_traj_25.dcd"
+
+    # Load PDB and DCD files using MDAnalysis
+    pdb_md = mda.Universe(topology_metal, trajetory_metal)
+    lig_name = "UNK"  # Replace with the actual ligand name
+    special_ligand = "HEM"  # Replace with the actual special ligand name
+    peptide = None  # Replace with the actual peptide name
+    frame_idx = 2
+
+    args = (frame_idx, pdb_md, lig_name, special_ligand, peptide)
+    result = process_frame_wrapper(args)
+
+    # Perform assertions based on the expected behavior of the process_frame_special function
+    assert isinstance(result, tuple)
+    assert len(result) == 2
+    assert isinstance(result[0], int)
+    assert isinstance(result[1], list)  # Assuming process_frame_special returns a list
 
 
 def test_fill_missing_frames():
