@@ -269,7 +269,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['LIG_GROUP'][10] = 'B'
     data['RESTYPE_LIG'][10] = 'Group4'
     data['TARGET_IDX'][10] = 501
-    data['RESNR_LIG'][10] = '[9_ 10]'
+    data['RESNR_LIG'][10] = '[9, 10]'
 
     data['FRAME'][11] = 11
     data['Prot_partner'][11] = 'B'
