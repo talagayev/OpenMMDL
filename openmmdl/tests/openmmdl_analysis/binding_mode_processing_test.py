@@ -617,7 +617,10 @@ def sample_data():
 
 def test_update_values(sample_data):
     # Arrange
-    df, new_df, unique_data = sample_data[0].copy(), sample_data[1].copy(), sample_data[2]
+    df, new_df, unique_data = sample_data
+
+    # Set 'FRAME' as the index for new_df
+    new_df = new_df.set_index('FRAME')
 
     # Act
     update_values(df, new_df, unique_data)
@@ -630,4 +633,4 @@ def test_update_values(sample_data):
     })
 
     pd.testing.assert_frame_equal(df, expected_df)
-    pd.testing.assert_frame_equal(df, expected_df)
+
