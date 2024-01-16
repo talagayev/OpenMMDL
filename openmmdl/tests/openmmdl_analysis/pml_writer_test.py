@@ -77,6 +77,37 @@ def test_generate_pharmacophore_vectors(sample_dataframe_generate_pharmacophore_
 
     assert result == expected_pharmacophore
 
+def test_generate_pharmacophore_centers_all_points():
+    # Sample data for the DataFrame
+    data = {
+        'interaction1': [1, 0, 1, 0, 1],
+        'interaction2': [0, 1, 0, 1, 0],
+        'LIGCOO': ['(1.0, 2.0, 3.0)', '(2.0, 3.0, 4.0)', '(3.0, 4.0, 5.0)', '(4.0, 5.0, 6.0)', '(5.0, 6.0, 7.0)'],
+    }
+
+    df = pd.DataFrame(data)
+
+    # Sample interactions
+    interactions = ['interaction1', 'interaction2']
+
+    # Call the function
+    pharmacophore = generate_pharmacophore_centers_all_points(df, interactions)
+
+    # Check if the generated pharmacophore has the expected structure
+    assert isinstance(pharmacophore, dict), "Pharmacophore should be a dictionary."
+    
+    for interaction in interactions:
+        assert interaction in pharmacophore, f"{interaction} not found in the generated pharmacophore."
+
+        points = pharmacophore[interaction]
+        assert isinstance(points, list), f"Pharmacophore points for {interaction} should be a list."
+        
+        # Check if the points have the expected structure
+        for point in points:
+            assert isinstance(point, list) and len(point) == 3, "Each point should be a list of three coordinates."
+    
+
+
 def test_generate_point_cloud_pml(tmp_path):
     # Sample data for the cloud_dict
     cloud_dict = {
