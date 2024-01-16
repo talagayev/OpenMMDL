@@ -4,6 +4,7 @@ import re
 import shutil
 import subprocess
 import os
+from pathlib import Path
 import matplotlib.pyplot as plt
 import pytest
 from openmmdl.openmmdl_analysis.visualization_functions import *
