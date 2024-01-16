@@ -174,7 +174,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
         'RESTYPE_LIG': {0: 0, 1: 0, 2: 0, 3: 0},
         'TARGET_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'COORDINATION': {0: 0, 1: 0, 2: 0, 3: 0},
-        'RESNR_LIG' : {0: 501, 1: 501, 2: 501, 3: 501}
+        'RESNR_LIG' : {0: '501', 1: '501', 2: '501', 3: '501'}
     }
     
     # Additional data for peptide interactions
@@ -189,7 +189,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['LIG_GROUP'][4] = 0
     data['RESTYPE_LIG'][4] = 0
     data['TARGET_IDX'][4] = 0
-    data['RESNR_LIG'][4] = 501
+    data['RESNR_LIG'][4] = '501'
 
     data['FRAME'][5] = 5
     data['Prot_partner'][5] = 'A'
@@ -204,7 +204,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['LIG_GROUP'][5] = 0
     data['RESTYPE_LIG'][5] = 0
     data['TARGET_IDX'][5] = 0
-    data['RESNR_LIG'][5] = 501
+    data['RESNR_LIG'][5] = '501'
 
     data['FRAME'][6] = 6
     data['Prot_partner'][6] = 'A'
@@ -218,7 +218,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['LIG_GROUP'][6] = 0
     data['RESTYPE_LIG'][6] = 0
     data['TARGET_IDX'][6] = 0
-    data['RESNR_LIG'][6] = 501
+    data['RESNR_LIG'][6] = '501'
 
     data['FRAME'][7] = 7
     data['Prot_partner'][7] = 'B'
@@ -232,7 +232,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['LIG_GROUP'][7] = 0
     data['RESTYPE_LIG'][7] = 0
     data['TARGET_IDX'][7] = 0
-    data['RESNR_LIG'][7] = 501
+    data['RESNR_LIG'][7] = '501'
 
     data['FRAME'][8] = 8
     data['Prot_partner'][8] = 'A'
@@ -246,7 +246,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['DONORTYPE'][8] = 0
     data['RESTYPE_LIG'][8] = 0
     data['TARGET_IDX'][8] = 0
-    data['RESNR_LIG'][8] = 501
+    data['RESNR_LIG'][8] = '501'
 
     data['FRAME'][9] = 9
     data['Prot_partner'][9] = 'A'
@@ -260,7 +260,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['DONORTYPE'][9] = 0
     data['RESTYPE_LIG'][9] = 0
     data['TARGET_IDX'][9] = 0
-    data['RESNR_LIG'][9] = 501
+    data['RESNR_LIG'][9] = '501'
     
     data['FRAME'][10] = 10
     data['Prot_partner'][10] = 'A'
@@ -269,7 +269,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['LIG_GROUP'][10] = 'Group4'
     data['RESTYPE_LIG'][10] = 'B'
     data['TARGET_IDX'][10] = 501
-    data['RESNR_LIG'][10] = 501
+    data['RESNR_LIG'][10] = '501'
 
     data['FRAME'][11] = 11
     data['Prot_partner'][11] = 'B'
@@ -279,7 +279,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['PROTISPOS'][11] = False
     data['RESTYPE_LIG'][11] = 'B'
     data['TARGET_IDX'][11] = 0
-    data['RESNR_LIG'][11] = 501
+    data['RESNR_LIG'][11] = '501'
 
     return pd.DataFrame(data)
 
