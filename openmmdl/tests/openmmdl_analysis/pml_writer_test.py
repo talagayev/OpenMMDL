@@ -236,9 +236,9 @@ def test_generate_bindingmode_pharmacophore():
                                    tolerance="0.43633232")
 
     tree = ET.ElementTree(root)
-    tree.write(f"./Binding_Modes_Markov_States/{outname}.pml", encoding="UTF-8", xml_declaration=True)
+    tree_str = ET.tostring(root, encoding="unicode")
+    print(f"XML Structure:\n{tree_str}")
 
-    # Update the assertion to include debugging information
     hydrophobic_point = root.find(".//point[@name='hydrophobic']")
     print(f"Found hydrophobic_point: {hydrophobic_point}")
     assert hydrophobic_point is not None, "Hydrophobic point not found"
