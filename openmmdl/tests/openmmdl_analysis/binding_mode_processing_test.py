@@ -632,5 +632,6 @@ def test_update_values(sample_data):
         'Updated_Column2': [400, 500, 600]
     })
 
-    pd.testing.assert_frame_equal(df, expected_df)
+    columns_to_update = list(unique_data.values())
+    pd.testing.assert_frame_equal(df, expected_df[["FRAME"] + columns_to_update])
 
