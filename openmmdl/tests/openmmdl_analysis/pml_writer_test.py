@@ -132,6 +132,9 @@ def test_generate_bindingmode_pharmacophore():
     with open(expected_output_file, 'r') as f:
         actual_xml = f.read()
 
+    print("Actual XML:")
+    print(actual_xml)
+
     # Define the expected XML structure
     expected_xml = f"""<?xml version='1.0' encoding='UTF-8'?>
 <MolecularEnvironment version="0.0" id="OpennMMDL_Analysis0" name="System1">
