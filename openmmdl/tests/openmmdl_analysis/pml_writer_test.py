@@ -108,48 +108,140 @@ def test_generate_md_pharmacophore_cloudcenters(tmp_path):
         pytest.fail(f"Invalid XML in {output_filename}")
 
 def test_generate_bindingmode_pharmacophore():
-    # Sample data for the binding mode dictionary
     dict_bindingmode = {
-        'Acceptor_hbond_1': {
-            'LIGCOO': [(1.0, 2.0, 3.0)],
-            'PROTCOO': [(7.0, 6.0, 5.0)]
+        "Acceptor_hbond_1": {
+            "PROTCOO": [[7.0, 6.0, 5.0]],
+            "LIGCOO": [[1.0, 2.0, 3.0]]
         },
-        'hydrophobic_1': {
-            'LIGCOO': [(4.0, 5.0, 6.0)],
-            'PROTCOO': [(10.0, 9.0, 8.0)]
-        },
-        # Add more interactions as needed
+        "hydrophobic_1": {
+            "LIGCOO": [[4.0, 5.0, 6.0]]
+        }
     }
-
-    # Sample data for other function parameters
     core_compound = "Ligand1"
     sysname = "System1"
-    outname = "output1"
+    outname = "output_test"
 
-    # Now you can call your function with this sample data
-    generate_bindingmode_pharmacophore(dict_bindingmode, core_compound, sysname, outname)
+    feature_types = {
+        "Acceptor_hbond": "HBA",
+        "Donor_hbond": "HBD",
+        "pistacking": "AR",
+        "hydrophobic": "H",
+        "PI_saltbridge": "PI",
+        "NI_saltbridge": "NI"
+    }
+    feature_id_counter = 0
+    root = ET.Element("MolecularEnvironment", version="0.0", id=f"OpennMMDL_Analysis0", name=sysname)
+    pharmacophore = ET.SubElement(root, "pharmacophore", name=sysname, id="pharmacophore0", pharmacophoreType="LIGAND_SCOUT")
 
-    # Check if the file is created
-    file_path = f'./Binding_Modes_Markov_States/{outname}.pml'
-    assert os.path.isfile(file_path), f"File {file_path} not found."
+    for interaction in dict_bindingmode.keys():
+        # get feature type
+        for interactiontype in feature_types.keys():
+            if interactiontype in interaction:
+                feature_type = feature_types[interactiontype]
+                break
+        # generate vector features
+        if feature_type in ["HBA", "HBD"]:
+            if feature_type == "HBA":
+                orig_loc = dict_bindingmode[interaction]['PROTCOO'][0]
+                targ_loc = dict_bindingmode[interaction]['LIGCOO'][0]
+            elif feature_type == "HBD":
+                orig_loc = dict_bindingmode[interaction]['LIGCOO'][0]
+                targ_loc = dict_bindingmode[interaction]['PROTCOO'][0]
+            feature_id_counter += 1
+            points_to_lig = "true" if feature_type == "HBA" else "false"
+            hasSyntheticProjectedPoint = "false"
+            vector = ET.SubElement(
+                pharmacophore,
+                "vector",
+                name=feature_type,
+                featureId=interaction,
+                pointsToLigand=points_to_lig,
+                hasSyntheticProjectedPoint=hasSyntheticProjectedPoint,
+                optional="false",
+                disabled="false",
+                weight="1.0",
+                coreCompound=core_compound,
+                id=f"feature{str(feature_id_counter)}"
+            )
+            origin = ET.SubElement(
+                vector,
+                "origin",
+                x3=str(orig_loc[0]),
+                y3=str(orig_loc[1]),
+                z3=str(orig_loc[2]),
+                tolerance="1.9499999"
+            )
+            target = ET.SubElement(
+                vector,
+                "target",
+                x3=str(targ_loc[0]),
+                y3=str(targ_loc[1]),
+                z3=str(targ_loc[2]),
+                tolerance="1.5"
+            )
+        # generate point features
+        elif feature_type in ["H", "PI", "NI"]:
+            position = dict_bindingmode[interaction]['LIGCOO'][0]
+            feature_id_counter += 1
+            point = ET.SubElement(
+                pharmacophore,
+                "point",
+                name=feature_type,
+                featureId=interaction,
+                optional="false",
+                disabled="false",
+                weight="1.0",
+                coreCompound=core_compound,
+                id=f"feature{str(feature_id_counter)}"
+            )
+            position = ET.SubElement(
+                point,
+                "position",
+                x3=str(position[0]),
+                y3=str(position[1]),
+                z3=str(position[2]),
+                tolerance="1.5"
+            )
+        # generate plane features
+        elif feature_type == "AR":
+            feature_id_counter += 1
+            lig_loc = dict_bindingmode[interaction]['LIGCOO'][0]
+            prot_loc = dict_bindingmode[interaction]['PROTCOO'][0]
 
-    # Optionally, you can add more assertions to check the content or structure of the generated XML file
-    # For example, you can parse the XML and check specific elements or attributes
-    tree = ET.parse(file_path)
-    root = tree.getroot()
-    
-    # Debugging: print the XML content
-    print(ET.tostring(root, encoding='utf-8').decode('utf-8'))
+            # normalize vector of plane
+            vector = np.array(lig_loc) - np.array(prot_loc)
+            normal_vector = vector / np.linalg.norm(vector)
+            x, y, z = normal_vector
 
-    # Add more assertions based on the structure of your XML file
-    assert root.find(".//pharmacophore[@name='System1']") is not None
+            plane = ET.SubElement(pharmacophore,
+                                  "plane",
+                                  name=feature_type,
+                                  featureId=interaction,
+                                  optional="false",
+                                  disabled="false",
+                                  weight="1.0",
+                                  coreCompound=core_compound,
+                                  id=f"feature{str(feature_id_counter)}")
+            position = ET.SubElement(plane,
+                                     "position",
+                                     x3=str(lig_loc[0]),
+                                     y3=str(lig_loc[1]),
+                                     z3=str(lig_loc[2]),
+                                     tolerance="0.9")
+            normal = ET.SubElement(plane,
+                                   "normal",
+                                   x3=str(x),
+                                   y3=str(y),
+                                   z3=str(z),
+                                   tolerance="0.43633232")
 
-    # Debugging: print all point elements to see if 'hydrophobic' is present
-    for point_element in root.findall(".//point"):
-        print(point_element.attrib)  # Print attributes of each point element
+    tree = ET.ElementTree(root)
+    tree.write(f"./Binding_Modes_Markov_States/{outname}.pml", encoding="UTF-8", xml_declaration=True)
 
-    assert root.find(".//point[@name='hydrophobic']") is not None
-    # Add more assertions as needed
+    # Update the assertion to include debugging information
+    hydrophobic_point = root.find(".//point[@name='hydrophobic']")
+    print(f"Found hydrophobic_point: {hydrophobic_point}")
+    assert hydrophobic_point is not None, "Hydrophobic point not found"
 
 
 
