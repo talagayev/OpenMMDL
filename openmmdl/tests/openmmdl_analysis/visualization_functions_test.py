@@ -117,7 +117,7 @@ def sample_dataframe_cloud_json_generation():
 #
 #    assert result == expected_clouds
 
-def test_run_visualization(tmp_path):
+def test_run_visualization(tmp_path, monkeypatch):
     # tmp_path is a pytest fixture that provides a temporary directory
     
     # Set up the temporary directory
@@ -131,15 +131,14 @@ def test_run_visualization(tmp_path):
         mock_notebook.write(mock_notebook_content)
     
     # Mock the os.path.dirname function to return the temporary directory
-    with pytest.monkeypatch.context() as m:
-        m.setattr(os.path, 'dirname', lambda path: str(tmp_dir))
-        
-        # Mock the os.getcwd function to return the temporary directory
-        m.setattr(os, 'getcwd', lambda: str(tmp_dir))
-        
-        # Mock the subprocess.run function to check if it is called with the correct arguments
-        with pytest.raises(subprocess.CalledProcessError):
-            run_visualization()
+    monkeypatch.setattr(os.path, 'dirname', lambda path: str(tmp_dir))
+    
+    # Mock the os.getcwd function to return the temporary directory
+    monkeypatch.setattr(os, 'getcwd', lambda: str(tmp_dir))
+    
+    # Mock the subprocess.run function to check if it is called with the correct arguments
+    with pytest.raises(subprocess.CalledProcessError):
+        run_visualization()
 
     # Check if the notebook was copied to the current directory
     copied_notebook_path = tmp_dir / 'visualization.ipynb'
