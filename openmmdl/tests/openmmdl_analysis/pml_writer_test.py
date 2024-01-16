@@ -125,7 +125,7 @@ def test_generate_bindingmode_pharmacophore():
 
     # Check if the generated XML file is in the expected directory
     expected_output_file = original_cwd / "Binding_Modes_Markov_States" / f"{outname}.pml"
-    assert expected_output_file is not None "Output file not found"
+    assert expected_output_file is not None
 
     # Read the actual XML content
     with open(expected_output_file, 'r') as f:
