@@ -119,8 +119,8 @@ def sample_dataframe_cloud_json_generation():
 
 def test_run_visualization():
     # Set up the paths
-    package_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'openmmdl/openmmdl_analysis'))
-    notebook_path = os.path.join(package_dir, 'visualization.ipynb')
+    package_path = Path("openmmdl/openmmdl_analysis")
+    notebook_path =  package_path / "visualization.ipynb"
     
     # Run the visualization function
     # run_visualization()
