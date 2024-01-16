@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import Mock, patch
 from plip.structure.preparation import PDBComplex, LigandFinder, Mol, PLInteraction
 
-from openmmdl.openmmdl_analysis.interaction_gathering import characterize_complex, retrieve_plip_interactions, create_df_from_binding_site, process_frame, process_trajectory, fill_missing_frames, process_trajectory, change_lig_to_residue
+from openmmdl.openmmdl_analysis.interaction_gathering import *
 
 
 test_data_directory = Path("openmmdl/tests/data/in")
@@ -20,6 +20,7 @@ frame_file = f"{test_data_directory}/processing_frame_1.pdb"
 
 binding_site_id = "UNK:X:0"
 lig_name = "UNK"
+peptide = "X"
 
 # Test the function
 def test_characterize_complex():
@@ -32,6 +33,13 @@ def test_characterize_complex():
 def test_retrieve_plip_interactions():
     # Call the function
     interactions = retrieve_plip_interactions(topology_file, lig_name)
+
+    # Check if the function returns a dictionary
+    assert isinstance(interactions, dict)
+
+def test_retrieve_plip_interactions_peptide():
+    # Call the function
+    interactions = retrieve_plip_interactions_peptide(topology_file, peptide)
 
     # Check if the function returns a dictionary
     assert isinstance(interactions, dict)
