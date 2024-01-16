@@ -252,24 +252,24 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['Prot_partner'][9] = 'A'
     data['INTERACTION'][9] = 'pication'
     data['LIG_IDX_LIST'][9] = [9, 10]
-    data['LIG_GROUP'][9] = 'Group4'
+    data['LIG_GROUP'][9] = 'B'
     data['ACCEPTOR_IDX'][9] = 0
     data['DON_IDX'][9] = 0
     data['PROTISDON'][9] = False
     data['DONOR_IDX'][9] = 0
     data['DONORTYPE'][9] = 0
-    data['RESTYPE_LIG'][9] = 'B'
+    data['RESTYPE_LIG'][9] = 'Group4'
     data['TARGET_IDX'][9] = 0
-    data['RESNR_LIG'][9] = '[9, 10]'
+    data['RESNR_LIG'][9] = '[9, 10]_'
     
     data['FRAME'][10] = 10
     data['Prot_partner'][10] = 'A'
     data['INTERACTION'][10] = 'pication'
     data['LIG_IDX_LIST'][10] = [9, 10]
-    data['LIG_GROUP'][10] = 'Group4'
-    data['RESTYPE_LIG'][10] = 'B'
+    data['LIG_GROUP'][10] = 'B'
+    data['RESTYPE_LIG'][10] = 'Group4'
     data['TARGET_IDX'][10] = 501
-    data['RESNR_LIG'][10] = '[9_ 10]'
+    data['RESNR_LIG'][10] = '[9_ 10]_'
 
     data['FRAME'][11] = 11
     data['Prot_partner'][11] = 'B'
@@ -277,7 +277,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['LIG_IDX_LIST'][11] = [7, 8]
     data['LIG_GROUP'][11] = 'Group4'
     data['PROTISPOS'][11] = False
-    data['RESTYPE_LIG'][11] = ''
+    data['RESTYPE_LIG'][11] = 'Group4'
     data['TARGET_IDX'][11] = 0
     data['RESNR_LIG'][11] = '[7, 8]'
 
