@@ -79,13 +79,13 @@ modeller = app.Modeller(complex_topology, complex_positions)
 def test_prepare_ligand():
     # Test the function with the sample ligand file.
     rdkit_mol_sdf = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=False)
-    rdkit_mol_sdf_2 = prepare_ligand(TEST_LIGAND_FILE, minimize_molecule=True)
+    rdkit_mol_mol2_2 = prepare_ligand(TEST_MOL2_FILE, minimize_molecule=True)
     rdkit_mol_mol = prepare_ligand(TEST_MOL_FILE, minimize_molecule=False)
     rdkit_mol_mol2 = prepare_ligand(TEST_MOL2_FILE, minimize_molecule=False)
     
     # Add your assertions here to check if the preparation worked as expected
     assert rdkit_mol_sdf is not None  # Check if the result is not None
-    assert rdkit_mol_sdf_2 is not None  # Check if the result is not None
+    assert rdkit_mol_mol2_2 is not None  # Check if the result is not None
     assert rdkit_mol_mol is not None  # Check if the result is not None
     assert rdkit_mol_mol2 is not None  # Check if the result is not None
 
