@@ -171,7 +171,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
         'LOCATION': {0: 0, 1: 0, 2: 0, 3: 0},
         'METAL_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'METAL_TYPE': {0: 0, 1: 0, 2: 0, 3: 0},
-        'RESTYPE_LIG': {0: '', 1: '', 2: 'Group3', 3: ''},
+        'RESTYPE_LIG': {0: '', 1: '', 2: '_', 3: ''},
         'TARGET_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'COORDINATION': {0: 0, 1: 0, 2: 0, 3: 0},
         'RESNR_LIG' : {0: '101', 1: '202', 2: '[5, 6]', 3: '102'}
@@ -258,16 +258,16 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['PROTISDON'][9] = False
     data['DONOR_IDX'][9] = 0
     data['DONORTYPE'][9] = 0
-    data['RESTYPE_LIG'][9] = 'Group4'
+    data['RESTYPE_LIG'][9] = '_'
     data['TARGET_IDX'][9] = 0
-    data['RESNR_LIG'][9] = '[9, 10]_'
+    data['RESNR_LIG'][9] = '[9, 10]'
     
     data['FRAME'][10] = 10
     data['Prot_partner'][10] = 'A'
     data['INTERACTION'][10] = 'pication'
     data['LIG_IDX_LIST'][10] = [9, 10]
     data['LIG_GROUP'][10] = 'B'
-    data['RESTYPE_LIG'][10] = 'Group4'
+    data['RESTYPE_LIG'][10] = 'test'
     data['TARGET_IDX'][10] = 501
     data['RESNR_LIG'][10] = '[9_ 10]_'
 
@@ -277,7 +277,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['LIG_IDX_LIST'][11] = [7, 8]
     data['LIG_GROUP'][11] = 'Group4'
     data['PROTISPOS'][11] = False
-    data['RESTYPE_LIG'][11] = 'Group4'
+    data['RESTYPE_LIG'][11] = '_'
     data['TARGET_IDX'][11] = 0
     data['RESNR_LIG'][11] = '[7, 8]'
 
