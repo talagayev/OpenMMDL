@@ -260,7 +260,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['DONORTYPE'][9] = 0
     data['RESTYPE_LIG'][9] = 'Group4'
     data['TARGET_IDX'][9] = 0
-    data['RESNR_LIG'][9] = '[9, 10]'
+    data['RESNR_LIG'][9] = '[9_ 10]'
     
     data['FRAME'][10] = 10
     data['Prot_partner'][10] = 'A'
