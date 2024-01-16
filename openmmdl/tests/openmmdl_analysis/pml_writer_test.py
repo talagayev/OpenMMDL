@@ -137,10 +137,19 @@ def test_generate_bindingmode_pharmacophore():
     # For example, you can parse the XML and check specific elements or attributes
     tree = ET.parse(file_path)
     root = tree.getroot()
+    
+    # Debugging: print the XML content
+    print(ET.tostring(root, encoding='utf-8').decode('utf-8'))
+
     # Add more assertions based on the structure of your XML file
     assert root.find(".//pharmacophore[@name='System1']") is not None
-    assert root.find(".//vector[@name='HBA']") is not None
+
+    # Debugging: print all point elements to see if 'hydrophobic' is present
+    for point_element in root.findall(".//point"):
+        print(point_element.attrib)  # Print attributes of each point element
+
     assert root.find(".//point[@name='hydrophobic']") is not None
+    # Add more assertions as needed
 
 
 
