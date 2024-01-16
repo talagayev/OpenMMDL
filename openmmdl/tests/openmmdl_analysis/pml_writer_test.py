@@ -122,10 +122,16 @@ def test_generate_bindingmode_pharmacophore(tmp_path):
     output_dir = tmp_path / "output"
     output_dir.mkdir()
 
-    # Call the function
-    generate_bindingmode_pharmacophore(
-        dict_bindingmode, core_compound, sysname, outname, id_num=id_num, output_dir=output_dir
-    )
+    # Call the function without the 'output_dir' argument
+    generate_bindingmode_pharmacophore(dict_bindingmode, core_compound, sysname, outname, id_num=0)
+
+    # Check if the generated XML file is in the expected directory
+    expected_output_file = tmp_path / "Binding_Modes_Markov_States" / f"{outname}.pml"
+    assert expected_output_file.is_file(), "Output file not found"
+
+    # Read the actual XML content
+    with open(expected_output_file, 'r') as f:
+        actual_xml = f.read()
 
     # Define the expected XML structure
     expected_xml = f"""<MolecularEnvironment version='0.0' id='OpennMMDL_Analysis{id_num}' name='{sysname}'>
@@ -139,13 +145,6 @@ def test_generate_bindingmode_pharmacophore(tmp_path):
     </point>
   </pharmacophore>
 </MolecularEnvironment>"""
-
-    # Check if the generated XML file matches the expected structure
-    output_file = output_dir / f"{outname}.pml"
-    assert output_file.is_file(), "Output file not found"
-    
-    with open(output_file, 'r') as f:
-        actual_xml = f.read()
 
     assert actual_xml.strip() == expected_xml.strip(), "Generated XML structure does not match expected"
 
