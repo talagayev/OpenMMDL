@@ -174,7 +174,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
         'RESTYPE_LIG': {0: '', 1: '', 2: '', 3: ''},
         'TARGET_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'COORDINATION': {0: 0, 1: 0, 2: 0, 3: 0},
-        'RESNR_LIG' : {0: '101', 1: '501', 2: '501', 3: '501'}
+        'RESNR_LIG' : {0: '101', 1: '202', 2: '102', 3: '102'}
     }
     
     # Additional data for peptide interactions
