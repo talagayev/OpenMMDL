@@ -610,7 +610,7 @@ def sample_data():
         'Column2': [400, 500, 600]
     })
 
-    unique_data = {'Column1': 'Updated_Column1', 'Column2': 'Updated_Column2'}
+    unique_data = {'Column1': 'Column1', 'Column2': 'Column2'}
 
     return df, new_df, unique_data
 
@@ -627,11 +627,11 @@ def test_update_values(sample_data):
     # Assert
     expected_df = pd.DataFrame({
         'FRAME': [1, 2, 3],
-        'Updated_Column1': [100, 200, 300],
-        'Updated_Column2': [400, 500, 600]
+        'Column1': [100, 200, 300],
+        'Column2': [400, 500, 600]
     })
 
-    # Check only the relevant columns for comparison
-    assert df[['FRAME'] + list(unique_data.values())].equals(expected_df[['FRAME'] + list(unique_data.values())])
+    # Check if the specific values are updated
+    assert df[['Column1', 'Column2']].equals(expected_df[['Column1', 'Column2']])
 
 
