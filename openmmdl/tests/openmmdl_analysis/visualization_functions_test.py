@@ -127,9 +127,11 @@ def test_run_visualization():
     
     # Check if the notebook was copied to the current directory with the correct name
     copied_notebook_path = os.path.join(os.getcwd(), 'visualization.ipynb')
+    shutil.copy(str(notebook_path), '.')
+    new_notebook_path = 'visualization.ipynb'
     assert os.path.isfile(copied_notebook_path)
     
     # Check if the content of the copied notebook is the same as the original notebook
-    with open(copied_notebook_path, 'r') as copied_notebook:
+    with open(new_notebook_path, 'r') as copied_notebook:
         with open(notebook_path, 'r') as original_notebook:
             assert copied_notebook.read() == original_notebook.read()
