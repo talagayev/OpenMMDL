@@ -334,7 +334,7 @@ def test_gather_interactions_with_peptides(sample_dataframe_bindingmode_processi
         7: {7: 'B_501_Donor_waterbridge'},
         8: {8: 'A_[7, 8]_pistacking'},
         9: {9: 'A_[9_ 10]_Group4_pication'},
-        10: {10: 'A_[9, 10]_Group4_B_pication'},
+        10: {10: 'A_[9, 10]_Group4_pication'},
         11: {11: 'B_[7, 8]_Group4_PI_saltbridge'},
     }
 
