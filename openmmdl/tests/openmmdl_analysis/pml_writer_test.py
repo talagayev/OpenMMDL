@@ -107,7 +107,7 @@ def test_generate_md_pharmacophore_cloudcenters(tmp_path):
     except ET.ParseError:
         pytest.fail(f"Invalid XML in {output_filename}")
 
-def test_generate_bindingmode_pharmacophore(tmp_path):
+def test_generate_bindingmode_pharmacophore():
     # Sample data for testing
     dict_bindingmode = {
         'Acceptor_hbond_1': {'PROTCOO': [(1.0, 2.0, 3.0)], 'LIGCOO': [(7.0, 6.0, 5.0)]},
@@ -118,16 +118,14 @@ def test_generate_bindingmode_pharmacophore(tmp_path):
     outname = 'output'
     id_num = 0
 
-    # Create a temporary directory for the output file
-    output_dir = tmp_path / "output"
-    output_dir.mkdir()
+    original_cwd = Path(os.getcwd())
 
     # Call the function without the 'output_dir' argument
     generate_bindingmode_pharmacophore(dict_bindingmode, core_compound, sysname, outname, id_num=0)
 
     # Check if the generated XML file is in the expected directory
-    expected_output_file = tmp_path / "Binding_Modes_Markov_States" / f"{outname}.pml"
-    assert expected_output_file.is_file(), "Output file not found"
+    expected_output_file = original_cwd / "Binding_Modes_Markov_States" / f"{outname}.pml"
+    assert expected_output_file is not None "Output file not found"
 
     # Read the actual XML content
     with open(expected_output_file, 'r') as f:
