@@ -281,7 +281,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['TARGET_IDX'][11] = 0
     data['RESNR_LIG'][11] = '[7, 8]'
 
-    data['FRAME'][12] = 4
+    data['FRAME'][12] = 12
     data['Prot_partner'][12] = 'A'
     data['INTERACTION'][12] = 'metal'
     data['METAL_IDX'][12] = 401  # METAL_IDX for 'metal'
@@ -349,7 +349,7 @@ def test_gather_interactions_with_peptides(sample_dataframe_bindingmode_processi
         9: {9: 'A_[9_ 10]_Group4_pication'},
         10: {10: 'A_[9_ 10]_Group4_pication'},
         11: {11: 'B_[7, 8]_Group4_PI_saltbridge'},
-        12: {12: 'A_[3, 4]_Fe_site1_metal'},
+        12: {12: 'A_501_Fe_site1_metal'},
     }
 
     # Check if the actual result matches the expected result
