@@ -3,6 +3,7 @@ import pandas as pd
 import re
 import os
 import matplotlib.pyplot as plt
+import xml.etree.ElementTree as ET
 import pytest
 from openmmdl.openmmdl_analysis.pml_writer import *
 
@@ -75,4 +76,31 @@ def test_generate_pharmacophore_vectors(sample_dataframe_generate_pharmacophore_
     }
 
     assert result == expected_pharmacophore
-    
+
+def test_generate_point_cloud_pml(tmp_path):
+    # Sample data for the cloud_dict
+    cloud_dict = {
+        'feature1': {
+            'interaction1': [(1.0, 2.0, 3.0), (1.5, 2.5, 3.5), (2.0, 3.0, 4.0)],
+            'interaction2': [(2.0, 3.0, 4.0), (2.5, 3.5, 4.5), (3.0, 4.0, 5.0)],
+        },
+        'feature2': {
+            'interaction3': [(3.0, 4.0, 5.0), (3.5, 4.5, 5.5), (4.0, 5.0, 6.0)],
+        },
+    }
+
+    # Output file paths
+    outname = tmp_path / "test_output"
+    outname_pml = f"{outname}.pml"
+
+    # Call the function
+    generate_point_cloud_pml(cloud_dict, "system_name", outname)
+
+    # Check if the output file is created
+    assert os.path.isfile(outname_pml), f"File {outname_pml} not found."
+
+    # Check if the generated XML is valid
+    try:
+        ET.parse(outname_pml)
+    except ET.ParseError:
+        pytest.fail(f"Invalid XML in {outname_pml}")
