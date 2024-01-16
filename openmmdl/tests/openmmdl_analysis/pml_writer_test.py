@@ -107,6 +107,41 @@ def test_generate_md_pharmacophore_cloudcenters(tmp_path):
     except ET.ParseError:
         pytest.fail(f"Invalid XML in {output_filename}")
 
+def test_generate_bindingmode_pharmacophore():
+    # Sample data for the binding mode dictionary
+    dict_bindingmode = {
+        'Acceptor_hbond_1': {
+            'LIGCOO': [(1.0, 2.0, 3.0)],
+            'PROTCOO': [(7.0, 6.0, 5.0)]
+        },
+        'hydrophobic_1': {
+            'LIGCOO': [(4.0, 5.0, 6.0)],
+            'PROTCOO': [(10.0, 9.0, 8.0)]
+        },
+        # Add more interactions as needed
+    }
+
+    # Sample data for other function parameters
+    core_compound = "Ligand1"
+    sysname = "System1"
+    outname = "output1"
+
+    # Now you can call your function with this sample data
+    generate_bindingmode_pharmacophore(dict_bindingmode, core_compound, sysname, outname)
+
+    # Check if the file is created
+    file_path = f'./Binding_Modes_Markov_States/{outname}.pml'
+    assert os.path.isfile(file_path), f"File {file_path} not found."
+
+    # Optionally, you can add more assertions to check the content or structure of the generated XML file
+    # For example, you can parse the XML and check specific elements or attributes
+    tree = ET.parse(file_path)
+    root = tree.getroot()
+    # Add more assertions based on the structure of your XML file
+    assert root.find(".//pharmacophore[@name='System1']") is not None
+    assert root.find(".//vector[@name='HBA']") is not None
+    assert root.find(".//point[@name='hydrophobic']") is not None
+
 
 
 def test_generate_pharmacophore_centers_all_points():
