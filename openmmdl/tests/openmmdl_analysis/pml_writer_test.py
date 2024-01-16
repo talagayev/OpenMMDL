@@ -77,6 +77,37 @@ def test_generate_pharmacophore_vectors(sample_dataframe_generate_pharmacophore_
 
     assert result == expected_pharmacophore
 
+def test_generate_md_pharmacophore_cloudcenters(tmp_path):
+    # Sample data for the DataFrame
+    data = {
+        'Acceptor_hbond_1': [1, 0, 1, 0, 1],
+        'Donor_hbond_1': [0, 1, 0, 1, 0],
+        'pistacking_1': [1, 0, 0, 1, 1],
+        'hydrophobic_1': [0, 1, 0, 1, 0],
+        'PI_saltbridge_1': [1, 0, 1, 0, 1],
+        'NI_saltbridge_1': [0, 1, 0, 1, 0],
+        'LIGCOO': ['(1.0, 2.0, 3.0)', '(2.0, 3.0, 4.0)', '(3.0, 4.0, 5.0)', '(4.0, 5.0, 6.0)', '(5.0, 6.0, 7.0)'],
+    }
+
+    df = pd.DataFrame(data)
+
+    # Output file paths
+    output_filename = tmp_path / "test_output.pml"
+
+    # Call the function
+    generate_md_pharmacophore_cloudcenters(df, 'core_compound', output_filename, 'system_name', id_num=0)
+
+    # Check if the output file is created
+    assert os.path.isfile(output_filename), f"File {output_filename} not found."
+
+    # Check if the generated XML is valid
+    try:
+        ET.parse(output_filename)
+    except ET.ParseError:
+        pytest.fail(f"Invalid XML in {output_filename}")
+
+
+
 def test_generate_pharmacophore_centers_all_points():
     # Sample data for the DataFrame
     data = {
