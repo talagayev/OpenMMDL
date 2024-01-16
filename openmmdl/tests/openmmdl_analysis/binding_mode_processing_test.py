@@ -635,3 +635,38 @@ def test_update_values(sample_data):
     columns_to_update = list(unique_data.values())
     pd.testing.assert_frame_equal(df, expected_df[["FRAME"] + columns_to_update])
 
+@pytest.fixture
+def mock_data():
+    grouped_frames_treshold = pd.DataFrame({
+        'Binding_fingerprint_treshold': ['mode1_frame1', 'mode1_frame2', 'mode2_frame1', 'mode2_frame2'],
+        'FRAME': [1, 2, 3, 4]
+    })
+
+    top_10_binding_modes = {'mode1': 3, 'mode2': 2}
+    total_binding_modes = 5
+    pdb_md = "mock_pdb_md"
+    ligand = "mock_ligand"
+    result_dict = {
+        'Binding Mode': [],
+        'First Frame': [],
+        'All Frames': [],
+        'Percentage Occurrence': [],
+        'Representative Frame': []
+    }
+
+    return grouped_frames_treshold, top_10_binding_modes, total_binding_modes, pdb_md, ligand, result_dict
+
+# Pytest for the process_mode function
+def test_process_mode(mock_data):
+    grouped_frames_treshold, top_10_binding_modes, total_binding_modes, pdb_md, ligand, result_dict = mock_data
+
+    process_mode('mode1', grouped_frames_treshold, top_10_binding_modes, total_binding_modes, pdb_md, ligand, result_dict)
+
+    assert result_dict['Binding Mode'] == ['mode1']
+    assert result_dict['First Frame'] == [1]
+    assert result_dict['All Frames'] == [[1, 2]]
+    assert result_dict['Percentage Occurrence'] == [60.0]
+    # You may need to adjust the following assertion based on your actual implementation of calculate_representative_frame
+    assert result_dict['Representative Frame'] == ["mock_representative_frame"]
+
+
