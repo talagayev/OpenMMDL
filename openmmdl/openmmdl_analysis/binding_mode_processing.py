@@ -196,7 +196,7 @@ def gather_interactions(df, ligand_rings, peptide=None):
                     col_name = f"{prot_partner}_{ligidx}_{lig_group}_{type}_{interaction}"
             elif row['INTERACTION'] == 'metal':
                 special_ligand = row['RESTYPE_LIG']
-                ligcarbonidx = (str(row['RESNR_LIG']) + row['RESTYPE_LIG'])
+                ligcarbonidx = (str(row['RESNR_LIG']))
                 metal_type = row['METAL_TYPE']
                 coordination = row['COORDINATION']
                 interaction = row['INTERACTION']
