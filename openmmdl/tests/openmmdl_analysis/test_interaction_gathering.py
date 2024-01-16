@@ -172,7 +172,8 @@ def test_process_frame_special_with_files():
         if os.path.exists(temp_file):
             os.remove(temp_file)
 
-ef test_process_frame_wrapper():
+def test_process_frame_wrapper():
+
     test_data_directory = "path/to/your/test/data"  # Replace with the actual path to your test data directory
     topology_metal = f"{test_data_directory}/metal_top.pdb"
     trajetory_metal = f"{test_data_directory}/metal_traj_25.dcd"
