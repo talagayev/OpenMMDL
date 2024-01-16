@@ -176,7 +176,7 @@ def gather_interactions(df, ligand_rings, peptide=None):
                 col_name = f"{prot_partner}_{peptide_partner}_{interaction}"
             elif row['INTERACTION'] == 'pication':
                 prot_partner = row['Prot_partner']
-                ligidx = (str(row['RESNR_LIG']) + row['RESTYPE_LIG'])
+                ligidx = (str(row['RESNR_LIG']))
                 ligtype = row['RESTYPE_LIG']
                 interaction = row['INTERACTION']
                 # Concatenate the values to form a unique column name
@@ -184,7 +184,7 @@ def gather_interactions(df, ligand_rings, peptide=None):
                 col_name = col_name.replace(',', '_')
             elif row['INTERACTION'] == 'saltbridge':
                 prot_partner = row['Prot_partner']
-                ligidx = (str(row['RESNR_LIG']) + row['RESTYPE_LIG'])
+                ligidx = (str(row['RESNR_LIG']))
                 lig_group = row['RESTYPE_LIG']
                 interaction = row['INTERACTION']
                 if row['PROTISPOS'] == True:
