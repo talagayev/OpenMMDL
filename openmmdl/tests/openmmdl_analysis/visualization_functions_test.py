@@ -78,3 +78,40 @@ def test_run_visualization():
     with open(new_notebook_path, 'r') as copied_notebook:
         with open(notebook_path, 'r') as original_notebook:
             assert copied_notebook.read() == original_notebook.read()
+
+@pytest.fixture
+def sample_dataframe():
+    # Create a sample dataframe for testing
+    data = {
+        'LIGCOO': ['(1.0, 2.0, 3.0)', '(4.0, 5.0, 6.0)'],
+        'INTERACTION': ['hydrophobic', 'acceptor'],
+        'PROTISDON': ['False', 'True'],
+        'PROTISPOS': ['False', 'True'],
+        'TARGETCOO': ['(7.0, 8.0, 9.0)', '(10.0, 11.0, 12.0)']
+    }
+    return pd.DataFrame(data)
+
+
+def test_cloud_json_generation(sample_dataframe):
+    result = cloud_json_generation(sample_dataframe)
+
+    assert 'hydrophobic' in result
+    assert 'acceptor' in result
+    assert 'donor' in result
+    assert 'waterbridge' in result
+    assert 'negative_ionizable' in result
+    assert 'positive_ionizable' in result
+    assert 'pistacking' in result
+    assert 'pication' in result
+    assert 'halogen' in result
+    assert 'metal' in result
+
+    # Add more specific assertions based on your expectations for the output
+    # For example, you might want to check the structure of the generated dictionary
+    assert isinstance(result['hydrophobic'], dict)
+    assert 'coordinates' in result['hydrophobic']
+    assert 'color' in result['hydrophobic']
+    assert 'radius' in result['hydrophobic']
+
+    # Add more tests based on your specific requirements and expected results
+
