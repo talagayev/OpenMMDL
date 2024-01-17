@@ -14,6 +14,8 @@ pdb_file_path = 'openmmdl/tests/data/in/0_unk_hoh.pdb'
 # Define test data paths
 test_data_directory =  Path("openmmdl/tests/data/in")
 pdb_file = test_data_directory / "0_unk_hoh.pdb"
+topology_metal = f"{test_data_directory}/metal_top.pdb"
+ligand_resname = "UNK"
 
 
 @pytest.fixture
@@ -278,3 +280,18 @@ def test_process_pdb(sample_pdb_info):
     # Clean up temporary and output files
     os.remove(temp_filename)
     os.remove(output_filename)
+
+
+@pytest.fixture
+def output_sdf_path(tmp_path):
+    return tmp_path / "output.sdf"
+
+def test_extract_and_save_ligand_as_sdf(output_sdf_path):
+    input_pdb_filename = topology_metal
+    output_filename = output_sdf_path
+    target_resname = ligand_resname
+
+    extract_and_save_ligand_as_sdf(input_pdb_filename, output_filename, target_resname)
+
+    assert output_sdf_path.is_file()
+
