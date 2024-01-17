@@ -1,5 +1,6 @@
 import os
 import pytest
+import tempfile
 import shutil
 from Bio import PDB
 import numpy as np
@@ -192,3 +193,39 @@ ATOM     33  N3  UNK A 454      38.981  47.235  41.740  1.00  0.00      A    N""
 
     renumber_atoms_in_residues(str(input_pdb_filename), str(output_pdb_filename), 'UNK')
     assert output_pdb_filename.exists()
+
+
+@pytest.fixture
+def sample_pdb_data():
+    return """
+ATOM   7413  N   UNK A 454      43.056  48.258  36.260  1.00  0.00      LIG  X  
+ATOM   7414  N1  UNK A 454      44.324  47.906  35.996  1.00  0.00      LIG  X  
+ATOM   7415  C14 UNK A 454      44.132  46.990  35.061  1.00  0.00      LIG  X  
+    """
+
+def test_replace_atom_type(sample_pdb_data):
+    modified_data = replace_atom_type(sample_pdb_data)
+    assert ' LIG  N' in modified_data
+    assert ' LIG  N1' in modified_data
+    assert ' LIG  C14' in modified_data
+    assert ' LIG  X' not in modified_data
+
+def test_process_pdb(sample_pdb_data):
+    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
+        temp_filename = temp_file.name
+        temp_file.write(sample_pdb_data)
+
+    output_filename = 'output_pdb_test.pdb'
+    process_pdb(temp_filename, output_filename)
+
+    with open(output_filename, 'r') as f:
+        modified_data = f.read()
+    
+    assert ' LIG  N' in modified_data
+    assert ' LIG  N1' in modified_data
+    assert ' LIG  C14' in modified_data
+    assert ' LIG  X' not in modified_data
+
+    # Clean up temporary and output files
+    os.remove(temp_filename)
+    os.remove(output_filename)
