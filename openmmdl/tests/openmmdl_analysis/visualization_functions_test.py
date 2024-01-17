@@ -135,3 +135,33 @@ def test_cloud_json_generation(sample_dataframe):
 
     # Add more tests based on your specific requirements and expected results
 
+@pytest.fixture
+def input_paths():
+    test_data_directory = Path("openmmdl/tests/data/in")
+    topology_file = f"{test_data_directory}/metal_top.pdb"
+    frame_file = f"{test_data_directory}/processing_frame_1.pdb"
+    topology_metal = f"{test_data_directory}/metal_top.pdb"
+    trajetory_metal = f"{test_data_directory}/metal_traj_25.dcd"
+    return topology_metal, trajetory_metal
+
+def test_save_interacting_waters_trajectory(input_paths):
+    topology_metal, trajetory_metal = input_paths
+    interacting_waters = [588, 733]
+    ligname = "UNK"
+    special = "HEM"
+    outputpath = "./test_output/"
+
+    save_interacting_waters_trajectory(topology_metal, trajetory_metal, interacting_waters, ligname, special, outputpath)
+
+    assert os.path.exists(f"{outputpath}interacting_waters.pdb")
+    assert os.path.exists(f"{outputpath}interacting_waters.dcd")
+
+    # Add additional assertions or checks as needed
+    # For example, you can use MDAnalysis to check if the saved files contain the expected number of atoms.
+
+    # Cleanup: Remove the created files after the test
+    os.remove(f"{outputpath}interacting_waters.pdb")
+    os.remove(f"{outputpath}interacting_waters.dcd")
+    os.rmdir(outputpath)
+
+
