@@ -245,10 +245,20 @@ def test_convert_pdb_to_sdf(pdb_file, tmpdir):
     # Check if the output SDF file was created
     assert os.path.isfile(expected_sdf_file)
 
-def test_process_pdb(sample_pdb_data):
+
+@pytest.fixture
+def sample_pdb_info():
+    return """
+ATOM   741  N   UNK A 454      43.056  48.258  36.260  1.00  0.00      LIG  X  
+ATOM   742  N1  UNK A 454      44.324  47.906  35.996  1.00  0.00      LIG  X  
+ATOM   743  C14 UNK A 454      44.132  46.990  35.061  1.00  0.00      LIG  X  
+    """
+
+
+def test_process_pdb(sample_pdb_info):
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
         temp_filename = temp_file.name
-        temp_file.write(sample_pdb_data)
+        temp_file.write(sample_pdb_info)
 
     print("Temp Data:")
     print(temp_filename)
