@@ -282,13 +282,9 @@ def test_process_pdb(sample_pdb_info):
     os.remove(output_filename)
 
 
-@pytest.fixture
-def output_sdf_path(tmp_path):
-    return tmp_path / "output.sdf"
-
 def test_extract_and_save_ligand_as_sdf(output_sdf_path):
     input_pdb_filename = topology_metal
-    output_filename = output_sdf_path
+    output_filename = "lig.sdf"
     target_resname = ligand_resname
 
     extract_and_save_ligand_as_sdf(input_pdb_filename, output_filename, target_resname)
