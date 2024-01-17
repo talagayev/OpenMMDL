@@ -97,6 +97,10 @@ def sample_dataframe():
         ('(43.0, 44.0, 45.0)', 'positive_ionizable', 'False', 'True', '(46.0, 47.0, 48.0)'),
         ('(49.0, 50.0, 51.0)', 'halogen', 'False', 'False', '(52.0, 53.0, 54.0)'),
         ('(55.0, 56.0, 57.0)', 'metal', 'False', 'False', '(58.0, 59.0, 60.0)'),
+        ('(61.0, 62.0, 63.0)', 'hydrophobic', 'False', 'False', '(64.0, 65.0, 66.0)'),
+        ('(67.0, 68.0, 69.0)', 'donor', 'True', 'False', '(70.0, 71.0, 72.0)'),
+        ('(73.0, 74.0, 75.0)', 'acceptor', 'False', 'False', '(76.0, 77.0, 78.0)'),
+        ('(79.0, 80.0, 81.0)', 'negative_ionizable', 'False', 'True', '(82.0, 83.0, 84.0)'),
     ]
     
     for row in additional_data:
