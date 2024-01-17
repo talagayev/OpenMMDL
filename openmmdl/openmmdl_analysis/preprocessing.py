@@ -129,6 +129,3 @@ def process_pdb(input_file, output_file):
 
     with open(output_file, 'w') as f:
         f.write(modified_data)
-                        # Change the residue name to avoid conflicts
-                        hydrogen_atom.name = (f'H{atom_counter}')
-                        residue.add(hydrogen_atom)
