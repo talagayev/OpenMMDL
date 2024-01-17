@@ -166,6 +166,5 @@ def test_save_interacting_waters_trajectory(input_paths):
     # Cleanup: Remove the created files after the test
     os.remove(f"{outputpath}interacting_waters.pdb")
     os.remove(f"{outputpath}interacting_waters.dcd")
-    os.rmdir(outputpath)
 
 
