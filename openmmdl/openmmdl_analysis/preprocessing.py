@@ -2,6 +2,7 @@ import MDAnalysis as mda
 import subprocess
 import os
 import re
+from openbabel import pybel
 
 def process_pdb_file(input_pdb_filename):
     """Process a PDB file to make it compatible with the openmmdl_analysis package.
@@ -25,29 +26,35 @@ def process_pdb_file(input_pdb_filename):
     # Save the modified topology to a new PDB file
     u.atoms.write(input_pdb_filename)
 
-# def extract_and_save_ligand_as_pdb(input_pdb_filename, output_pdb_filename, target_resname):
-#     """Extract and save the ligand from the receptor ligand complex PDB file into a new PDB file by itself .
+def extract_and_save_ligand_as_sdf(input_pdb_filename, output_filename, target_resname):
+    """Extract and save the ligand from the receptor ligand complex PDB file into a new PDB file by itself .
 
-#     Args:
-#         input_pdb_filename (str): name of the input PDB file
-#         output_pdb_filename (str): name of the output PDB file
-#         target_resname (str): resname of the ligand in the original PDB file
-#     """
-#     # Load the PDB file using MDAnalysis
-#     u = mda.Universe(input_pdb_filename)
+    Args:
+        input_pdb_filename (str): name of the input PDB file
+        output_pdb_filename (str): name of the output PDB file
+        target_resname (str): resname of the ligand in the original PDB file
+    """
+    # Load the PDB file using MDAnalysis
+    u = mda.Universe(input_pdb_filename)
 
-#     # Find the ligand by its residue name
-#     ligand_atoms = u.select_atoms(f"resname {target_resname}")
+    # Find the ligand by its residue name
+    ligand_atoms = u.select_atoms(f"resname {target_resname}")
 
-#     if len(ligand_atoms) == 0:
-#         print(f"No ligand with residue name '{target_resname}' found in the PDB file.")
-#         return
+    if len(ligand_atoms) == 0:
+        print(f"No ligand with residue name '{target_resname}' found in the PDB file.")
+        return
 
-#     # Create a new Universe with only the ligand
-#     ligand_universe = mda.Merge(ligand_atoms)
+    # Create a new Universe with only the ligand
+    ligand_universe = mda.Merge(ligand_atoms)
 
-#     # Save the ligand Universe as a PDB file
-#     ligand_universe.atoms.write(output_pdb_filename)
+    # Save the ligand Universe as a PDB file
+    ligand_universe.atoms.write("lig.pdb")
+    
+    # use openbabel to convert pdb to sdf
+    mol = next(pybel.readfile("pdb", "lig.pdb"))
+    mol.write("sdf", output_filename)
+    #remove the temporary pdb file
+    os.remove("lig.pdb")
 
 def convert_pdb_to_sdf(input_pdb_filename, output_sdf_filename):
     """Convert ligand PDB file to SDF file for analysis using Open Babel.
@@ -119,6 +126,36 @@ def process_pdb(input_file, output_file):
         pdb_data = f.read()
 
     modified_data = replace_atom_type(pdb_data)
+
+    with open(output_file, 'w') as f:
+        f.write(modified_data)
+
+def move_hydrogens_to_end(structure, target_residue_name):
+    # Counter for atom numbering within each residue
+    atom_counter = 1
+
+    # Iterate over all models in the structure
+    for model in structure:
+        # Iterate over all chains in the model
+        for chain in model:
+            # Iterate over all residues in the chain
+            for residue in chain:
+                # Check if the residue name matches the target residue name
+                if residue.resname == target_residue_name:
+                    # Collect hydrogen atoms in the residue
+                    hydrogen_atoms = [atom for atom in residue if atom.element == 'H']
+
+                    # Remove hydrogen atoms from the residue
+                    for hydrogen_atom in hydrogen_atoms:
+                        residue.detach_child(hydrogen_atom.id)
+
+                    # Add hydrogen atoms to the end of the residue with renumbering
+                    for hydrogen_atom in hydrogen_atoms:
+                        hydrogen_atom.serial_number = atom_counter
+                        atom_counter += 1
+                        # Change the residue name to avoid conflicts
+                        hydrogen_atom.name = (f'H{atom_counter}')
+                        residue.add(hydrogen_atom)
 
     with open(output_file, 'w') as f:
         f.write(modified_data)
