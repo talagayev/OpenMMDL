@@ -156,6 +156,3 @@ def move_hydrogens_to_end(structure, target_residue_name):
                         # Change the residue name to avoid conflicts
                         hydrogen_atom.name = (f'H{atom_counter}')
                         residue.add(hydrogen_atom)
-
-    with open(output_file, 'w') as f:
-        f.write(modified_data)
