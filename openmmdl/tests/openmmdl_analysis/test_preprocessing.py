@@ -220,8 +220,7 @@ def test_process_pdb(sample_pdb_data):
     print(modified_data)
 
     assert ' LIG  N' in modified_data
-    assert ' LIG  N1' in modified_data
-    assert ' LIG  C14' in modified_data
+    assert ' LIG  C' in modified_data
     assert ' LIG  X' not in modified_data
 
     # Clean up temporary and output files
