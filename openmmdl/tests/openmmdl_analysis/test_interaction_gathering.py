@@ -177,6 +177,12 @@ def test_process_frame_wrapper():
     test_data_directory = "openmmdl/tests/data/in"  # Replace with the actual path to your test data directory
     topology_metal = f"{test_data_directory}/metal_top.pdb"
     trajetory_metal = f"{test_data_directory}/metal_traj_25.dcd"
+    ligand_special = f"{test_data_directory}/ligand_special.pdb"
+    shutil.copy(str(topology_metal), '.')
+    shutil.copy(str(trajetory_metal), '.')
+    shutil.copy(str(ligand_special), '.')
+    topology_metal = "metal_top.pdb"
+    trajetory_metal = "metal_traj_25.dcd"
 
     # Load PDB and DCD files using MDAnalysis
     pdb_md = mda.Universe(topology_metal, trajetory_metal)
