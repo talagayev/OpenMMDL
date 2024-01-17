@@ -153,6 +153,10 @@ def test_save_interacting_waters_trajectory(input_paths):
 
     save_interacting_waters_trajectory(topology_metal, trajetory_metal, interacting_waters, ligname, special, outputpath)
 
+    interacting_water_pdb = "interacting_waters.pdb"
+    interacting_water_dcd = "interacting_waters.dcd"
+    assert interacting_water_pdb is not None
+    assert interacting_water_dcd is not None
     assert os.path.exists(f"{outputpath}interacting_waters.pdb")
     assert os.path.exists(f"{outputpath}interacting_waters.dcd")
 
