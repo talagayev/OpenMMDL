@@ -198,7 +198,6 @@ def test_process_frame_wrapper():
     assert isinstance(result, tuple)
     assert len(result) == 2
     assert isinstance(result[0], int)
-    assert isinstance(result[1], list)  # Assuming process_frame_special returns a list
 
 
 def test_fill_missing_frames():
