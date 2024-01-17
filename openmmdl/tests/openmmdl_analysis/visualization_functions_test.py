@@ -83,11 +83,11 @@ def test_run_visualization():
 def sample_dataframe():
     # Create a sample dataframe for testing
     data = {
-        'LIGCOO': ['(1.0, 2.0, 3.0)', '(4.0, 5.0, 6.0)'],
-        'INTERACTION': ['hydrophobic', 'acceptor'],
-        'PROTISDON': ['False', 'True'],
-        'PROTISPOS': ['False', 'True'],
-        'TARGETCOO': ['(7.0, 8.0, 9.0)', '(10.0, 11.0, 12.0)']
+        'LIGCOO': ['(1.0, 2.0, 3.0)', '(4.0, 5.0, 6.0)', '(13.0, 14.0, 15.0)', '(16.0, 17.0, 18.0)', '(19.0, 20.0, 21.0)'],
+        'INTERACTION': ['hydrophobic', 'acceptor', 'donor', 'pistacking', 'pication'],
+        'PROTISDON': ['False', 'True', 'True', 'False', 'True'],
+        'PROTISPOS': ['False', 'True', 'False', 'False', 'False'],
+        'TARGETCOO': ['(7.0, 8.0, 9.0)', '(10.0, 11.0, 12.0)', '(22.0, 23.0, 24.0)', '(25.0, 26.0, 27.0)', '(28.0, 29.0, 30.0)']
     }
     return pd.DataFrame(data)
 
