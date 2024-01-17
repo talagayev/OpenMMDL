@@ -195,13 +195,30 @@ ATOM     33  N3  UNK A 454      38.981  47.235  41.740  1.00  0.00      A    N""
     assert output_pdb_filename.exists()
 
 
+
 @pytest.fixture
-def sample_pdb_data():
-    return """
-ATOM   740  N   UNK A 454      43.056  48.258  36.260  1.00  0.00      LIG  X  
-ATOM   741  N1  UNK A 454      44.324  47.906  35.996  1.00  0.00      LIG  X  
-ATOM   742  C14 UNK A 454      44.132  46.990  35.061  1.00  0.00      LIG  X  
-    """
+def pdb_file(tmpdir):
+    # Create a temporary PDB file for testing (truncated for brevity)
+    pdb_content = """ATOM   7413  N   UNK A 454      43.056  48.258  36.260  1.00  0.00      A    N  
+ATOM   7414  N1  UNK A 454      44.324  47.906  35.996  1.00  0.00      A    N  
+... (truncated) ...
+ATOM   7444  C15 UNK A 454      39.067  48.055  41.112  1.00  0.00      A    C  
+ATOM   7445  N3  UNK A 454      38.363  47.775  42.006  1.00  0.00      A    N  
+"""
+
+    pdb_path = tmpdir.join("test_input.pdb")
+    pdb_path.write(pdb_content)
+    return str(pdb_path)
+
+def test_convert_pdb_to_sdf(pdb_file, tmpdir):
+    # Define the expected output SDF file path
+    expected_sdf_file = str(tmpdir.join("test_output.sdf"))
+
+    # Call the function with the test PDB file and output SDF file
+    convert_pdb_to_sdf(pdb_file, expected_sdf_file)
+
+    # Check if the output SDF file was created
+    assert os.path.isfile(expected_sdf_file)
 
 def test_process_pdb(sample_pdb_data):
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
