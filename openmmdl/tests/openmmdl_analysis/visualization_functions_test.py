@@ -146,10 +146,10 @@ def input_paths():
 
 def test_save_interacting_waters_trajectory(input_paths):
     topology_metal, trajetory_metal = input_paths
-    interacting_waters = [588, 733]
+    interacting_waters = [588, 733, 1555, 2000, 1266]
     ligname = "UNK"
     special = "HEM"
-    outputpath = "./test_output/"
+    outputpath = "./"
 
     save_interacting_waters_trajectory(topology_metal, trajetory_metal, interacting_waters, ligname, special, outputpath)
 
