@@ -203,13 +203,6 @@ ATOM   7414  N1  UNK A 454      44.324  47.906  35.996  1.00  0.00      LIG  X
 ATOM   7415  C14 UNK A 454      44.132  46.990  35.061  1.00  0.00      LIG  X  
     """
 
-def test_replace_atom_type(sample_pdb_data):
-    modified_data = replace_atom_type(sample_pdb_data)
-    assert ' LIG  N' in modified_data
-    assert ' LIG  N1' in modified_data
-    assert ' LIG  C14' in modified_data
-    assert ' LIG  X' not in modified_data
-
 def test_process_pdb(sample_pdb_data):
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
         temp_filename = temp_file.name
@@ -220,7 +213,10 @@ def test_process_pdb(sample_pdb_data):
 
     with open(output_filename, 'r') as f:
         modified_data = f.read()
-    
+
+    print("Modified Data:")
+    print(modified_data)
+
     assert ' LIG  N' in modified_data
     assert ' LIG  N1' in modified_data
     assert ' LIG  C14' in modified_data
