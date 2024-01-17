@@ -198,9 +198,9 @@ ATOM     33  N3  UNK A 454      38.981  47.235  41.740  1.00  0.00      A    N""
 @pytest.fixture
 def sample_pdb_data():
     return """
-ATOM   7413  N   UNK A 454      43.056  48.258  36.260  1.00  0.00      LIG  X  
-ATOM   7414  N1  UNK A 454      44.324  47.906  35.996  1.00  0.00      LIG  X  
-ATOM   7415  C14 UNK A 454      44.132  46.990  35.061  1.00  0.00      LIG  X  
+ATOM   741  N   UNK A 454      43.056  48.258  36.260  1.00  0.00      LIG  X  
+ATOM   741  N1  UNK A 454      44.324  47.906  35.996  1.00  0.00      LIG  X  
+ATOM   741  C14 UNK A 454      44.132  46.990  35.061  1.00  0.00      LIG  X  
     """
 
 def test_process_pdb(sample_pdb_data):
@@ -208,6 +208,8 @@ def test_process_pdb(sample_pdb_data):
         temp_filename = temp_file.name
         temp_file.write(sample_pdb_data)
 
+    print("Temp Data:")
+    print(temp_filename)
     output_filename = 'output_pdb_test.pdb'
     process_pdb(temp_filename, output_filename)
 
