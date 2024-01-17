@@ -198,9 +198,9 @@ ATOM     33  N3  UNK A 454      38.981  47.235  41.740  1.00  0.00      A    N""
 @pytest.fixture
 def sample_pdb_data():
     return """
-ATOM   741  N   UNK A 454      43.056  48.258  36.260  1.00  0.00      LIG  X  
+ATOM   740  N   UNK A 454      43.056  48.258  36.260  1.00  0.00      LIG  X  
 ATOM   741  N1  UNK A 454      44.324  47.906  35.996  1.00  0.00      LIG  X  
-ATOM   741  C14 UNK A 454      44.132  46.990  35.061  1.00  0.00      LIG  X  
+ATOM   742  C14 UNK A 454      44.132  46.990  35.061  1.00  0.00      LIG  X  
     """
 
 def test_process_pdb(sample_pdb_data):
