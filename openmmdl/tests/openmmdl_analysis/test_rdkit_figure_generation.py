@@ -10,7 +10,7 @@ test_data_directory = Path("openmmdl/tests/data/openmmdl_analysis/rdkit_figure_g
 test_data_directory_files = Path("openmmdl/tests/data/in")
 lig_no_h = test_data_directory_files / 'lig_no_h.pdb'
 complex = test_data_directory_files / 'complex.pdb'
-smi_file = f"{test_data_directory}/lig_no_h.smi"
+smi_file = test_data_directory_files / 'lig_no_h.smi'
 current_directory = os.getcwd() 
 output_path = 'all_binding_modes_arranged.png'
 
