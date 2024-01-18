@@ -465,21 +465,18 @@ def df_iteration_numbering(df,unique_data, peptide=None):
                     for col in unique_data.values():
                         if "hbond" in col:
                             prot_partner, ligcarbonidx, type, interaction = col.split('_')
-
                             condition = (row['Prot_partner'] == prot_partner) & ((str(row['RESNR_LIG']) + row['RESTYPE_LIG']) == ligcarbonidx) & (row['INTERACTION'] == interaction)
                             df.at[index, col] = 1 if condition else 0
                 elif row['PROTISDON'] == False:
                     for col in unique_data.values():
                         if "hbond" in col:
                             prot_partner, ligcarbonidx, type, interaction = col.split('_')
-
                             condition = (row['Prot_partner'] == prot_partner) & (((str(row['RESNR_LIG']) + row['RESTYPE_LIG'])) == ligcarbonidx) & (row['INTERACTION'] == interaction)
                             df.at[index, col] = 1 if condition else 0
             elif row['INTERACTION'] == "halogen":
                 for col in unique_data.values():
                     if "halogen" in col:
                         prot_partner, ligcarbonidx, halogen, interaction = col.split('_')
-
                         condition = (row['Prot_partner'] == prot_partner) & ((str(row['RESNR_LIG']) + row['RESTYPE_LIG']) == ligcarbonidx) & (row['DONORTYPE'] == halogen) & (row['INTERACTION'] == interaction)
                         df.at[index, col] = 1 if condition else 0
             elif row['INTERACTION'] == "pistacking":
@@ -493,10 +490,14 @@ def df_iteration_numbering(df,unique_data, peptide=None):
                     if "waterbridge" in col:
                         if row['PROTISDON'] == True:
                             prot_partner, ligcarbonidx, type, interaction = col.split('_')
+                            print((str(row['RESNR_LIG']) + row['RESTYPE_LIG']))
+                            print(ligcarbonidx)
                             condition = (row['Prot_partner'] == prot_partner) & ((str(row['RESNR_LIG']) + row['RESTYPE_LIG']) == ligcarbonidx) & (row['INTERACTION'] == interaction)
                             df.at[index, col] = 1 if condition else 0
                         elif row['PROTISDON'] == False:
                             prot_partner, ligcarbonidx, type, interaction = col.split('_')
+                            print((str(row['RESNR_LIG']) + row['RESTYPE_LIG']))
+                            print(ligcarbonidx)
                             condition = (row['Prot_partner'] == prot_partner) & ((str(row['RESNR_LIG']) + row['RESTYPE_LIG']) == ligcarbonidx) & (row['INTERACTION'] == interaction)
                             df.at[index, col] = 1 if condition else 0
             elif row['INTERACTION'] == "pication":
