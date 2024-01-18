@@ -653,6 +653,24 @@ def test_df_iteration_numbering_with_peptide(sample_dataframe_it_peptides):
     expected_101ILE_hydrophobic_values = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (sample_dataframe_it_peptides['62VAL_101ILE_hydrophobic'] == expected_101ILE_hydrophobic_values).all()
 
+    expected_202TYR_Donor_hbond_values = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert (sample_dataframe_it_peptides['SER144_202TYR_Donor_hbond'] == expected_101ILE_hydrophobic_values).all()
+
+    expected_155ARG_ARG_NI_saltbridge_values = [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert (sample_dataframe_it_peptides['GLU321_155ARG_ARG_NI_saltbridge'] == expected_155ARG_ARG_NI_saltbridge_values).all()
+
+    expected_102VAL_hydrophobic_values = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert (sample_dataframe_it_peptides['ILE432_102VAL_hydrophobic'] == expected_102VAL_hydrophobic_values).all()
+
+    expected_501ILE_halogen_values = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert (sample_dataframe_it_peptides['LEU248_501ILE_F_halogen'] == expected_501ILE_halogen_values).all()
+
+    expected_301HIS_Acceptor_hbond_values = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+    assert (sample_dataframe_it_peptides['SER300_301HIS_Acceptor_hbond'] == expected_301HIS_Acceptor_hbond_values).all()
+
+    expected_455SER_Acceptor_waterbridge_values = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+    assert (sample_dataframe_it_peptides['TYR343_455SER_Acceptor_waterbridge'] == expected_455SER_Acceptor_waterbridge_values).all()
+    
 @pytest.fixture
 def sample_data():
     # Create sample data for testing
