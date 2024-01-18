@@ -227,7 +227,7 @@ def test_arranged_figure_generation():
 output_image_file = "output_image.png"
 
 # Copy the files to the current folder
-shutil.copy(complex_file, Path.cwd())
+shutil.copy(complex, Path.cwd())
 shutil.copy(lig_no_h, Path.cwd())
 shutil.copy(smi_file, Path.cwd())
 
