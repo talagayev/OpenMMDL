@@ -612,7 +612,7 @@ def sample_dataframe_it_peptides():
         'LIG_IDX_LIST': [None, None, None, None, None, None, None, None, None, None, None, None, None],
         'RESTYPE_LIG': ['VAL', 'TYR', 'ARG', 'VAL', 'ILE', 'HIS', 'SER', 'TYR', 'PHE', 'ARG', 'PHE', 'GLU', 'HIS'],
         'TARGET_IDX': [None, None, None, None, None, None, None, None, None, None, None, None, None],
-        'METAL_TYPE': [None, None, None, None, None, None, None, None, None, None, None, None, 'Fe_site1'],
+        'METAL_TYPE': [None, None, None, None, None, None, None, None, None, None, None, None, 'Fe'],
         '62VAL_101ILE_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         'SER144_202TYR_Donor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         'GLU321_155ARG_ARG_NI_saltbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
