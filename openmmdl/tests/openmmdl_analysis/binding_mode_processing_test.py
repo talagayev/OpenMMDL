@@ -650,7 +650,7 @@ def test_df_iteration_numbering_with_peptide(sample_dataframe_it_peptides):
     df_iteration_numbering(sample_dataframe_it_peptides, unique_data, peptide=True)
 
     # Assertions similar to the provided ones
-    expected_101ILE_hydrophobic_values = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    expected_101ILE_hydrophobic_values = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (sample_dataframe_it_peptides['62VAL_101ILE_hydrophobic'] == expected_101ILE_hydrophobic_values).all()
 
 @pytest.fixture
