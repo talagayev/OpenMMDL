@@ -595,6 +595,63 @@ def test_df_iteration_numbering():
     expected_100ASPA_4005_Donor_waterbridge_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
     assert (df['100ASPA_4005_Donor_waterbridge'] == expected_100ASPA_4005_Donor_waterbridge_values).all()
 
+
+@pytest.fixture
+def sample_dataframe_it_peptides():
+    # Create a sample DataFrame for testing
+    data = {
+        'Unnamed: 0': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        'Prot_partner': ['62VAL', 'SER144', 'GLU321', 'ILE432', 'LEU248', 'SER300', 'TYR343', 'ILE178', 'PHE344', 'PHE754', 'LYS567', 'LYS567', 'HIS'],
+        'LIGCARBONIDX': [101, 202, 155, 102, 501, 301, 455, 467, 398, 245, 228, 423, 256],
+        'INTERACTION': ['hydrophobic', 'hbond', 'saltbridge', 'hydrophobic', 'halogen', 'hbond', 'waterbridge', 'waterbridge', 'pistacking', 'pication', 'pication', 'PI_saltbridge', 'metal'],
+        'PROTISDON': [None, True, None, None, None, True, None, False, None, None, None, None, None],
+        'ACCEPTORIDX': [None, 202, None, None, None, 301, None, None, None, None, None, None, None],
+        'DONORIDX': [None, None, None, None, None, None, None, None, None, None, None, None, None],
+        'DONORTYPE': [None, None, None, None, 'F', None, None, None, None, None, None, None, None],
+        'LIG_IDX_LIST': [None, None, None, None, None, None, None, None, None, None, None, None, None],
+        'RESTYPE_LIG': ['VAL', 'TYR', 'ARG', 'VAL', 'ILE', 'HIS', 'SER', 'TYR', 'PHE', 'ARG', 'PHE', 'GLU', 'Fe_site1'],
+        'TARGET_IDX': [None, None, None, None, None, None, None, None, None, None, None, None, None],
+        'METAL_TYPE': [None, None, None, None, None, None, None, None, None, None, None, None, 'Fe_site1'],
+        '62VAL_101ILE_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'SER144_202TYR_Donor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'GLU321_155ARG_ARG_NI_saltbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'ILE432_102VAL_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'LEU248_501ILE_F_halogen': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'SER300_301HIS_Acceptor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'TYR343_455SER_Acceptor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'ILE178_467TYR_Donor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'PHE344_398PHE_pistacking': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'PHE754_245ARG_ARG_pication': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'LYS567_423GLU_GLU_PI_saltbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'HIS_256HIS_Fe_site1_metal': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    }
+    
+    df = pd.DataFrame(data)
+    return df
+
+def test_df_iteration_numbering_with_peptide(sample_dataframe_it_peptides):
+    unique_data = {
+        0: '62VAL_101ILE_hydrophobic',
+        1: 'SER144_202TYR_Donor_hbond',
+        2: 'GLU321_155ARG_ARG_NI_saltbridge',
+        3: 'ILE432_102VAL_hydrophobic',
+        4: 'LEU248_501ILE_F_halogen',
+        5: 'SER300_301HIS_Acceptor_hbond',
+        6: 'TYR343_455SER_Acceptor_waterbridge',
+        7: 'ILE178_467TYR_Donor_waterbridge',
+        8: 'PHE344_398PHE_pistacking',
+        9: 'PHE754_245ARG_ARG_pication',
+        10: 'LYS567_228PHE_PHE_pication',
+        11: 'LYS567_423GLU_GLU_PI_saltbridge',
+        12: 'HIS_256HIS_Fe_site1_metal',
+    }
+
+    df_iteration_numbering(sample_dataframe_it_peptides, unique_data, peptide=True)
+
+    # Assertions similar to the provided ones
+    expected_101ILE_hydrophobic_values = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert (sample_dataframe_it_peptides['62VAL_101ILE_hydrophobic'] == expected_101ILE_hydrophobic_values).all()
+
 @pytest.fixture
 def sample_data():
     # Create sample data for testing
