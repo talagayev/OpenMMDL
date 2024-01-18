@@ -59,6 +59,7 @@ def test_highlight_numbers():
     assert highlighted_halogen is not None
     assert highlighted_ni is not None
     assert highlighted_pication is not None
+    assert highlighted_metal is not None
     
 def test_update_dict():
     # Test case 1: Check if the target dictionary is updated correctly
