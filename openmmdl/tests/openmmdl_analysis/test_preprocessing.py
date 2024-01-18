@@ -282,7 +282,7 @@ def test_process_pdb(sample_pdb_info):
     os.remove(output_filename)
 
 
-def test_extract_and_save_ligand_as_sdf(output_sdf_path):
+def test_extract_and_save_ligand_as_sdf():
     input_pdb_filename = topology_metal
     output_filename = "lig.sdf"
     target_resname = ligand_resname
