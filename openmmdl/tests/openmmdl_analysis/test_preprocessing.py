@@ -84,15 +84,6 @@ ATOM     22  C   *   A 122      42.146  49.054  37.737  1.00  0.00      A    C
 ATOM     23  C   *   A 123      42.675  48.761  39.003  1.00  0.00      A    C  
 ATOM     24  C   *   A 124      41.859  48.278  39.998  1.00  0.00      A    C """)
 
-
-@pytest.fixture
-def temp_pdb_file(tmp_path):
-    input_pdb_filename = tmp_path / "test_input.pdb"
-    # Copy the content of the provided PDB file to the temporary test file
-    with open(pdb_file_path, "r") as src_pdb, open(input_pdb_filename, "w") as dest_pdb:
-        dest_pdb.write(src_pdb.read())
-    return input_pdb_filename
-
 def test_process_pdb_file():
     # Define the input and output file paths
     original_cwd = Path(os.getcwd())
