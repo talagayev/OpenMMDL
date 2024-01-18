@@ -175,7 +175,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
         'RESTYPE_LIG': {0: 'ILE', 1: 'TYR', 2: 'ARG', 3: 'VAL'},
         'TARGET_IDX': {0: 0, 1: 0, 2: 0, 3: 0},
         'COORDINATION': {0: 0, 1: 0, 2: 0, 3: 0},
-        'RESNR_LIG' : {0: '101', 1: '202', 2: '[5, 6]', 3: '102'}
+        'RESNR_LIG' : {0: '101', 1: '202', 2: '155', 3: '102'}
     }
      
     # Additional data for peptide interactions
@@ -193,7 +193,7 @@ def sample_dataframe_bindingmode_processing_with_peptides():
     data['RESNR_LIG'][4] = '501'
  
     data['FRAME'][5] = 5
-    data['Prot_partner'][5] = 'SER'
+    data['Prot_partner'][5] = 'SER300'
     data['INTERACTION'][5] = 'hbond'
     data['ACCEPTORIDX'][5] = 301
     data['DON_IDX'][5] = 0
@@ -337,18 +337,18 @@ def test_gather_interactions_with_peptides(sample_dataframe_bindingmode_processi
  
     # Check specific values in the generated dictionary for known interactions based on the updated fixture
     expected_result = {
-        1: {0: 'A_101_hydrophobic'},
-        2: {1: 'B_202_Donor_hbond', 3: 'A_102_hydrophobic'},
-        3: {2: 'C_[5, 6]_Group3_NI_saltbridge'},
-        4: {4: 'A_501_F_halogen'},
-        5: {5: 'A_301_Acceptor_hbond'},
-        6: {6: 'A_401_Acceptor_waterbridge'},
-        7: {7: 'B_501_Donor_waterbridge'},
-        8: {8: 'A_[7, 8]_pistacking'},
-        9: {9: 'A_[9_ 10]_Group4_pication'},
-        10: {10: 'A_[9_ 10]_Group4_pication'},
-        11: {11: 'B_[7, 8]_Group4_PI_saltbridge'},
-        12: {12: 'A_501_Fe_site1_metal'},
+        1: {0: '62VAL_101ILE_hydrophobic},
+        2: {1: 'SER144_202TYR_Donor_hbond', 3: 'ILE432_102VAL_hydrophobic'},
+        3: {2: 'GLU321_155ARG_ARG_NI_saltbridge'},
+        4: {4: 'LEU248_501ILE_F_halogen'},
+        5: {5: 'SER300_301HIS_Acceptor_hbond'},
+        6: {6: 'TYR343_455SER_Acceptor_waterbridge'},
+        7: {7: 'ILE178_467TYR_Donor_waterbridge'},
+        8: {8: 'PHE344_398PHE_pistacking'},
+        9: {9: 'PHE754_245ARG_ARG_pication'},
+        10: {10: 'LYS567_228PHE_PHE_pication'},
+        11: {11: 'LYS567_423GLU_GLU_PI_saltbridge'},
+        12: {12: 'HIS_256HIS_Fe_site1_metal'},
     }
  
     # Check if the actual result matches the expected result
