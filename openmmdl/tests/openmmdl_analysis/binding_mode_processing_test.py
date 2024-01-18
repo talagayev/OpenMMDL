@@ -654,7 +654,7 @@ def test_df_iteration_numbering_with_peptide(sample_dataframe_it_peptides):
     assert (sample_dataframe_it_peptides['62VAL_101ILE_hydrophobic'] == expected_101ILE_hydrophobic_values).all()
 
     expected_202TYR_Donor_hbond_values = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    assert (sample_dataframe_it_peptides['SER144_202TYR_Donor_hbond'] == expected_101ILE_hydrophobic_values).all()
+    assert (sample_dataframe_it_peptides['SER144_202TYR_Donor_hbond'] == expected_202TYR_Donor_hbond_values).all()
 
     expected_155ARG_ARG_NI_saltbridge_values = [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (sample_dataframe_it_peptides['GLU321_155ARG_ARG_NI_saltbridge'] == expected_155ARG_ARG_NI_saltbridge_values).all()
