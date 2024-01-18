@@ -602,9 +602,9 @@ def sample_dataframe_it_peptides():
     data = {
         'Unnamed: 0': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         'Prot_partner': ['62VAL', 'SER144', 'GLU321', 'ILE432', 'LEU248', 'SER300', 'TYR343', 'ILE178', 'PHE344', 'PHE754', 'LYS567', 'LYS567', 'HIS'],
-        'LIGCARBONIDX': [101, 202, 155, 102, 501, 301, 455, 467, 398, 245, 228, 423, 256],
+        'LIGCARBONIDX': [101, 202, 155, 102, 501, 301, 467, 467, 398, 245, 228, 423, 256],
         'INTERACTION': ['hydrophobic', 'hbond', 'saltbridge', 'hydrophobic', 'halogen', 'hbond', 'waterbridge', 'waterbridge', 'pistacking', 'pication', 'pication', 'PI_saltbridge', 'metal'],
-        'PROTISDON': [None, True, None, None, None, True, None, False, None, None, None, None, None],
+        'PROTISDON': [None, True, None, None, None, True, True, False, None, None, None, None, None],
         'ACCEPTORIDX': [None, 202, None, None, None, 301, None, None, None, None, None, None, None],
         'RESNR_LIG': [101, 202, 155, 102, 501, 301, 455, 467, 398, 245, 228, 423, 256],
         'DONORIDX': [None, None, None, None, None, None, None, None, None, None, None, None, None],
