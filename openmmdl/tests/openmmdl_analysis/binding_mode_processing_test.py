@@ -337,7 +337,7 @@ def test_gather_interactions_with_peptides(sample_dataframe_bindingmode_processi
  
     # Check specific values in the generated dictionary for known interactions based on the updated fixture
     expected_result = {
-        1: {0: '62VAL_101ILE_hydrophobic},
+        1: {0: '62VAL_101ILE_hydrophobic'},
         2: {1: 'SER144_202TYR_Donor_hbond', 3: 'ILE432_102VAL_hydrophobic'},
         3: {2: 'GLU321_155ARG_ARG_NI_saltbridge'},
         4: {4: 'LEU248_501ILE_F_halogen'},
