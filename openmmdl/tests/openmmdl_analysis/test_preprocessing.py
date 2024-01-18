@@ -284,7 +284,7 @@ def test_process_pdb(sample_pdb_info):
 
 def test_extract_and_save_ligand_as_sdf():
     input_pdb_filename = topology_metal
-    output_filename = "lig.sdf"
+    output_filename = "ligand_changed.sdf"
     target_resname = ligand_resname
 
     extract_and_save_ligand_as_sdf(input_pdb_filename, output_filename, target_resname)
