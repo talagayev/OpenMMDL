@@ -670,7 +670,25 @@ def test_df_iteration_numbering_with_peptide(sample_dataframe_it_peptides):
 
     expected_455SER_Acceptor_waterbridge_values = [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
     assert (sample_dataframe_it_peptides['TYR343_455SER_Acceptor_waterbridge'] == expected_455SER_Acceptor_waterbridge_values).all()
-    
+
+    expected_467TYR_Donor_waterbridge_values = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+    assert (sample_dataframe_it_peptides['ILE178_467TYR_Donor_waterbridge'] == expected_467TYR_Donor_waterbridge_values).all()
+
+    expected_398PHE_pistacking_values = [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+    assert (sample_dataframe_it_peptides['PHE344_398PHE_pistacking'] == expected_398PHE_pistacking_values).all()
+
+    expected_245ARG_ARG_pication_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    assert (sample_dataframe_it_peptides['PHE754_245ARG_ARG_pication'] == expected_245ARG_ARG_pication_values).all()
+
+    expected_228PHE_PHE_pication_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+    assert (sample_dataframe_it_peptides['LYS567_228PHE_PHE_pication'] == expected_228PHE_PHE_pication_values).all()
+
+    expected_423GLU_GLU_PI_saltbridge_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+    assert (sample_dataframe_it_peptides['LYS567_423GLU_GLU_PI_saltbridge'] == expected_423GLU_GLU_PI_saltbridge_values).all()
+
+    expected_256HIS_Fe_site1_metal_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    assert (sample_dataframe_it_peptides['HIS_256HIS_Fe_site1_metal'] == expected_256HIS_Fe_site1_metal_values).all()
+
 @pytest.fixture
 def sample_data():
     # Create sample data for testing
