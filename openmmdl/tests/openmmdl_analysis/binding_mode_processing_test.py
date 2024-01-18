@@ -610,7 +610,7 @@ def sample_dataframe_it_peptides():
         'DONORIDX': [None, None, None, None, None, None, None, None, None, None, None, None, None],
         'DONORTYPE': [None, None, None, None, 'F', None, None, None, None, None, None, None, None],
         'LIG_IDX_LIST': [None, None, None, None, None, None, None, None, None, None, None, None, None],
-        'RESTYPE_LIG': ['VAL', 'TYR', 'ARG', 'VAL', 'ILE', 'HIS', 'SER', 'TYR', 'PHE', 'ARG', 'PHE', 'GLU', 'Fe_site1'],
+        'RESTYPE_LIG': ['VAL', 'TYR', 'ARG', 'VAL', 'ILE', 'HIS', 'SER', 'TYR', 'PHE', 'ARG', 'PHE', 'GLU', 'HIS'],
         'TARGET_IDX': [None, None, None, None, None, None, None, None, None, None, None, None, None],
         'METAL_TYPE': [None, None, None, None, None, None, None, None, None, None, None, None, 'Fe_site1'],
         '62VAL_101ILE_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
