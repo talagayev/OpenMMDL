@@ -40,6 +40,7 @@ def test_highlight_numbers():
         "59ARGA 4194 F halogen",
         "166ARGA 4202,4203 Carboxylate NI saltbridge",
         "165ASPA 4202 Amine PI saltbridge"
+        "HEM 4202 FE 4 metal"
     ]
 
     starting_idx = 1  # Updated starting index
