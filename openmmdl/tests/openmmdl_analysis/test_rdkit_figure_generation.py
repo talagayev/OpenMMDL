@@ -4,7 +4,7 @@ import time
 import shutil
 from PIL import Image
 from pathlib import Path
-from openmmdl.openmmdl_analysis.rdkit_figure_generation import split_interaction_data, highlight_numbers, update_dict, create_and_merge_images, arranged_figure_generation, generate_interaction_dict
+from openmmdl.openmmdl_analysis.rdkit_figure_generation import *
 
 test_data_directory = Path("openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation")
 test_data_directory_files = Path("openmmdl/tests/data/in")
