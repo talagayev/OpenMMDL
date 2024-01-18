@@ -623,6 +623,7 @@ def sample_dataframe_it_peptides():
         'ILE178_467TYR_Donor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         'PHE344_398PHE_pistacking': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         'PHE754_245ARG_ARG_pication': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'LYS567_228PHE_PHE_pication': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         'LYS567_423GLU_GLU_PI_saltbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         'HIS_256HIS_Fe_site1_metal': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
