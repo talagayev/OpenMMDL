@@ -290,4 +290,5 @@ def test_extract_and_save_ligand_as_sdf():
     extract_and_save_ligand_as_sdf(input_pdb_filename, output_filename, target_resname)
 
     assert output_filename is not None
+    os.remove("ligand_changed.sdf")
 
