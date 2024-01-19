@@ -598,8 +598,8 @@ def test_df_iteration_numbering():
     expected_166ARGA_4220_Acceptor_hbond_values = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (df['166ARGA_4220_Acceptor_hbond'] == expected_166ARGA_4220_Acceptor_hbond_values).all()
 
-    expected_4221_Carboxylate_NI_saltbridge_values = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    assert (df['4221_Carboxylate_NI_saltbridge'] == expected_4221_Carboxylate_NI_saltbridge_values).all()
+    expected_Carboxylate_NI_saltbridge_values = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert (df['166ARGA_4220,4221_Carboxylate_NI_saltbridge'] == expected_Carboxylate_NI_saltbridge_values).all()
     
     expected_63ARGA_4201_Acceptor_waterbridge_values = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (df['63ARGA_4201_Acceptor_waterbridge'] == expected_63ARGA_4201_Acceptor_waterbridge_values).all()
