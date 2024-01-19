@@ -562,7 +562,7 @@ def test_df_iteration_numbering():
     df['TARGET_IDX'] = target_idx_values
 
     # Define the values for the "METAL_TYPE" column
-    metal_type_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Fe]
+    metal_type_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Fe"]
 
     # Add the "TARGET_IDX" column to the DataFrame
     df['METAL_TYPE'] = metal_type_values
