@@ -4,7 +4,7 @@
 This is a detailed explanation on how to run the **OpenMMDL Setup**.
 
 .. figure:: /_static/images/OpenMMDL_Setup.png
-    :figwidth: 700px
+    :figwidth: 600px
     :height: 200px
     :align: center
 
