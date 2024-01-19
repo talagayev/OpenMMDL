@@ -22,7 +22,9 @@ OpenMMDL  @ Molecular Design Lab
 
 *OpenMMDL Setup* - A webserver tool that allows to modify the Protein and generate Input Files for MD Simulations.
 
-*OpenMMDL Simulation* - A script that performs a OpenMM MD Simulation with your Input files and further postprocesses the MD Simulation with MDTraj and MDAnalysis.
+*OpenMMDL Simulation* - Performs a OpenMM MD Simulation with your Input files and further postprocesses the MD Simulation with MDTraj and MDAnalysis.
+
+*OpenMMDL Analysis* - Analyzes the protein-ligand interactions in the OpenMM MD Simulation trajectories.
 
 
 
