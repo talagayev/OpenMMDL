@@ -125,7 +125,7 @@ Final_Output
 ------------------------------
 **Final_Output**: A folder that contains the final files after the MD Simulation, ready to be analyzed. This folder contains 2 subfolders.
 
-1. *All_Atoms*: Folder that contains the centered topology files with new coordinates according to the center of mass.
+1. *All_Atoms*: Folder that contains the centered topology files of all atoms with new coordinates according to the center of mass.
 
 .. list-table::
    :header-rows: 1
@@ -133,18 +133,18 @@ Final_Output
 
    * - Name
      - Description
-   * - centered_top.pdb
+   * - centered_top.pdb*
      - Topology File of the centered protein in PDB Format with all atoms and new coordinates.
-   * - centered_top.gro
+   * - centered_top.gro*
      - Topology File of the centered protein in Gromacs GRO Format with all atoms and new coordinates.
-   * - centered_traj.dcd
+   * - centered_traj.dcd*
      - Trajectory File of the aligned centered protein in DCD Format with all atoms and new coordinates.
-   * - centered_traj.xtc
-     - Trajectory File of the centered protein in XTC Format with all atoms and new coordinates.
+   * - centered_traj.xtc*
+     - Trajectory File of the aligned centered protein in XTC Format with all atoms and new coordinates.
 
 
 
-2. *Prot_Lig*: Folder that contains the centered topology files with new coordinates according to the center of mass.
+2. *Prot_Lig*: Folder that contains the centered topology files of only the protein and ligand atoms with new coordinates according to the center of mass.
 
 
 
