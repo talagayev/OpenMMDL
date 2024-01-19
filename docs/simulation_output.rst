@@ -6,23 +6,22 @@ The OpenMMDL Simulation script creates output folders and files during and after
 The following list contains an detailed overview of the folders and files:
 The Optional files are highlighted with an *asteriks**
 
-Analysis
+Input_Files
 ------------------------------
-**Analysis**: A folder that contains RMSD Analysis of the MD Simulation performed with MDAnaylsis:
+**Input_Files**: A folder that contains the PDF and SDF files, which served as Input Files for the MD Simulation.
+
 
 
 .. list-table::
    :header-rows: 1
-   :widths: 25 50
+   :widths: 25 75
 
    * - Name
      - Description
-   * - RMSD_between_the_frames.png
-     - Displays the RMSD between the frames of the protein and ligand.
-   * - RMSD_over_time.png
-     - Displays the RMSD of the protein, backbone and ligand during the simulation.
-   * - RMSD_over_time.csv
-     -  Displays the Data used in RMSD_over_time.png.
+   * - Protein_name.pdb*
+     - Protein PDB File that served as the input for the MD Simulation.
+   * - ligand_name.sdf*
+     - Ligand SDF File that served as the input for the MD Simulation.
 
 Checkpoints
 ------------------------------
@@ -42,24 +41,6 @@ Checkpoints
      - Checkpoint saved every 100000 steps.
    * - 100x_checkpoint.chk*
      - Checkpoint saved every 1000000 steps.
-
-Input_Files
-------------------------------
-**Input_Files**: A folder that contains the PDF and SDF files, which served as Input Files for the MD Simulation.
-
-
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Name
-     - Description
-   * - Protein_name.pdb*
-     - Protein PDB File that served as the input for the MD Simulation.
-   * - ligand_name.sdf*
-     - Ligand SDF File that served as the input for the MD Simulation.
-
 
 MD_Files
 ------------------------------
@@ -147,14 +128,22 @@ MD_Postprocessing
    * - centered_top.gro
      - Topology File of the centered protein in Gromacs GRO Format with all atoms and new coordinates.
    * - centered_traj.dcd
-     - Trajectory File of the centered protein in DCD Format with all atoms and new coordinates.
+     - Trajectory File of the aligned centered protein in DCD Format with all atoms and new coordinates.
+   * - centered_traj_unaligned.dcd
+     - Trajectory File of the unaligned centered protein in DCD Format with all atoms and new coordinates.
    * - centered_traj.xtc
      - Trajectory File of the centered protein in XTC Format with all atoms and new coordinates.
+   * - centered_traj_unaligned.xtc
+     - Trajectory File of the unaligned centered protein in XTC Format with all atoms and new coordinates.
    * - prot_lig_top.pdb*
      - Topology File of the centered protein in PDB Format with only protein and ligand atoms and new coordinates.
    * - prot_lig_top.gro*
      - Topology File of the centered protein in Gromacs GRO Format with only protein and ligand atoms and new coordinates.
    * - prot_lig_traj.dcd*
      - Trajectory File of the centered protein in DCD Format with only protein and ligand atoms and new coordinates.
+   * - prot_lig_traj_unaligned.dcd*
+     - Trajectory File of the unaligned centered protein in DCD Format with only protein and ligand atoms and new coordinates.
    * - prot_lig_traj.xtc*
      - Trajectory File of the centered protein in XTC Format with only protein and ligand atoms and new coordinates.
+   * - prot_lig_traj_unaligned.xtc*
+     - Trajectory File of the unaligned centered protein in XTC Format with only protein and ligand atoms and new coordinates.
