@@ -3,7 +3,7 @@
 This is a detailed explanation on how to use **OpenMMDL Simulation**.
 
 .. figure:: /_static/images/OpenMMDL_Simulation_logo.png
-    :figwidth: 700px
+    :figwidth: 600px
     :align: center
 
 **OpenMMDL Simulation** starts the MD simulation with the inputs acquired from **OpenMMDL Setup**.
