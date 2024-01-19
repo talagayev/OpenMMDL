@@ -112,10 +112,20 @@ MD_Postprocessing
      - Trajectory File of the centered protein in DCD Format.
    * - centered_old_coordinates.xtc
      - Trajectory File of the centered protein in XTC Format.
+   * - centered_traj_unaligned.dcd
+     - Trajectory File of the unaligned centered protein in DCD Format with all atoms and new coordinates.
+   * - centered_traj_unaligned.xtc
+     - Trajectory File of the unaligned centered protein in XTC Format with all atoms and new coordinates.
+   * - prot_lig_traj_unaligned.dcd*
+     - Trajectory File of the unaligned centered protein in DCD Format with only protein and ligand atoms and new coordinates.
+   * - prot_lig_traj_unaligned.xtc*
+     - Trajectory File of the unaligned centered protein in XTC Format with only protein and ligand atoms and new coordinates.
      
-     
-*2_MDTraj*: Folder that contains the centered topology files with new coordinates according to the center of mass.
+Final_Output
+------------------------------
+**Final_Output**: A folder that contains the final files after the MD Simulation, ready to be analyzed. This folder contains 2 subfolders.
 
+*All_Atoms*: Folder that contains the centered topology files with new coordinates according to the center of mass.
 
 .. list-table::
    :header-rows: 1
@@ -129,21 +139,14 @@ MD_Postprocessing
      - Topology File of the centered protein in Gromacs GRO Format with all atoms and new coordinates.
    * - centered_traj.dcd
      - Trajectory File of the aligned centered protein in DCD Format with all atoms and new coordinates.
-   * - centered_traj_unaligned.dcd
-     - Trajectory File of the unaligned centered protein in DCD Format with all atoms and new coordinates.
    * - centered_traj.xtc
      - Trajectory File of the centered protein in XTC Format with all atoms and new coordinates.
-   * - centered_traj_unaligned.xtc
-     - Trajectory File of the unaligned centered protein in XTC Format with all atoms and new coordinates.
    * - prot_lig_top.pdb*
      - Topology File of the centered protein in PDB Format with only protein and ligand atoms and new coordinates.
    * - prot_lig_top.gro*
      - Topology File of the centered protein in Gromacs GRO Format with only protein and ligand atoms and new coordinates.
    * - prot_lig_traj.dcd*
      - Trajectory File of the centered protein in DCD Format with only protein and ligand atoms and new coordinates.
-   * - prot_lig_traj_unaligned.dcd*
-     - Trajectory File of the unaligned centered protein in DCD Format with only protein and ligand atoms and new coordinates.
    * - prot_lig_traj.xtc*
      - Trajectory File of the centered protein in XTC Format with only protein and ligand atoms and new coordinates.
-   * - prot_lig_traj_unaligned.xtc*
-     - Trajectory File of the unaligned centered protein in XTC Format with only protein and ligand atoms and new coordinates.
+
