@@ -72,7 +72,8 @@ Two scripts are needed to run simulations via slurm. Start using the `runOpenMM_
 
     bash runOpenMM_slurm.sh
     
-without any flags, it will list the flags needed. The simplest way to run a simulation is to use the `-i` flag, which takes an input directory including the simulation script, the topology and optionally the ligand file and it will create the outputs folder within the given directory. NOTE: make sure only one topology is present in the input folder, so that it finds it automatically.
+without any flags, it will list the flags needed. The simplest way to run a simulation is to use the `-i` flag, which takes an input directory including the simulation script, the topology and optionally the ligand file and it will create the outputs folder within the given directory. 
+NOTE: make sure only one topology is present in the input folder, so that it finds it automatically.
 
 The script calls a second script (you don't need to do that) that is used for slurms `sbatch` command to run multiple replicas. The second script can be left where it is and named how it is (SlurmWrap.sh).
 
