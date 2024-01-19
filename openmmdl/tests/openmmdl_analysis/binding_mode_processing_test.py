@@ -542,8 +542,14 @@ def test_df_iteration_numbering():
     # Define the values for the "DONOR_IDX" column
     donor_idx_values = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4005.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4228.0]
 
-    # Add the "ACCEPTOR_IDX" column to the DataFrame
+    # Add the "DONOR_IDX" column to the DataFrame
     df['DONOR_IDX'] = donor_idx_values
+
+    # Define the values for the "DON_IDX" column
+    don_idx_values = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4005.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4228.0]
+
+    # Add the "DON_IDX" column to the DataFrame
+    df['DON_IDX'] = don_idx_values
     
     # Define the values for the "LIG_IDX_LIST" column
     lig_idx_list_values = [0, 0, 0, 0, 0, 0, 0, "4220,4221", 0, 0, 0, 0, 0, 0, 0, "4213,4214,4215,4216,4217,4218", "4213,4214,4215,4216,4217,4218", 0, 0]
