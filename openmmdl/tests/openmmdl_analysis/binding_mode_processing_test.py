@@ -463,7 +463,7 @@ def test_df_iteration_numbering():
         'Unnamed: 0': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
         'RESNR': [98, 63, 162, 161, 166, 165, 125, 166, 211, 227, 223, 165, 100, 59, 98, 207, 164, 155],
         'RESTYPE': ['PHE', 'ARG', 'ALA', 'PHE', 'ARG', 'ASP', 'TYR', 'ARG', 'PHE', 'LEU', 'THR', 'ASP', 'ASP', 'ARG', 'PHE', 'PHE', 'LYS', 'HEM'],
-        'RESCHAIN': ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A],
+        'RESCHAIN': ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
         'RESNR_LIG': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         'RESTYPE_LIG': ['UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'HEM'],
         'RESCHAIN_LIG': ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
