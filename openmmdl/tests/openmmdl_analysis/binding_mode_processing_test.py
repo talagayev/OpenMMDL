@@ -572,19 +572,19 @@ def test_df_iteration_numbering():
     # Define the values for the "METAL_TYPE" column
     metal_type_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Fe", 0]
 
-    # Add the "TARGET_IDX" column to the DataFrame
+    # Add the "METAL_TYPE" column to the DataFrame
     df['METAL_TYPE'] = metal_type_values
 
     # Define the values for the "COORDINATION" column
     coordination_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0]
 
-    # Add the "TARGET_IDX" column to the DataFrame
+    # Add the "COORDINATION" column to the DataFrame
     df['COORDINATION'] = coordination_values
 
-    # Define the values for the "DONOR_TYPE" column
+    # Define the values for the "DONORTYPE" column
     donor_type_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "F"]
 
-    # Add the "TARGET_IDX" column to the DataFrame
+    # Add the "DONORTYPE" column to the DataFrame
     df['DONORTYPE'] = donor_type_values
 
     
