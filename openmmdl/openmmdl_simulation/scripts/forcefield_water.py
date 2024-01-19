@@ -164,9 +164,7 @@ def generate_forcefield(protein_ff, solvent_ff, add_membrane, rdkit_mol=None):
     
     # If a ligand is present, a Forcefield with GAFF will be created for the ligand 
     if rdkit_mol is not None:
-        gaff = GAFFTemplateGenerator(
-            molecules=Molecule.from_rdkit(rdkit_mol, allow_undefined_stereo=True), forcefield = 'gaff-2.11'
-        )
+        gaff = GAFFTemplateGenerator(molecules=Molecule.from_rdkit(rdkit_mol, allow_undefined_stereo=True), forcefield = 'gaff-2.11')
         forcefield.registerTemplateGenerator(gaff.generator)
 
     return forcefield
@@ -203,9 +201,7 @@ def generate_transitional_forcefield(protein_ff, solvent_ff, add_membrane, rdkit
     
     # If a ligand is present, a Forcefield with GAFF will be created for the ligand 
     if rdkit_mol is not None:
-        gaff = GAFFTemplateGenerator(
-            molecules=Molecule.from_rdkit(rdkit_mol, allow_undefined_stereo=True), forcefield = 'gaff-2.11'
-        )
+        gaff = GAFFTemplateGenerator(molecules=Molecule.from_rdkit(rdkit_mol, allow_undefined_stereo=True), forcefield = 'gaff-2.11')
         transitional_forcefield.registerTemplateGenerator(gaff.generator)
 
     return transitional_forcefield
