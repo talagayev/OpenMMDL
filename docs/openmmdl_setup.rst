@@ -5,7 +5,7 @@ This is a detailed explanation on how to run the **OpenMMDL Setup**.
 
 .. figure:: /_static/images/OpenMMDL_Setup.png
     :figwidth: 700px
-    :height: 600px
+    :height: 200px
     :align: center
 
 To start the **OpenMMDL Setup** we need to activate the openmmdl environment. to do this we have to enter the following command lines:
