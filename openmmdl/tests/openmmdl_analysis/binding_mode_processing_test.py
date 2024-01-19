@@ -460,25 +460,26 @@ def test_filtering_values_with_provided_data():
 def test_df_iteration_numbering():
     # Sample DataFrame for testing
     data = {
-        'Unnamed: 0': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-        'RESNR': [98, 63, 162, 161, 166, 165, 125, 166, 211, 227, 223, 165, 100, 59, 98, 207, 164],
-        'RESTYPE': ['PHE', 'ARG', 'ALA', 'PHE', 'ARG', 'ASP', 'TYR', 'ARG', 'PHE', 'LEU', 'THR', 'ASP', 'ASP', 'ARG', 'PHE', 'PHE', 'LYS'],
-        'RESCHAIN': ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
-        'RESNR_LIG': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        'RESTYPE_LIG': ['UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK'],
-        'RESCHAIN_LIG': ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
-        'DIST': [3.46, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 3.36, 3.61, 3.84, 3.62, 3.72, 3.62, 3.99, 3.65, 3.70, 5.16],
-        'LIGCARBONIDX': [4196.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4206.0, 4207.0, 4207.0, 4215.0, 4217.0, 4217.0, 4194.0, 4208.0, 0.0],
-        '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '166ARGA_4220,4221_Carboxylate_NI_saltbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '98PHEA_4194_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '63ARGA_4201_Acceptor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '166ARGA_4220_Acceptor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '98PHEA_4225_Donor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '207PHEA_4213,4214,4215,4216,4217,4218_pistacking': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '100ASPA_4005_Donor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        '59ARGA_4222_Acceptor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        'Unnamed: 0': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+        'RESNR': [98, 63, 162, 161, 166, 165, 125, 166, 211, 227, 223, 165, 100, 59, 98, 207, 164, 155],
+        'RESTYPE': ['PHE', 'ARG', 'ALA', 'PHE', 'ARG', 'ASP', 'TYR', 'ARG', 'PHE', 'LEU', 'THR', 'ASP', 'ASP', 'ARG', 'PHE', 'PHE', 'LYS', 'HEM'],
+        'RESCHAIN': ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A],
+        'RESNR_LIG': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'RESTYPE_LIG': ['UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'UNK', 'HEM'],
+        'RESCHAIN_LIG': ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
+        'DIST': [3.46, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 3.36, 3.61, 3.84, 3.62, 3.72, 3.62, 3.99, 3.65, 3.70, 5.16, 2.55],
+        'LIGCARBONIDX': [4196.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4206.0, 4207.0, 4207.0, 4215.0, 4217.0, 4217.0, 4194.0, 4208.0, 0.0, 0.0],
+        '162ALAA_4214_4215_4216_4217_4218_4213_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '166ARGA_4220,4221_Carboxylate_NI_saltbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '98PHEA_4194_hydrophobic': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '63ARGA_4201_Acceptor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '166ARGA_4220_Acceptor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '98PHEA_4225_Donor_hbond': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '207PHEA_4213,4214,4215,4216,4217,4218_pistacking': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '100ASPA_4005_Donor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        '59ARGA_4222_Acceptor_waterbridge': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        'HEM_4255_Fe_4.0_metal': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
 
     df = pd.DataFrame(data)
@@ -500,58 +501,77 @@ def test_df_iteration_numbering():
     'waterbridge',
     'hydrophobic',
     'pistacking',
-    'pication'
+    'pication',
+    'metal'
 ]
     df['INTERACTION'] = interactions
 
     
     # Define the values for the "PROTISDON" column
-    protisdon_values = [False, True, True, True, True, True, True, 0, 0, 0, 0, 0, False, True, 0, 0, 0]
+    protisdon_values = [False, True, True, True, True, True, True, 0, 0, 0, 0, 0, False, True, 0, 0, 0, 0]
 
     # Update the "PROTISDON" column in the DataFrame
     df['PROTISDON'] = protisdon_values
 
     # Define the values for the "Prot_partner" column
-    prot_partner_values = ['98PHEA', '63ARGA', '162ALAA', '161PHEA', '166ARGA', '165ASPA', '125TYRA', '166ARGA', '211PHEA', '227LEUA', '223THRA', '165ASPA', '100ASPA', '59ARGA', '98PHEA', '207PHEA', '164LYSA']
+    prot_partner_values = ['98PHEA', '63ARGA', '162ALAA', '161PHEA', '166ARGA', '165ASPA', '125TYRA', '166ARGA', '211PHEA', '227LEUA', '223THRA', '165ASPA', '100ASPA', '59ARGA', '98PHEA', '207PHEA', '164LYSA', '105HEM']
 
     # Update the "Prot_partner" column in the DataFrame
     df['Prot_partner'] = prot_partner_values
 
     # Define the values for the "ACCEPTORIDX" column
-    acceptoridx_values = [0.0, 0.0, 4221.0, 4221.0, 4220.0, 4220.0, 4192.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    acceptoridx_values = [0.0, 0.0, 4221.0, 4221.0, 4220.0, 4220.0, 4192.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
     # Update the "ACCEPTORIDX" column in the DataFrame
     df['ACCEPTORIDX'] = acceptoridx_values
 
     # Define the values for the "DONORIDX" column
-    donoridx_values = [4225.0, 0.0, 2417.0, 2397.0, 2468.0, 2456.0, 1828.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    donoridx_values = [4225.0, 0.0, 2417.0, 2397.0, 2468.0, 2456.0, 1828.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
     # Update the "ACCEPTORIDX" column in the DataFrame
     df['DONORIDX'] = donoridx_values
 
     # Define the values for the "ACCEPTOR_IDX" column
-    acceptor_idx_values = [0.0, 4201.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4222.0, 0.0, 0.0, 0.0]
+    acceptor_idx_values = [0.0, 4201.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4222.0, 0.0, 0.0, 0.0, 0.0]
 
     # Add the "ACCEPTOR_IDX" column to the DataFrame
     df['ACCEPTOR_IDX'] = acceptor_idx_values
 
     # Define the values for the "DONOR_IDX" column
-    donor_idx_values = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4005.0, 0.0, 0.0, 0.0, 0.0]
+    donor_idx_values = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4005.0, 0.0, 0.0, 0.0, 0.0. 0.0]
 
     # Add the "ACCEPTOR_IDX" column to the DataFrame
     df['DONOR_IDX'] = donor_idx_values
     
     # Define the values for the "LIG_IDX_LIST" column
-    lig_idx_list_values = [0, 0, 0, 0, 0, 0, 0, "4220,4221", 0, 0, 0, 0, 0, 0, 0, "4213,4214,4215,4216,4217,4218", "4213,4214,4215,4216,4217,4218"]
+    lig_idx_list_values = [0, 0, 0, 0, 0, 0, 0, "4220,4221", 0, 0, 0, 0, 0, 0, 0, "4213,4214,4215,4216,4217,4218", "4213,4214,4215,4216,4217,4218", 0]
 
     # Add the "LIG_IDX_LIST" column to the DataFrame
     df['LIG_IDX_LIST'] = lig_idx_list_values
 
     # Define the values for the "LIG_GROUP" column
-    lig_group_values = [0, 0, 0, 0, 0, 0, 0, "Carboxylate", 0, 0, 0, 0, 0, 0, 0, "Aromatic", "Aromatic"]
+    lig_group_values = [0, 0, 0, 0, 0, 0, 0, "Carboxylate", 0, 0, 0, 0, 0, 0, 0, "Aromatic", "Aromatic", 0]
 
     # Add the "LIG_GROUP" column to the DataFrame
     df['LIG_GROUP'] = lig_group_values
+
+    # Define the values for the "TARGET_IDX" column
+    target_idx_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4255]
+
+    # Add the "TARGET_IDX" column to the DataFrame
+    df['TARGET_IDX'] = target_idx_values
+
+    # Define the values for the "METAL_TYPE" column
+    metal_type_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "Fe]
+
+    # Add the "TARGET_IDX" column to the DataFrame
+    df['METAL_TYPE'] = metal_type_values
+
+    # Define the values for the "COORDINATION" column
+    coordination_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4]
+
+    # Add the "TARGET_IDX" column to the DataFrame
+    df['COORDINATION'] = target_idx_values
     
     # Updated unique_data dictionary
     unique_data = {
@@ -564,37 +584,43 @@ def test_df_iteration_numbering():
         '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication': '164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication',
         '207PHEA_4213,4214,4215,4216,4217,4218_pistacking': '207PHEA_4213,4214,4215,4216,4217,4218_pistacking',
         '59ARGA_4222_Acceptor_waterbridge': '59ARGA_4222_Acceptor_waterbridge',
-        '100ASPA_4005_Donor_waterbridge': '100ASPA_4005_Donor_waterbridge'
+        '100ASPA_4005_Donor_waterbridge': '100ASPA_4005_Donor_waterbridge',
+        'HEM_4255_Fe_4.0_metal': 'HEM_4255_Fe_4.0_metal'
     }
 
 
     # Call the function with the sample DataFrame and unique_data
     df_iteration_numbering(df, unique_data)
 
-    expected_98PHEA_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+    expected_98PHEA_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
     assert (df['98PHEA_4194_hydrophobic'] == expected_98PHEA_values).all()
 
-    expected_166ARGA_4220_Acceptor_hbond_values = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    expected_166ARGA_4220_Acceptor_hbond_values = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (df['166ARGA_4220_Acceptor_hbond'] == expected_166ARGA_4220_Acceptor_hbond_values).all()
 
-    expected_63ARGA_4201_Acceptor_waterbridge_values = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    expected_4221_Carboxylate_NI_saltbridge_values = [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    assert (df['4221_Carboxylate_NI_saltbridge'] == expected_4221_Carboxylate_NI_saltbridge_values).all()
+    
+    expected_63ARGA_4201_Acceptor_waterbridge_values = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (df['63ARGA_4201_Acceptor_waterbridge'] == expected_63ARGA_4201_Acceptor_waterbridge_values).all()
 
-    expected_98PHEA_4225_Donor_hbond_values = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    expected_98PHEA_4225_Donor_hbond_values = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     assert (df['98PHEA_4225_Donor_hbond'] == expected_98PHEA_4225_Donor_hbond_values).all()
 
-    expected_164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    expected_164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
     assert (df['164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication'] == expected_164LYSA_4213_4214_4215_4216_4217_4218_Aromatic_pication_values).all()
 
-    expected_207PHEA_4213_4214_4215_4216_4217_4218_pistacking_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+    expected_207PHEA_4213_4214_4215_4216_4217_4218_pistacking_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     assert (df['207PHEA_4213,4214,4215,4216,4217,4218_pistacking'] == expected_207PHEA_4213_4214_4215_4216_4217_4218_pistacking_values).all()
 
-    expected_59ARGA_4222_Acceptor_waterbridge_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+    expected_59ARGA_4222_Acceptor_waterbridge_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
     assert (df['59ARGA_4222_Acceptor_waterbridge'] == expected_59ARGA_4222_Acceptor_waterbridge_values).all()
 
-    expected_100ASPA_4005_Donor_waterbridge_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]
+    expected_100ASPA_4005_Donor_waterbridge_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
     assert (df['100ASPA_4005_Donor_waterbridge'] == expected_100ASPA_4005_Donor_waterbridge_values).all()
 
+    expected_HEM_4255_Fe_4_metal_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    assert (df['HEM_4255_Fe_4.0_metal'] == expected_HEM_4255_Fe_4_metal_values).all()
 
 @pytest.fixture
 def sample_dataframe_it_peptides():
