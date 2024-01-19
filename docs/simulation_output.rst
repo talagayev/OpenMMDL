@@ -93,10 +93,7 @@ MD_Files
 
 MD_Postprocessing
 ------------------------------
-**MD_Postprocessing**: A folder that contains the postprocessing files after the MD Simulation. This folder contains 2 subfolders.
-
-*1_MDTraj*: Folder that contains the centered topology files with old coordinates.
-
+**MD_Postprocessing**: A folder that contains the postprocessing files after the MD Simulation.
 
 .. list-table::
    :header-rows: 1
