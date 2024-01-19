@@ -355,7 +355,6 @@ def test_gather_interactions_with_peptides(sample_dataframe_bindingmode_processi
     assert result == expected_result
 
 
-
 @pytest.fixture
 def test_remove_duplicates_data():
     input_data = {
