@@ -14,7 +14,7 @@ OpenMMDL  @ Molecular Design Lab
     :alt: Documentation Status
 
 .. figure:: /_static/images/OpenMMDL_logo_2.png
-   :figwidth: 400px
+   :figwidth: 700px
    :align: center
 
 
