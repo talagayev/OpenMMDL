@@ -585,7 +585,7 @@ def test_df_iteration_numbering():
     donor_type_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "F"]
 
     # Add the "TARGET_IDX" column to the DataFrame
-    df['DONOR_TYPE'] = metal_type_values
+    df['DONORTYPE'] = donor_type_values
 
     
     # Updated unique_data dictionary
