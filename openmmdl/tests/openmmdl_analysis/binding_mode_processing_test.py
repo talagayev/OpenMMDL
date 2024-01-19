@@ -538,7 +538,7 @@ def test_df_iteration_numbering():
     df['ACCEPTOR_IDX'] = acceptor_idx_values
 
     # Define the values for the "DONOR_IDX" column
-    donor_idx_values = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4005.0, 0.0, 0.0, 0.0, 0.0. 0.0]
+    donor_idx_values = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4005.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
     # Add the "ACCEPTOR_IDX" column to the DataFrame
     df['DONOR_IDX'] = donor_idx_values
