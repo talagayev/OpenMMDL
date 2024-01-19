@@ -46,7 +46,7 @@ For help during usage of OpenMMDL-Simulation use the following command line:
 
     openmmdl_simulation -h all
 
-Running **OpenMMDL Simulation** test simulations
+Running OpenMMDL Simulation test simulations
 ------------------------------
 There are two Systems prepared for the testing of the simulation.
 
@@ -64,17 +64,17 @@ There are two Systems prepared for the testing of the simulation.
 
 Each of the command lines should generate a folder, where the script and the input data will be moved and further perform a MD simulation and postprocessing of the systems.
 
-Running **OpenMMDL Simulation** using slurm
+Running OpenMMDL Simulation using slurm
 ------------------------------
-Two scripts are needed to run simulations via slurm. Start using the runOpenMM_slurm.sh bash script when being in the repository folder. It has several inputs. For help just type:
+Two scripts are needed to run simulations via slurm. Start using the `runOpenMM_slurm.sh` bash script when being in the repository folder. It has several inputs. For help just type:
 
 .. code-block:: text
 
     bash runOpenMM_slurm.sh
     
-without any flags, it will list the flags needed. The simplest way to run a simulation is to use the "-i" flag, which takes an input directory including the simulation script, the topology and optionally the ligand file and it will create the outputs folder within the given directory. NOTE: make sure only one topology is present in the input folder, so that it finds it automatically.
+without any flags, it will list the flags needed. The simplest way to run a simulation is to use the `-i` flag, which takes an input directory including the simulation script, the topology and optionally the ligand file and it will create the outputs folder within the given directory. NOTE: make sure only one topology is present in the input folder, so that it finds it automatically.
 
-The script calls a second script (you don't need to do that) that is used for slurms "sbatch" command to run multiple replicas. The second script can be left where it is and named how it is (SlurmWrap.sh).
+The script calls a second script (you don't need to do that) that is used for slurms `sbatch` command to run multiple replicas. The second script can be left where it is and named how it is (SlurmWrap.sh).
 
 One example line of how to start a five replicas on cn-gpus would be:
 
