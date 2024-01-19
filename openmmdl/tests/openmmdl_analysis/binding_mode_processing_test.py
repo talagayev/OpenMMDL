@@ -571,7 +571,7 @@ def test_df_iteration_numbering():
     coordination_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4]
 
     # Add the "TARGET_IDX" column to the DataFrame
-    df['COORDINATION'] = target_idx_values
+    df['COORDINATION'] = coordination_values
     
     # Updated unique_data dictionary
     unique_data = {
