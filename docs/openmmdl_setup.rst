@@ -7,7 +7,6 @@ This is a detailed explanation on how to run the **OpenMMDL Setup**.
     :figwidth: 725px
     :height: 115px
     :align: center
-|  
 To start the **OpenMMDL Setup** we need to activate the openmmdl environment. to do this we have to enter the following command lines:
 
 .. code-block:: text
