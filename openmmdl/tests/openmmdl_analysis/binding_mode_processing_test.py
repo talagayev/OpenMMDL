@@ -530,7 +530,7 @@ def test_df_iteration_numbering():
     # Define the values for the "DONORIDX" column
     donoridx_values = [4225.0, 0.0, 2417.0, 2397.0, 2468.0, 2456.0, 1828.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
-    # Update the "ACCEPTORIDX" column in the DataFrame
+    # Update the "DONORIDX" column in the DataFrame
     df['DONORIDX'] = donoridx_values
 
     # Define the values for the "ACCEPTOR_IDX" column
