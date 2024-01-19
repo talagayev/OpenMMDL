@@ -1,27 +1,27 @@
 **Running OpenMMDL Setup**
 =============================
 
-This is a detailed explanation on how to run the OpenMMDL Setup.
+This is a detailed explanation on how to run the **OpenMMDL Setup**.
 
 .. figure:: /_static/images/OpenMMDL_Setup.png
     :figwidth: 600px
     :align: center
 
-To start the OpenMMDL Setup we need to activate the openmmdl environment. to do this we have to enter the following command lines:
+To start the **OpenMMDL Setup** we need to activate the openmmdl environment. to do this we have to enter the following command lines:
 
 .. code-block:: text
 
     conda activate openmmdl
 
-Now that we have activated the openmmdl environment we can start OpenMMDL Setup. To do this you need to type the following:
+Now that we have activated the openmmdl environment we can start **OpenMMDL Setup**. To do this you need to type the following:
 
 .. code-block:: text
 
     openmmdl_setup
 
-This will open the OpenMMDL-Setup, which you can use for the creation of the input files for OpenMMDL Simulation.
+This will open the **OpenMMDL Setup**, which you can use for the creation of the input files for OpenMMDL Simulation.
 
-There are two possible options to create the input files for OpenMMDL Simulation:
+There are two possible options to create the input files for **OpenMMDL Simulation**:
 
 1. The PDBFixer Path, where a `pdb` file of the protein is used as an input for the preparation and simulation.
 The tutorial for the PDBFixer Path can be found :doc:`here </tutorial_pdb_path>`.
