@@ -15,7 +15,6 @@ OpenMMDL  @ Molecular Design Lab
 
 .. figure:: /_static/images/OpenMMDL_logo_2.png
    :figwidth: 600px
-   :height: 115px
    :align: center
 
 
