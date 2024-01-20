@@ -79,7 +79,9 @@ def test_plot_waterbridge_piechart(tmp_path):
     waterbridge_barcodes = [np.array([1, 0, 1, 0]), np.array([0, 1, 0, 1])]
     waterbridge_interactions = ['interaction1', 'interaction2']
 
-    # Create the necessary directories
+    # Change the current working directory to tmp_path
+
+    # Use os.makedirs 
     os.makedirs(f"{tmp_path}/Barcodes/Waterbridge_Piecharts/", exist_ok=True)
 
     # Call the function
@@ -87,7 +89,7 @@ def test_plot_waterbridge_piechart(tmp_path):
 
     # Check if the output files are created
     for interaction in waterbridge_interactions:
-        outname_png = f"{tmp_path}/Barcodes/Waterbridge_Piecharts/{interaction}.png"
+        outname_png = f"./Barcodes/Waterbridge_Piecharts/{interaction}.png"
         assert os.path.isfile(outname_png), f"File {outname_png} not found."
 
         # Additional assertions for content or specific properties of the generated files
