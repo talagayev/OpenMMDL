@@ -175,8 +175,7 @@ def test_save_interacting_waters_trajectory(input_paths):
     os.remove(f"{outputpath}interacting_waters.dcd")
 
 
-def test_visualization(mock_show_mdtraj, mock_open, mock_data):
-
+def test_visualization():
     shutil.copy(str(clouds), '.')
     shutil.copy(str(waters_pdb), '.')
     shutil.copy(str(waters_dcd), '.')
