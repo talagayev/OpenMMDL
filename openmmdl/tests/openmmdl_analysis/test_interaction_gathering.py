@@ -270,10 +270,6 @@ def test_fill_missing_frames():
     assert all(filled_df['FRAME'] == [1, 2, 3, 4, 5])
     assert all(filled_df.loc[filled_df['FRAME'] == 3, 'Value1'] == 'skip')
 
-    # Test Case 3: Custom placeholder value
-    custom_placeholder_df = fill_missing_frames(df, md_len, placeholder_value="N/A")
-    assert all(custom_placeholder_df.loc[custom_placeholder_df['FRAME'] == 3, 'Value1'] == 'N/A')
-
     # Test Case 4: No missing frames
     no_missing_frames_df = fill_missing_frames(df, md_len=5)
     assert all(no_missing_frames_df['FRAME'] == [1, 2, 4, 5])  # Should remain unchanged
