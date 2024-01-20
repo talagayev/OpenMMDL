@@ -130,6 +130,54 @@ def test_process_frame_with_sample_data():
     for column in expected_columns:
         assert column in result.columns
 
+
+def test_process_frame_with_sample_data_peptide():
+    # Define a sample frame number
+    frame_number = 1
+
+    # Define paths and filenames
+    destination_file = f"processing_frame_{frame_number}.pdb"
+    peptide_destination_file = f"processing_frame_{frame_number}_peptide.pdb"
+
+    # Copy the frame file to the destination file for testing purposes
+    shutil.copy(frame_file, destination_file)
+
+    # Load the sample PDB file into an MDAnalysis Universe
+    sample_universe = mda.Universe(topology_file)
+
+    # Call the process_frame function with the sample data for ligand
+    result_ligand = process_frame(frame_number, sample_universe, lig_name)
+
+    # Define the expected columns you want to check for ligand
+    expected_columns_ligand = ["FRAME", "INTERACTION", "TARGET_IDX"]  # Add specific columns for ligand
+
+    # Check if the result is a Pandas DataFrame for ligand
+    assert isinstance(result_ligand, pd.DataFrame)
+
+    # Check if all expected columns are present in the result for ligand
+    for column in expected_columns_ligand:
+        assert column in result_ligand.columns
+
+    # Clean up the ligand processing frame file
+    os.remove(destination_file)
+
+    # Call the process_frame function with the sample data for peptide
+    result_peptide = process_frame(frame_number, sample_universe, peptide='X', special=None)
+
+    # Define the expected columns you want to check for peptide
+    expected_columns_peptide = ["FRAME", "INTERACTION", "TARGET_IDX"]  # Add specific columns for peptide
+
+    # Check if the result is a Pandas DataFrame for peptide
+    assert isinstance(result_peptide, pd.DataFrame)
+
+    # Check if all expected columns are present in the result for peptide
+    for column in expected_columns_peptide:
+        assert column in result_peptide.columns
+
+    # Clean up the peptide processing frame file
+    os.remove(peptide_destination_file)
+
+
 def test_process_trajectory():
     topology_file = f"{test_data_directory}/0_unk_hoh.pdb"
     trajectory_file = f"{test_data_directory}/all_50.dcd"
