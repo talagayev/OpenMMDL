@@ -159,7 +159,7 @@ def test_process_frame_with_sample_data_peptide():
         assert column in result_ligand.columns
 
     # Call the process_frame function with the sample data for peptide
-    result_peptide = process_frame(frame_number, sample_universe, peptide='X', special=None)
+    result_peptide = process_frame(frame_number, sample_universe, lig_name, peptide='X', special=None)
 
     # Define the expected columns you want to check for peptide
     expected_columns_peptide = ["FRAME", "INTERACTION", "TARGET_IDX"]  # Add specific columns for peptide
