@@ -138,11 +138,12 @@ def test_process_frame_with_sample_data_special():
     special='HEM'
 
     destination_file = "processing_frame_1.pdb"
+    destination_file_complex = "complex.pdb"
     
-
     shutil.copy(frame_file, destination_file)
     shutil.copy(str(ligand_special), '.')
-    shutil.copy(str(topology_file), '.')
+    shutil.copy(str(topology_metal), '.')
+    shutil.copy(topology_metal, destination_file_complex)
 
     # Load the sample PDB file into an MDAnalysis Universe
     sample_universe = mda.Universe(topology_metal, trajetory_metal)
