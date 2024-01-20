@@ -17,6 +17,10 @@ def sample_rdkit_molecule():
 
 def test_ff_selection():
     assert ff_selection('AMBER14') == 'amber14-all.xml'
+    assert ff_selection('AMBER99SB') == 'amber99sb.xml'
+    assert ff_selection('AMBER99SB-ILDN') == 'amber99sbildn.xml'
+    assert ff_selection('AMBER03') == 'amber03.xml'
+    assert ff_selection('AMBER10') == 'amber10.xml'
     assert ff_selection('CHARMM36') == 'charmm36.xml'
     assert ff_selection('NonexistentFF') is None
 
