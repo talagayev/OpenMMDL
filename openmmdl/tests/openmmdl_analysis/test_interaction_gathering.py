@@ -262,22 +262,39 @@ def test_process_frame_wrapper():
 
 
 def test_fill_missing_frames():
-    # Create a sample DataFrame with missing frames
-    data = {'FRAME': [1, 2, 4, 5],
-            'Value1': ['A', 'B', 'C', 'D']}
+    # Test Case 1: Basic functionality
+    data = {'FRAME': [1, 2, 4, 5], 'Value1': ['A', 'B', 'C', 'D']}
     df = pd.DataFrame(data)
     md_len = 6
-
-
-    # Call the fill_missing_frames function
-    filled_df = fill_missing_frames(df, md_len)  # md_len = 6, should include frames 1 to 5
-
-    # Assert that all frame numbers from 1 to 5 are present in the 'FRAME' column
+    filled_df = fill_missing_frames(df, md_len)
     assert all(filled_df['FRAME'] == [1, 2, 3, 4, 5])
-
-    # Assert that missing frames have 'Value1' column set to "skip"
     assert all(filled_df.loc[filled_df['FRAME'] == 3, 'Value1'] == 'skip')
 
-    assert isinstance(filled_df, pd.DataFrame)
+    # Test Case 2: Empty DataFrame input
+    empty_df = pd.DataFrame(columns=['FRAME', 'Value1'])
+    filled_empty_df = fill_missing_frames(empty_df, md_len)
+    assert filled_empty_df.empty  # Ensure the result is also an empty DataFrame
+
+    # Test Case 3: Custom placeholder value
+    custom_placeholder_df = fill_missing_frames(df, md_len, placeholder_value="N/A")
+    assert all(custom_placeholder_df.loc[custom_placeholder_df['FRAME'] == 3, 'Value1'] == 'N/A')
+
+    # Test Case 4: No missing frames
+    no_missing_frames_df = fill_missing_frames(df, md_len=5)
+    assert all(no_missing_frames_df['FRAME'] == [1, 2, 4, 5])  # Should remain unchanged
+
+    # Test Case 5: DataFrame with additional columns
+    data_with_extra_columns = {'FRAME': [1, 2, 4, 5], 'Value1': ['A', 'B', 'C', 'D'], 'Value2': [10, 20, 30, 40]}
+    df_with_extra_columns = pd.DataFrame(data_with_extra_columns)
+    filled_df_extra_columns = fill_missing_frames(df_with_extra_columns, md_len)
+    assert all(filled_df_extra_columns['FRAME'] == [1, 2, 3, 4, 5])
+    assert all(filled_df_extra_columns.loc[filled_df_extra_columns['FRAME'] == 3, 'Value1'] == 'skip')
+    assert all(filled_df_extra_columns.loc[filled_df_extra_columns['FRAME'] == 3, 'Value2'] == 'skip')
+
+    # Additional assertions for concatenated DataFrame
+    assert len(filled_df_extra_columns) == len(df_with_extra_columns) + len(set(range(md_len)) - set(df_with_extra_columns['FRAME']))
+    assert all(filled_df_extra_columns['Value2'].notna())  # Values in the new rows should not be NaN
+
+
 if __name__ == "__main":
     pytest.main()
