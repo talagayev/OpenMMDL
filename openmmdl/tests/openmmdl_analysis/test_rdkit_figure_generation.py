@@ -59,6 +59,7 @@ def test_highlight_numbers():
     assert highlighted_waterbridge is not None
     assert highlighted_halogen is not None
     assert highlighted_ni is not None
+    assert highlighted_pi is not None
     assert highlighted_pication is not None
     assert highlighted_metal is not None
     
