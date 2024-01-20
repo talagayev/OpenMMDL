@@ -87,9 +87,26 @@ def test_water_model_selection():
     
     assert water_model_selection('TIP3P', 'NonexistentFF') is None
 
-def test_generate_forcefield(sample_rdkit_molecule):
+def test_generate_forcefield_with_membrane(sample_rdkit_molecule):
+    forcefield = generate_forcefield('amber14-all.xml', 'amber14/tip3p.xml', True, sample_rdkit_molecule)
+    assert isinstance(forcefield, app.ForceField)
+    # Add additional assertions specific to the case with a membrane
+
+def test_generate_forcefield_without_membrane(sample_rdkit_molecule):
     forcefield = generate_forcefield('amber14-all.xml', 'amber14/tip3p.xml', False, sample_rdkit_molecule)
     assert isinstance(forcefield, app.ForceField)
+    # Add additional assertions specific to the case without a membrane
+
+def test_generate_forcefield_with_old_amber_forcefield(sample_rdkit_molecule):
+    forcefield = generate_forcefield('amber99sb.xml', 'amber14/tip3p.xml', True, sample_rdkit_molecule)
+    assert isinstance(forcefield, app.ForceField)
+    # Add additional assertions specific to the case with an old Amber forcefield
+
+def test_generate_forcefield_without_small_molecule():
+    forcefield = generate_forcefield('amber14-all.xml', 'amber14/tip3p.xml', False)
+    assert isinstance(forcefield, app.ForceField)
+    # Add additional assertions specific to the case without a small molecule
+
 
 
 def test_generate_forcefield_membrane_logic(sample_rdkit_molecule):
