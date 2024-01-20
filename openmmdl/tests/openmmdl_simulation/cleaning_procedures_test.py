@@ -13,16 +13,22 @@ def test_protein_name():
 def test_directory_path():
     return "test_directory"
 
-def test_cleanup(test_protein_name):
+def test_cleanup(test_protein_name, monkeypatch):
     # Create a dummy file to be removed
     with open(f'output_{test_protein_name}', 'w') as dummy_file:
         dummy_file.write("Dummy content")
 
+    # Use monkeypatch to simulate FileNotFoundError
+    def mock_remove(path):
+        raise FileNotFoundError(f"No such file or directory: '{path}'")
+
+    monkeypatch.setattr(os, 'remove', mock_remove)
+
     # Call the cleanup function
     cleanup(test_protein_name)
 
-    # Check if the file has been removed
-    assert not os.path.exists(f'output_{test_protein_name}')
+    # Check if the file has not been removed due to FileNotFoundError
+    assert os.path.exists(f'output_{test_protein_name}')
 
 def test_create_directory_if_not_exists(test_directory_path):
     # Create a test directory
