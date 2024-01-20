@@ -80,14 +80,23 @@ def test_plot_waterbridge_piechart(tmp_path):
     waterbridge_interactions = ['interaction1', 'interaction2']
 
     # Change the current working directory to tmp_path
+    os.chdir(tmp_path)
 
-    # Use os.makedirs 
-    os.makedirs(f"{tmp_path}/Barcodes/Waterbridge_Piecharts/", exist_ok=True)
+    # Create the necessary directories
+    os.makedirs('Barcodes/Waterbridge_Piecharts', exist_ok=True)
 
     # Call the function
     plot_waterbridge_piechart(df_all, waterbridge_barcodes, waterbridge_interactions)
 
     # Check if the output files are created
     for interaction in waterbridge_interactions:
-        outname_png = f"./Barcodes/Waterbridge_Piecharts/{interaction}.png"
+        outname_png = f"Barcodes/Waterbridge_Piecharts/{interaction}.png"
         assert os.path.isfile(outname_png), f"File {outname_png} not found."
+
+        # Additional checks for content or specific properties of the generated files
+        # For example, you can check if the file size is greater than zero
+        assert os.path.getsize(outname_png) > 0, f"File {outname_png} is empty."
+
+        # You can also check if the generated images are valid, e.g., by trying to open them with matplotlib
+        img = plt.imread(outname_png)
+        assert img is not None, f"Unable to read image file {outname_png}."
