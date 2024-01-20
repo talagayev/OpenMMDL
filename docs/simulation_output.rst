@@ -26,7 +26,7 @@ Input_Files
 Checkpoints
 ------------------------------
 
-**Checkpoints**: A folder that contains Checkpoints, which can be used to restart the MD Simulation.
+**Checkpoints**: A folder that contains checkpoints, which can be used to restart the MD Simulation.
 
 
 .. list-table::
