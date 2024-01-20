@@ -181,8 +181,8 @@ def mock_data():
         'interacting_waters.pkl': [1, 2, 3]  # Mock pickled data
     }
 
-@patch('visualization.open', create=True)
-@patch('visualization.nv.show_mdtraj')
+@patch('builtins.open', create=True)
+@patch('nv.show_mdtraj')
 def test_visualization(mock_show_mdtraj, mock_open, mock_data):
     ligand_name = "your_ligand_name"
     receptor_type = "protein"
