@@ -158,9 +158,6 @@ def test_process_frame_with_sample_data_peptide():
     for column in expected_columns_ligand:
         assert column in result_ligand.columns
 
-    # Clean up the ligand processing frame file
-    os.remove(destination_file)
-
     # Call the process_frame function with the sample data for peptide
     result_peptide = process_frame(frame_number, sample_universe, peptide='X', special=None)
 
@@ -173,9 +170,6 @@ def test_process_frame_with_sample_data_peptide():
     # Check if all expected columns are present in the result for peptide
     for column in expected_columns_peptide:
         assert column in result_peptide.columns
-
-    # Clean up the peptide processing frame file
-    os.remove(peptide_destination_file)
 
 
 def test_process_trajectory():
