@@ -31,7 +31,7 @@ def test_water_forcefield_selection():
     assert water_forcefield_selection('SPC/E', 'amber14-all.xml') == 'amber14/spce.xml'
     assert water_forcefield_selection('TIP4P-Ew', 'amber14-all.xml') == 'amber14/tip4pew.xml'
     assert water_forcefield_selection('TIP4P-FB', 'amber14-all.xml') == 'amber14/tip4pfb.xml'
-    assert water_forcefield_selection('TIP5P', 'amber14-all.xml') == 'amber14/tip5p.xml'
+    assert water_forcefield_selection('TIP5P', 'amber14-all.xml') is None
     assert water_forcefield_selection('NonexistentWater', 'amber14-all.xml') is None
     assert water_forcefield_selection('TIP3P', 'NonexistentFF') is None
 
