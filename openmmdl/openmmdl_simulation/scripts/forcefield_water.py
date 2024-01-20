@@ -161,7 +161,7 @@ def generate_forcefield(protein_ff, solvent_ff, add_membrane, rdkit_mol=None):
             forcefield = app.ForceField(protein_ff,solvent_ff)
     else:
         forcefield = app.ForceField(protein_ff,solvent_ff)
-    
+        
     # If a ligand is present, a Forcefield with GAFF will be created for the ligand 
     if rdkit_mol is not None:
         gaff = GAFFTemplateGenerator(molecules=Molecule.from_rdkit(rdkit_mol, allow_undefined_stereo=True), forcefield = 'gaff-2.11')
@@ -169,6 +169,7 @@ def generate_forcefield(protein_ff, solvent_ff, add_membrane, rdkit_mol=None):
 
     return forcefield
     
+
 def generate_transitional_forcefield(protein_ff, solvent_ff, add_membrane, rdkit_mol=None):
     """
     Generate an OpenMM transitional forcefield object with TIP3P water model for membrane building and register a small molecule.
@@ -198,7 +199,7 @@ def generate_transitional_forcefield(protein_ff, solvent_ff, add_membrane, rdkit
             transitional_forcefield = app.ForceField(protein_ff,'amber14/tip3p.xml')
     else:
         transitional_forcefield = app.ForceField(protein_ff,solvent_ff)
-    
+        
     # If a ligand is present, a Forcefield with GAFF will be created for the ligand 
     if rdkit_mol is not None:
         gaff = GAFFTemplateGenerator(molecules=Molecule.from_rdkit(rdkit_mol, allow_undefined_stereo=True), forcefield = 'gaff-2.11')
