@@ -142,9 +142,10 @@ def test_process_frame_with_sample_data_special():
 
     shutil.copy(frame_file, destination_file)
     shutil.copy(str(ligand_special), '.')
+    shutil.copy(str(topology_file), '.')
 
     # Load the sample PDB file into an MDAnalysis Universe
-    sample_universe = mda.Universe(topology_file)
+    sample_universe = mda.Universe(topology_metal, trajetory_metal)
 
     # Call the process_frame function with the sample data for special ligand 'HEM'
     result_special = process_frame(frame_number, sample_universe, lig_name, special='HEM')
