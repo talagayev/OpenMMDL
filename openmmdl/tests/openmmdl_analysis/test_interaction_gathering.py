@@ -139,33 +139,40 @@ def tmp_folder(tmp_path):
 def test_process_frame_with_sample_data_special(tmp_folder):
     # Define a sample frame number
     frame_number = 1
-    special='HEM'
+    special = 'HEM'
 
     # Set up paths and filenames in the temporary folder
     destination_file = tmp_folder / "processing_frame_1.pdb"
     destination_file_complex = tmp_folder / "complex.pdb"
     ligand_special_tmp = tmp_folder / "ligand_special.pdb"
-    
+
     # Copy files to the temporary folder
     shutil.copy(frame_file, destination_file)
     shutil.copy(str(ligand_special), ligand_special_tmp)
     shutil.copy(str(topology_metal), destination_file_complex)
 
-    # Load the sample PDB file into an MDAnalysis Universe
-    sample_universe = mda.Universe(destination_file_complex, trajetory_metal)
+    # Change the working directory to the temporary folder
+    os.chdir(tmp_folder)
 
-    # Call the process_frame function with the sample data for special ligand 'HEM'
-    result_special = process_frame(frame_number, sample_universe, lig_name, special='HEM')
+    try:
+        # Load the sample PDB file into an MDAnalysis Universe
+        sample_universe = mda.Universe(destination_file_complex, trajetory_metal)
 
-    # Define the expected columns you want to check for special ligand 'HEM'
-    expected_columns_special = ["FRAME", "INTERACTION", "TARGET_IDX", "RESTYPE", "LOCATION"]  # Add specific columns for special ligand 'HEM'
+        # Call the process_frame function with the sample data for special ligand 'HEM'
+        result_special = process_frame(frame_number, sample_universe, lig_name, special='HEM')
 
-    # Check if the result is a Pandas DataFrame for special ligand 'HEM'
-    assert isinstance(result_special, pd.DataFrame)
+        # Define the expected columns you want to check for special ligand 'HEM'
+        expected_columns_special = ["FRAME", "INTERACTION", "TARGET_IDX", "RESTYPE", "LOCATION"]  # Add specific columns for special ligand 'HEM'
 
-    # Check if all expected columns are present in the result for special ligand 'HEM'
-    for column in expected_columns_special:
-        assert column in result_special.columns
+        # Check if the result is a Pandas DataFrame for special ligand 'HEM'
+        assert isinstance(result_special, pd.DataFrame)
+
+        # Check if all expected columns are present in the result for special ligand 'HEM'
+        for column in expected_columns_special:
+            assert column in result_special.columns
+    finally:
+        # Revert back to the original working directory
+        os.chdir(os.path.dirname(__file__))
 
 
 def test_process_frame_with_sample_data_peptide():
