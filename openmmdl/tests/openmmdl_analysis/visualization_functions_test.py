@@ -10,7 +10,11 @@ from unittest.mock import patch, Mock
 import pytest
 from openmmdl.openmmdl_analysis.visualization_functions import *
 
-package_path = Path("openmmdl/openmmdl_analysis")
+test_data_directory_files = Path("openmmdl/tests/data/in")
+clouds = test_data_directory_files / 'clouds.json'
+waters_pdb = test_data_directory_files / 'interacting_waters.pdb'
+waters_dcd = test_data_directory_files / 'interacting_waters.dcd'
+waters_pkl = test_data_directory_files / 'interacting_waters.pkl'
 
 # visualization_functions tests
 @pytest.fixture
@@ -171,29 +175,16 @@ def test_save_interacting_waters_trajectory(input_paths):
     os.remove(f"{outputpath}interacting_waters.dcd")
 
 
-@pytest.fixture
-def mock_data():
-    # Mock data for file-loading operations
-    return {
-        'clouds.json': '{"hydrophobic": {"coordinates": [], "color": [1, 1, 1], "radius": 1.0}}',
-        'interacting_waters.pdb': 'mock_pdb_content',
-        'interacting_waters.dcd': 'mock_dcd_content',
-        'interacting_waters.pkl': [1, 2, 3]  # Mock pickled data
-    }
-
-@patch('builtins.open', create=True)
-@patch('nv.show_mdtraj')
 def test_visualization(mock_show_mdtraj, mock_open, mock_data):
-    ligand_name = "your_ligand_name"
+
+    shutil.copy(str(clouds), '.')
+    shutil.copy(str(waters_pdb), '.')
+    shutil.copy(str(waters_dcd), '.')
+    shutil.copy(str(waters_pkl), '.')
+    ligand_name = "LET"
     receptor_type = "protein"
     height = "1000px"
     width = "1000px"
-
-    # Set up mock data for open function
-    mock_open.side_effect = lambda x: Mock(read=lambda: mock_data[x])
-
-    # Set up mock data for show_mdtraj function
-    mock_show_mdtraj.return_value = Mock()
 
     # Call the function with sample data
     result = visualization(ligand_name, receptor_type, height, width)
