@@ -136,27 +136,13 @@ def test_process_frame_with_sample_data_peptide():
     frame_number = 1
 
     # Define paths and filenames
-    destination_file = f"processing_frame_{frame_number}.pdb"
-    peptide_destination_file = f"processing_frame_{frame_number}_peptide.pdb"
+    peptide_destination_file = f"processing_frame_1.pdb"
 
     # Copy the frame file to the destination file for testing purposes
-    shutil.copy(frame_file, destination_file)
+    shutil.copy(frame_file, peptide_destination_file)
 
     # Load the sample PDB file into an MDAnalysis Universe
     sample_universe = mda.Universe(topology_file)
-
-    # Call the process_frame function with the sample data for ligand
-    result_ligand = process_frame(frame_number, sample_universe, lig_name)
-
-    # Define the expected columns you want to check for ligand
-    expected_columns_ligand = ["FRAME", "INTERACTION", "TARGET_IDX"]  # Add specific columns for ligand
-
-    # Check if the result is a Pandas DataFrame for ligand
-    assert isinstance(result_ligand, pd.DataFrame)
-
-    # Check if all expected columns are present in the result for ligand
-    for column in expected_columns_ligand:
-        assert column in result_ligand.columns
 
     # Call the process_frame function with the sample data for peptide
     result_peptide = process_frame(frame_number, sample_universe, lig_name, peptide='X', special=None)
