@@ -30,6 +30,8 @@ def test_water_model_selection():
     assert water_model_selection('SPC/E', 'amber10.xml') == 'spce'
     assert water_model_selection('TIP3P-PME-B', 'charmm36.xml') == 'charmm'
     assert water_model_selection('SPC/E', 'amber14-all.xml') == 'spce'
+    assert water_model_selection('TIP5P', 'charmm36.xml') == 'tip5p'
+    assert water_model_selection('TIP5P', 'amber14-all.xml') is None
     assert water_model_selection('TIP3P', 'NonexistentFF') is None
 
 def test_generate_forcefield(sample_rdkit_molecule):
