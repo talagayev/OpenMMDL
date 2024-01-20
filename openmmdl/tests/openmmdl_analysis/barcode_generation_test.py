@@ -99,5 +99,7 @@ def test_plot_waterbridge_piechart(tmp_path):
         # You can add more assertions based on your specific requirements
         # For example, check if the file size is greater than zero, check the title, etc.
         assert os.path.getsize(outname_png) > 0, f"File {outname_png} is empty."
+        # Retrieve the percentage directly from the Axes object
+        percentage_text = plt.gca().texts[0].get_text()
         expected_percentage = round(((sum(1 for val in df_all['WATER_IDX'] if val != 0) / len(df_all['WATER_IDX'])) * 100), 2)
-        assert f"{expected_percentage}%" in plt.gca().texts[0].get_text(), f"Percentage '{expected_percentage}%' not found in the image."
+        assert f"{expected_percentage}%" in percentage_text, f"Percentage '{expected_percentage}%' not found in the image."
