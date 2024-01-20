@@ -79,28 +79,25 @@ def test_plot_waterbridge_piechart(tmp_path):
     waterbridge_barcodes = [np.array([1, 0, 1, 0]), np.array([0, 1, 0, 1])]
     waterbridge_interactions = ['interaction1', 'interaction2']
 
-    # Set the desired output directory
-    output_directory = os.path.join(tmp_path, 'Barcodes', 'Waterbridge_Piecharts')
+    # Create the necessary directories
+    os.makedirs(f"{tmp_path}/Barcodes/Waterbridge_Piecharts/", exist_ok=True)
 
     # Call the function
     plot_waterbridge_piechart(df_all, waterbridge_barcodes, waterbridge_interactions)
 
     # Check if the output files are created
     for interaction in waterbridge_interactions:
-        outname_png = os.path.join(output_directory, f"{interaction}.png")
+        outname_png = f"{tmp_path}/Barcodes/Waterbridge_Piecharts/{interaction}.png"
         assert os.path.isfile(outname_png), f"File {outname_png} not found."
 
-        # Additional checks for content or specific properties of the generated files
-        assert os.path.getsize(outname_png) > 0, f"File {outname_png} is empty."
-        
-        # Check if the generated image is a valid PNG
+        # Additional assertions for content or specific properties of the generated files
         img = plt.imread(outname_png)
         assert img is not None, f"Unable to read image file {outname_png}."
 
-        # Check if the title of the pie chart is present in the image
+        # You can add more assertions based on your specific requirements
+        # For example, check if the file size is greater than zero, check the title, etc.
+        assert os.path.getsize(outname_png) > 0, f"File {outname_png} is empty."
         expected_title = str(interaction)
         assert expected_title in plt.gca().get_title(), f"Title '{expected_title}' not found in the image."
-
-        # Check if the total frames with waterbridge information is present in the image
         expected_percentage = round(((sum(1 for val in df_all['WATER_IDX'] if val != 0) / len(df_all['WATER_IDX'])) * 100), 2)
         assert f"{expected_percentage}%" in plt.gca().texts[0].get_text(), f"Percentage '{expected_percentage}%' not found in the image."
