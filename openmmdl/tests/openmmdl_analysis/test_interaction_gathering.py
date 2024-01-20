@@ -131,22 +131,28 @@ def test_process_frame_with_sample_data():
     for column in expected_columns:
         assert column in result.columns
 
+@pytest.fixture
+def tmp_folder(tmp_path):
+    # Use tmp_path as the temporary folder
+    return tmp_path
 
-def test_process_frame_with_sample_data_special():
+def test_process_frame_with_sample_data_special(tmp_folder):
     # Define a sample frame number
     frame_number = 1
     special='HEM'
 
-    destination_file = "processing_frame_1.pdb"
-    destination_file_complex = "complex.pdb"
+    # Set up paths and filenames in the temporary folder
+    destination_file = tmp_folder / "processing_frame_1.pdb"
+    destination_file_complex = tmp_folder / "complex.pdb"
+    ligand_special_tmp = tmp_folder / "ligand_special.pdb"
     
+    # Copy files to the temporary folder
     shutil.copy(frame_file, destination_file)
-    shutil.copy(str(ligand_special), '.')
-    shutil.copy(str(topology_metal), '.')
-    shutil.copy(topology_metal, destination_file_complex)
+    shutil.copy(str(ligand_special), ligand_special_tmp)
+    shutil.copy(str(topology_metal), destination_file_complex)
 
     # Load the sample PDB file into an MDAnalysis Universe
-    sample_universe = mda.Universe(topology_metal, trajetory_metal)
+    sample_universe = mda.Universe(destination_file_complex, trajetory_metal)
 
     # Call the process_frame function with the sample data for special ligand 'HEM'
     result_special = process_frame(frame_number, sample_universe, lig_name, special='HEM')
