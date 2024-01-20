@@ -4,7 +4,6 @@ import re
 import os
 import matplotlib.pyplot as plt
 import pytest
-from unittest.mock import patch, Mock
 from openmmdl.openmmdl_analysis.barcode_generation import *
 
 # Barcode generation tests
@@ -92,36 +91,3 @@ def test_plot_waterbridge_piechart(tmp_path):
     for interaction in waterbridge_interactions:
         outname_png = f"./Barcodes/Waterbridge_Piecharts/{interaction}.png"
         assert os.path.isfile(outname_png), f"File {outname_png} not found."
-
-
-@pytest.fixture
-def mock_data():
-    # Mock data for file-loading operations
-    return {
-        'clouds.json': '{"hydrophobic": {"coordinates": [], "color": [1, 1, 1], "radius": 1.0}}',
-        'interacting_waters.pdb': 'mock_pdb_content',
-        'interacting_waters.dcd': 'mock_dcd_content',
-        'interacting_waters.pkl': [1, 2, 3]  # Mock pickled data
-    }
-
-@patch('your_module.open', create=True)
-@patch('your_module.nv.show_mdtraj')
-def test_visualization(mock_show_mdtraj, mock_open, mock_data):
-    ligand_name = "your_ligand_name"
-    receptor_type = "protein"
-    height = "1000px"
-    width = "1000px"
-
-    # Set up mock data for open function
-    mock_open.side_effect = lambda x: Mock(read=lambda: mock_data[x])
-
-    # Set up mock data for show_mdtraj function
-    mock_show_mdtraj.return_value = Mock()
-
-    # Call the function with sample data
-    result = visualization(ligand_name, receptor_type, height, width)
-
-    # Perform assertions based on the expected outcome
-    assert result is not None
-    # Add more assertions based on your specific requirements
-
