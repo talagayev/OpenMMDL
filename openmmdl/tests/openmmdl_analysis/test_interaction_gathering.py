@@ -271,8 +271,10 @@ def test_fill_missing_frames():
     assert all(filled_df.loc[filled_df['FRAME'] == 3, 'Value1'] == 'skip')
 
     # Test Case 4: No missing frames
-    no_missing_frames_df = fill_missing_frames(df, md_len=5)
-    assert all(no_missing_frames_df['FRAME'] == [1, 2, 4, 5])  # Should remain unchanged
+    no_missing_frames_data = {'FRAME': [1, 2, 3, 4, 5, 6], 'Value1': ['A', 'B', 'C', 'D', 'E', 'F']}
+    no_missing_frames_df = pd.DataFrame(no_missing_frames_data)
+    filled_no_missing_frames_df = fill_missing_frames(no_missing_frames_df, md_len=6)
+    assert all(filled_no_missing_frames_df['FRAME'] == [1, 2, 3, 4, 5, 6])  # Should remain unchanged
 
     # Test Case 5: DataFrame with additional columns
     data_with_extra_columns = {'FRAME': [1, 2, 4, 5], 'Value1': ['A', 'B', 'C', 'D'], 'Value2': [10, 20, 30, 40]}
