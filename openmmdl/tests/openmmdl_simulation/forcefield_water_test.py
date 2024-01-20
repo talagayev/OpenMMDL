@@ -48,12 +48,42 @@ def test_water_forcefield_selection():
     assert water_forcefield_selection('NonexistentFF', 'charmm36.xml') is None
 
 def test_water_model_selection():
-    assert water_model_selection('TIP3P', 'amber14-all.xml') == 'tip3p'
+    assert water_model_selection('TIP3P', 'amber99sb.xml') == 'tip3p'
+    assert water_model_selection('TIP3P', 'amber99sbildn.xml') == 'tip3p'
+    assert water_model_selection('TIP3P', 'amber03.xml') == 'tip3p'
+    assert water_model_selection('TIP3P', 'amber10.xml') == 'tip3p'
+    
+    assert water_model_selection('SPC/E', 'amber99sb.xml') == 'spce'
+    assert water_model_selection('SPC/E', 'amber99sbildn.xml') == 'spce'
+    assert water_model_selection('SPC/E', 'amber03.xml') == 'spce'
     assert water_model_selection('SPC/E', 'amber10.xml') == 'spce'
+    
+    assert water_model_selection('TIP4P-Ew', 'amber99sb.xml') == 'tip4pew'
+    assert water_model_selection('TIP4P-Ew', 'amber99sbildn.xml') == 'tip4pew'
+    assert water_model_selection('TIP4P-Ew', 'amber03.xml') == 'tip4pew'
+    assert water_model_selection('TIP4P-Ew', 'amber10.xml') == 'tip4pew'
+    
+    assert water_model_selection('TIP4P-FB', 'amber99sb.xml') == 'tip4pfb'
+    assert water_model_selection('TIP4P-FB', 'amber99sbildn.xml') == 'tip4pfb'
+    assert water_model_selection('TIP4P-FB', 'amber03.xml') == 'tip4pfb'
+    assert water_model_selection('TIP4P-FB', 'amber10.xml') == 'tip4pfb'
+    
+    assert water_model_selection('TIP5P', 'amber99sb.xml') is None
+    assert water_model_selection('TIP5P', 'amber99sbildn.xml') is None
+    assert water_model_selection('TIP5P', 'amber03.xml') is None
+    assert water_model_selection('TIP5P', 'amber10.xml') is None
+    
+    assert water_model_selection('TIP3P', 'amber14-all.xml') == 'tip3p'
+    
+    assert water_model_selection('CHARMM default', 'charmm36.xml') == 'charmm'
     assert water_model_selection('TIP3P-PME-B', 'charmm36.xml') == 'charmm'
-    assert water_model_selection('SPC/E', 'amber14-all.xml') == 'spce'
+    assert water_model_selection('TIP3P-PME-F', 'charmm36.xml') == 'charmm'
+    assert water_model_selection('SPC/E', 'charmm36.xml') == 'charmm'
+    assert water_model_selection('TIP4P-Ew', 'charmm36.xml') == 'tip4pew'
+    assert water_model_selection('TIP4P-2005', 'charmm36.xml') == 'tip4pew'
     assert water_model_selection('TIP5P', 'charmm36.xml') == 'tip5p'
-    assert water_model_selection('TIP5P', 'amber14-all.xml') is None
+    assert water_model_selection('TIP5P-Ew', 'charmm36.xml') == 'tip5p'
+    
     assert water_model_selection('TIP3P', 'NonexistentFF') is None
 
 def test_generate_forcefield(sample_rdkit_molecule):
