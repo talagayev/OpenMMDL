@@ -19,6 +19,7 @@ topology_file = f"{test_data_directory}/complex.pdb"
 frame_file = f"{test_data_directory}/processing_frame_1.pdb"
 topology_metal = f"{test_data_directory}/metal_top.pdb"
 trajetory_metal = f"{test_data_directory}/metal_traj_25.dcd"
+ligand_special = f"{test_data_directory}/ligand_special.pdb"
 
 binding_site_id = "UNK:X:0"
 lig_name = "UNK"
@@ -137,8 +138,10 @@ def test_process_frame_with_sample_data_special():
     special='HEM'
 
     destination_file = "processing_frame_1.pdb"
+    
 
     shutil.copy(frame_file, destination_file)
+    shutil.copy(str(ligand_special), '.')
 
     # Load the sample PDB file into an MDAnalysis Universe
     sample_universe = mda.Universe(topology_file)
