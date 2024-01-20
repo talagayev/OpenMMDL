@@ -48,11 +48,38 @@ def test_generate_forcefield_membrane_logic(sample_rdkit_molecule):
     forcefield_2 = generate_forcefield('amber14-all.xml', 'amber14/tip3p.xml', True, sample_rdkit_molecule)
     forcefield_3 = generate_forcefield('amber14-all.xml', 'amber14/tip3p.xml', False, sample_rdkit_molecule)
     forcefield_4 = generate_forcefield('amber03.xml', 'tip3p.xml', False, sample_rdkit_molecule)
+
     assert isinstance(forcefield_1, app.ForceField)
     assert isinstance(forcefield_2, app.ForceField)
     assert isinstance(forcefield_3, app.ForceField)
     assert isinstance(forcefield_4, app.ForceField)
 
+    # Additional tests for different force field combinations
+    forcefield_5 = generate_forcefield('amber14-all.xml', 'tip3p.xml', True, sample_rdkit_molecule)
+    forcefield_6 = generate_forcefield('amber03.xml', 'amber14/tip3p.xml', False, sample_rdkit_molecule)
+
+    assert isinstance(forcefield_5, app.ForceField)
+    assert isinstance(forcefield_6, app.ForceField)
+
+    # Additional tests for membrane flag logic
+    forcefield_7 = generate_forcefield('amber10.xml', 'tip3p.xml', True, sample_rdkit_molecule)
+    forcefield_8 = generate_forcefield('amber14-all.xml', 'tip3p.xml', False, sample_rdkit_molecule)
+
+    assert isinstance(forcefield_7, app.ForceField)
+    assert isinstance(forcefield_8, app.ForceField)
+
 def test_generate_transitional_forcefield(sample_rdkit_molecule):
     transitional_forcefield = generate_transitional_forcefield('amber14-all.xml', 'tip3p.xml', True, sample_rdkit_molecule)
     assert isinstance(transitional_forcefield, app.ForceField)
+
+    # Additional tests for different force field combinations
+    transitional_forcefield_2 = generate_transitional_forcefield('amber03.xml', 'amber14/tip3p.xml', False, sample_rdkit_molecule)
+    assert isinstance(transitional_forcefield_2, app.ForceField)
+
+    # Additional tests for membrane flag logic
+    transitional_forcefield_3 = generate_transitional_forcefield('amber14-all.xml', 'tip3p.xml', False, sample_rdkit_molecule)
+    assert isinstance(transitional_forcefield_3, app.ForceField)
+
+    # Additional tests for GAFF registration
+    transitional_forcefield_4 = generate_transitional_forcefield('amber14-all.xml', 'tip3p.xml', True)
+    assert isinstance(transitional_forcefield_4, app.ForceField)
