@@ -56,5 +56,6 @@ jobs:
         with:
           file: ./coverage.xml  # Specify the path to the XML coverage report
           flags: unittests
+          version: "v0.1.15"
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
