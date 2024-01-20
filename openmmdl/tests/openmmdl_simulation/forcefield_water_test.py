@@ -25,9 +25,27 @@ def test_ff_selection():
     assert ff_selection('NonexistentFF') is None
 
 def test_water_forcefield_selection():
+    # Test cases for 'amber14-all.xml' force field
     assert water_forcefield_selection('TIP3P', 'amber14-all.xml') == 'amber14/tip3p.xml'
-    assert water_forcefield_selection('SPC/E', 'charmm36.xml') == 'charmm36/spce.xml'
+    assert water_forcefield_selection('TIP3P-FB', 'amber14-all.xml') == 'amber14/tip3pfb.xml'
+    assert water_forcefield_selection('SPC/E', 'amber14-all.xml') == 'amber14/spce.xml'
+    assert water_forcefield_selection('TIP4P-Ew', 'amber14-all.xml') == 'amber14/tip4pew.xml'
+    assert water_forcefield_selection('TIP4P-FB', 'amber14-all.xml') == 'amber14/tip4pfb.xml'
+    assert water_forcefield_selection('TIP5P', 'amber14-all.xml') == 'amber14/tip5p.xml'
+    assert water_forcefield_selection('NonexistentWater', 'amber14-all.xml') is None
     assert water_forcefield_selection('TIP3P', 'NonexistentFF') is None
+
+    # Test cases for 'charmm36.xml' force field
+    assert water_forcefield_selection('CHARMM default', 'charmm36.xml') == 'charmm36/water.xml'
+    assert water_forcefield_selection('TIP3P-PME-B', 'charmm36.xml') == 'charmm36/tip3p-pme-b.xml'
+    assert water_forcefield_selection('TIP3P-PME-F', 'charmm36.xml') == 'charmm36/tip3p-pme-f.xml'
+    assert water_forcefield_selection('SPC/E', 'charmm36.xml') == 'charmm36/spce.xml'
+    assert water_forcefield_selection('TIP4P-Ew', 'charmm36.xml') == 'charmm36/tip4pew.xml'
+    assert water_forcefield_selection('TIP4P-2005', 'charmm36.xml') == 'charmm36/tip4p2005.xml'
+    assert water_forcefield_selection('TIP5P', 'charmm36.xml') == 'charmm36/tip5p.xml'
+    assert water_forcefield_selection('TIP5P-Ew', 'charmm36.xml') == 'charmm36/tip5pew.xml'
+    assert water_forcefield_selection('NonexistentWater', 'charmm36.xml') is None
+    assert water_forcefield_selection('NonexistentFF', 'charmm36.xml') is None
 
 def test_water_model_selection():
     assert water_model_selection('TIP3P', 'amber14-all.xml') == 'tip3p'
