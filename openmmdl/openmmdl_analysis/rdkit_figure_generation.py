@@ -214,6 +214,7 @@ def highlight_numbers(split_data, starting_idx):
             numeric_codes = parts[1:-3]
             interaction_type = parts[-1]
             saltbridge_type = parts[-2]
+            print(saltbridge_type)
             if saltbridge_type == "NI":
                 split_codes = numeric_codes[0].split(',')
                 numeric_values = [int(code) for code in split_codes]
@@ -236,6 +237,7 @@ def highlight_numbers(split_data, starting_idx):
                         if lig_atom.name == atom_name:
                             lig_real_index = lig_atom.id
                     highlighted_pi.append(lig_real_index-1)
+                    print(highlighted_pi)
 
         elif interaction_type == 'pication':
             parts = item.split()
