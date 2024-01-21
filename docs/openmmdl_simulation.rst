@@ -1,6 +1,6 @@
 **Running OpenMMDL Simulation**
 ===============
-This is a detailed explanation on how to use **OpenMMDL Simulation**.
+This page details the variables required to run the simulation and showcases the application of **OpenMMDL Simulation**.
 
 .. figure:: /_static/images/OpenMMDL_Simulation_logo.png
     :figwidth: 600px
