@@ -1,4 +1,4 @@
-**Analysis Output**
+**OpenMMDL Analysis Output Files**
 =================================
 
 The **OpenMMDL Analysis** script creates output folders and files during and after the analysis.
