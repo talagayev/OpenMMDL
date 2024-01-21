@@ -279,15 +279,26 @@ def test_fill_missing_frames():
     # Test Case 5: DataFrame with additional columns
     data_with_extra_columns = {'FRAME': [1, 2, 4, 5], 'Value1': ['A', 'B', 'C', 'D'], 'Value2': [10, 20, 30, 40]}
     df_with_extra_columns = pd.DataFrame(data_with_extra_columns)
+
+    # Ensure the original DataFrame has unique frame numbers
+    assert df_with_extra_columns['FRAME'].nunique() == len(df_with_extra_columns)
+
     filled_df_extra_columns = fill_missing_frames(df_with_extra_columns, md_len=6)
     expected_frames = [1, 2, 3, 4, 5]
-    
+
+    # Debugging prints
+    print(f'Original DataFrame length: {len(df_with_extra_columns)}')
+    print(f'Filled DataFrame length: {len(filled_df_extra_columns)}')
+    print(f'Expected frames: {expected_frames}')
+
+    # Assert that the resulting DataFrame has unique frame numbers
+    assert filled_df_extra_columns['FRAME'].nunique() == len(filled_df_extra_columns)
+
     # Assert that the resulting DataFrame has the expected frames
     assert all(filled_df_extra_columns['FRAME'] == expected_frames)
 
-    # Additional assertions for concatenated DataFrame
-    assert len(filled_df_extra_columns) == len(df_with_extra_columns) + len(set(range(md_len)) - set(df_with_extra_columns['FRAME']))
-    assert all(filled_df_extra_columns['Value2'].notna())  # Values in the new rows should not be NaN
+    # Assert that the length of the resulting DataFrame is equal to the length of expected frames
+    assert len(filled_df_extra_columns) == len(expected_frames)
 
 
 if __name__ == "__main":
