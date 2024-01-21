@@ -1,3 +1,3 @@
 **Frequently asked questions**
 =============================
-To be added
+  - Do i need to process the files
