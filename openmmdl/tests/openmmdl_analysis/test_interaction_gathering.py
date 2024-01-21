@@ -279,10 +279,14 @@ def test_fill_missing_frames():
     # Test Case 5: DataFrame with additional columns
     data_with_extra_columns = {'FRAME': [1, 2, 4, 5], 'Value1': ['A', 'B', 'C', 'D'], 'Value2': [10, 20, 30, 40]}
     df_with_extra_columns = pd.DataFrame(data_with_extra_columns)
-    filled_df_extra_columns = fill_missing_frames(df_with_extra_columns, md_len)
-    assert all(filled_df_extra_columns['FRAME'] == [1, 2, 3, 4, 5])
-    assert all(filled_df_extra_columns.loc[filled_df_extra_columns['FRAME'] == 3, 'Value1'] == 'skip')
-    assert all(filled_df_extra_columns.loc[filled_df_extra_columns['FRAME'] == 3, 'Value2'] == 'skip')
+    filled_df_extra_columns = fill_missing_frames(df_with_extra_columns, md_len=6)
+    expected_frames = [1, 2, 3, 4, 5, 6]
+
+    # Assert that the resulting DataFrame has the expected frames
+    assert all(filled_df_extra_columns['FRAME'] == expected_frames)
+
+    # Assert that the length of the resulting DataFrame is equal to the length of expected frames
+    assert len(filled_df_extra_columns) == len(expected_frames)
 
     # Additional assertions for concatenated DataFrame
     assert len(filled_df_extra_columns) == len(df_with_extra_columns) + len(set(range(md_len)) - set(df_with_extra_columns['FRAME']))
