@@ -6,7 +6,7 @@ This page details the variables required to run the analysis and showcases the a
 
 .. figure:: /_static/images/OpenMMDL_analysis_logo.png
     :figwidth: 600px
-    :height: 100px
+    :height: 130px
     :align: center
 | 
 
