@@ -7,20 +7,19 @@ Frequently asked questions
 ..
 
 
-Building and publishing your project
+OpenMMDL
 ------------------------------------
 
-Why does my project have status "failing"?
+Can i install OpenMMDL on my personal computer?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Projects have the status "failing" because something in the build process has failed.
-This can be because the project is not correctly configured,
-because the contents of the Git repository cannot be built,
-or in the most rare cases because a system that Read the Docs connects to is not working.
+**OpenMMDL** is available for Linux and Mac systems. **OpenMMDL Setup** and **OpenMMDL Simulation** are incompatible with Windows systems, thus only **OpenMMDL Analysis** of the **OpenMMDL** package can be used on Windows systems.
 
-First, you should check out the :guilabel:`Builds` tab of your project.
-By clicking on the failing step,
-you will be able to see details that can lead to resolutions to your build error.
 
-If the solution is not self-evident,
-you can use an important word or message from the error to search for a solution.
+OpenMMDL Setup
+------------------------------------
+
+Do i need to prepare the protein before using OpenMMDL Setup?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**OpenMMDL Setup** is able to prepare the protein for you in the PDBFixer path and add the missing residues in addition to protonating the protein, but it is not able to cap the residues and the prefered input for OpenMMDL Setup is a protein, which is already prepared by a user with having the missing residues modelled and the termini capped.
