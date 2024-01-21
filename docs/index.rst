@@ -53,6 +53,7 @@ OpenMMDL  @ Molecular Design Lab
    :caption: OpenMMDL-Analysis
    
    openmmdl_analysis
+   analysis_output
 
 .. toctree::
    :maxdepth: 1
