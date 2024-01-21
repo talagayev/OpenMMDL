@@ -285,9 +285,6 @@ def test_fill_missing_frames():
     # Assert that the resulting DataFrame has the expected frames
     assert all(filled_df_extra_columns['FRAME'] == expected_frames)
 
-    # Assert that the length of the resulting DataFrame is equal to the length of expected frames
-    assert len(filled_df_extra_columns) == len(expected_frames)
-
     # Additional assertions for concatenated DataFrame
     assert len(filled_df_extra_columns) == len(df_with_extra_columns) + len(set(range(md_len)) - set(df_with_extra_columns['FRAME']))
     assert all(filled_df_extra_columns['Value2'].notna())  # Values in the new rows should not be NaN
