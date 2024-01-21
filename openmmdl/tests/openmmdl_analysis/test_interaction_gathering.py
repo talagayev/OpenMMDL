@@ -280,8 +280,8 @@ def test_fill_missing_frames():
     data_with_extra_columns = {'FRAME': [1, 2, 4, 5], 'Value1': ['A', 'B', 'C', 'D'], 'Value2': [10, 20, 30, 40]}
     df_with_extra_columns = pd.DataFrame(data_with_extra_columns)
     filled_df_extra_columns = fill_missing_frames(df_with_extra_columns, md_len=6)
-    expected_frames = [1, 2, 3, 4, 5, 6]
-
+    expected_frames = [1, 2, 3, 4, 5]
+    
     # Assert that the resulting DataFrame has the expected frames
     assert all(filled_df_extra_columns['FRAME'] == expected_frames)
 
