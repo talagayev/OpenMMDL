@@ -1,7 +1,7 @@
 **Running OpenMMDL Setup**
 =============================
 
-This is a detailed explanation on how to run the **OpenMMDL Setup**.
+This page displays the preparation paths and forcefields available in OpenMMDL and showcases the application of **OpenMMDL Setup**.
 
 .. figure:: /_static/images/OpenMMDL_Setup.png
     :figwidth: 600px
