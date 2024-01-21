@@ -6,9 +6,9 @@ The **OpenMMDL Simulation** script creates output folders and files during and a
 The following list contains an detailed overview of the folders and files:
 The Optional files are highlighted with an *asteriks**
 
-Input_Files
+Input Files
 ------------------------------
-**Input_Files**: A folder that contains the PDF and SDF files, which served as Input Files for the MD Simulation.
+**Input Files**: A folder that contains the PDF and SDF files, which served as Input Files for the MD Simulation.
 
 
 
@@ -42,11 +42,11 @@ Checkpoints
    * - 100x_checkpoint.chk*
      - Checkpoint saved every 1000000 steps.
 
-MD_Files
+MD Files
 ------------------------------
-**MD_Files**: A folder that contains the files that were generated during the MD Simulation. This folder contains 3 subfolders.
+**MD Files**: A folder that contains the files that were generated during the MD Simulation. This folder contains 3 subfolders.
 
-*Pre_MD*: Folder that contains the files that were prepared by the script before the MD Simulation.
+*Pre MD*: Folder that contains the files that were prepared by the script before the MD Simulation.
 
 .. list-table::
    :header-rows: 1
@@ -63,7 +63,7 @@ MD_Files
    * - membrane_protein_name.pdb*
      - Prepared PDB File with membrane.
 
-*Minimization_Equilibration*: Folder that contains topology files after the minimization and equilibration of OpenMM.
+*Minimization Equilibration*: Folder that contains topology files after the minimization and equilibration with **OpenMM**.
 
 .. list-table::
    :header-rows: 1
@@ -76,7 +76,7 @@ MD_Files
    * - Equilibration_protein_name.pdb
      - Prepared PDB File after OpenMM energy minimization and equilibration.
 
-*MD_Output*: Folder that contains the Output trajectory files generated during the MD Simulation.
+*MD Output*: Folder that contains the Output trajectory files generated during the MD Simulation.
 
 
 .. list-table::
@@ -91,9 +91,9 @@ MD_Files
      - Trajectory of the OpenMM Simulation.
 
 
-MD_Postprocessing
+MD Postprocessing
 ------------------------------
-**MD_Postprocessing**: A folder that contains the postprocessing files after the MD Simulation.
+**MD Postprocessing**: A folder that contains the postprocessing files after the MD Simulation.
 
 .. list-table::
    :header-rows: 1
@@ -120,9 +120,9 @@ MD_Postprocessing
      
 Final_Output
 ------------------------------
-**Final_Output**: A folder that contains the final files after the MD Simulation, ready to be analyzed. This folder contains 2 subfolders.
+**Final Output**: A folder that contains the final files after the MD Simulation, ready to be analyzed. This folder contains 2 subfolders.
 
-1. *All_Atoms*: Folder that contains the centered topology files of all atoms with new coordinates according to the center of mass.
+1. *All Atoms*: Folder that contains the centered topology files of all atoms with new coordinates according to the center of mass.
 
 .. list-table::
    :header-rows: 1
@@ -141,7 +141,7 @@ Final_Output
 
 
 
-2. *Prot_Lig*: Folder that contains the centered topology files of only the protein and ligand atoms with new coordinates according to the center of mass.
+2. *Prot Lig*: Folder that contains the centered topology files of only the protein and ligand atoms with new coordinates according to the center of mass.
 
 
 
