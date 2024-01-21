@@ -118,7 +118,7 @@ MD Postprocessing
    * - prot_lig_traj_unaligned.xtc*
      - Trajectory File of the unaligned centered protein in XTC Format with only protein and ligand atoms and new coordinates.
      
-Final_Output
+Final Output
 ------------------------------
 **Final Output**: A folder that contains the final files after the MD Simulation, ready to be analyzed. This folder contains 2 subfolders.
 
