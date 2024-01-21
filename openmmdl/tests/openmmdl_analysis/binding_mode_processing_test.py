@@ -447,32 +447,30 @@ unique_columns_rings_grouped = {
 }
 
 def test_filtering_values_with_provided_data():
-    # Test case 1: Check if the function returns a dictionary with the key 'all'
+    # Test case 1: Check if the function returns a list
     threshold = 0.2  # 20% threshold
     frames = 1000  # Some arbitrary number of frames
     df = pd.DataFrame()  # Create an empty DataFrame for testing
     result = filtering_values(threshold, frames, df, unique_columns_rings_grouped)
 
-    assert isinstance(result, list)  # Check if the result is a DataFrame
-    assert all(col in df.columns for col in result.columns)
+    assert isinstance(result, list)  # Check if the result is a list
 
-    # Test case 2: Check if the filtered values are appended to the DataFrame
-    assert all(col in df.columns for col in result['all'])
+    # Test case 2: Check if the filtered values are present in the DataFrame
+    assert all(col in df.columns for col in result)
 
     # Test case 3: Check if the DataFrame has the correct shape after filtering
-    expected_shape = (df.shape[0], df.shape[1] + len(result['all']))
+    expected_shape = (df.shape[0], df.shape[1] + len(result))
     assert df.shape == expected_shape
 
     # Test case 4: Check if the filtered values are not duplicated
-    assert len(set(result['all'])) == len(result['all'])
+    assert len(set(result)) == len(result)
 
     # Test case 5: Check if the DataFrame values are initially set to None
-    assert df[result['all']].isnull().all().all()
+    assert df[result].isnull().all().all()
 
     # Test case 6: Check if the threshold calculation is correct
     expected_threshold = threshold * frames
-    occurrences = {value: 5 for value in result['all']}  # Assume all values occur 5 times
-    result = filtering_values(threshold, frames, df, unique_columns_rings_grouped)
+    occurrences = {value: 5 for value in result}  # Assume all values occur 5 times
     assert all(count >= expected_threshold for count in occurrences.values())
     
 
