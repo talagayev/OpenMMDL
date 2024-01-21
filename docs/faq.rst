@@ -10,7 +10,7 @@ Frequently asked questions
 OpenMMDL
 ------------------------------------
 
-Can i install OpenMMDL on my personal computer?
+What OS does OpenMMDL support?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **OpenMMDL** is available for Linux and Mac systems. **OpenMMDL Setup** and **OpenMMDL Simulation** are currently incompatible with Windows systems, thus only **OpenMMDL Analysis** of the **OpenMMDL** package can be used on Windows systems.
