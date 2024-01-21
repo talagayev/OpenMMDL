@@ -1,4 +1,4 @@
-**OpenMMDL Simulation Output Files**
+**Analysis Output**
 =================================
 
 The **OpenMMDL Simulation** script creates output folders and files during and after the simulation.
