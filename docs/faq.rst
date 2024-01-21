@@ -5,17 +5,10 @@ Frequently asked questions
    :local:
 
 ..
-  Frequently asked questions should be questions that actually got asked.
-  Formulate them as a question and an answer.
-  Consider that the answer is best as a reference to another place in the documentation.
 
 
 Building and publishing your project
 ------------------------------------
-
-
-.. Old reference
-.. _My project isn't building correctly:
 
 Why does my project have status "failing"?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
