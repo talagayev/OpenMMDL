@@ -1,14 +1,14 @@
 **Analysis Output**
 =================================
 
-The **OpenMMDL Simulation** script creates output folders and files during and after the simulation.
+The **OpenMMDL Analysis** script creates output folders and files during and after the analysis.
 
 The following list contains an detailed overview of the folders and files:
 The Optional files are highlighted with an *asteriks**
 
-Input Files
+Barcodes
 ------------------------------
-**Input Files**: A folder that contains the PDF and SDF files, which served as Input Files for the MD Simulation.
+**Barcodes**: A folder that contains the figures of the barcodes for the interactions.
 
 
 
@@ -18,15 +18,29 @@ Input Files
 
    * - Name
      - Description
-   * - Protein_name.pdb*
-     - Protein PDB File that served as the input for the MD Simulation.
-   * - ligand_name.sdf*
-     - Ligand SDF File that served as the input for the MD Simulation.
+   * - acceptor_interactions.png*
+     - File displaying the barcodes for all hydrogen bond acceptor interactions.
+   * - donor_interactions.png*
+     - File displaying the barcodes for all hydrogen bond donor interactions.
+   * - halogen_interactions.png*
+     - File displaying the barcodes for all halogen interactions.
+   * - hydrophobic_interactions.png*
+     - File displaying the barcodes for all hydrophobic interactions.
+   * - metal_interactions.png*
+     - File displaying the barcodes for all metal interactions.
+   * - saltbridge_interactions.png*
+     - File displaying the barcodes for all saltbridge interactions.
+   * - pication_interactions.png*
+     - File displaying the barcodes for all pication interactions.
+   * - pistacking_interactions.png*
+     - File displaying the barcodes for all pistacking interactions.
+   * - waterbridge_interactions.png*
+     - File displaying the barcodes for all waterbridge interactions.
 
-Checkpoints
+Binding_Modes_Markov_States
 ------------------------------
 
-**Checkpoints**: A folder that contains checkpoints, which can be used to restart the MD Simulation.
+**Binding_Modes_Markov_States**: A folder that contains the figures of the Markov state figures and 2D depiction figure of the  top 10 occuring binding modes.
 
 
 .. list-table::
