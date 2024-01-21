@@ -6,9 +6,8 @@ This page details the variables required to run the analysis and showcases the a
 
 .. figure:: /_static/images/OpenMMDL_analysis_logo.png
     :figwidth: 600px
-    :height: 130px
+    :height: 140px
     :align: center
-| 
 
 **OpenMMDL Analysis** can be used to analyze MD trajectories for receptor ligand interactions.
 
