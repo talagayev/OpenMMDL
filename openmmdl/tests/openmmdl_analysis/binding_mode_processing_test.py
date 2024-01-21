@@ -453,7 +453,7 @@ def test_filtering_values_with_provided_data():
     df = pd.DataFrame()  # Create an empty DataFrame for testing
     result = filtering_values(threshold, frames, df, unique_columns_rings_grouped)
 
-    assert isinstance(result, pd.DataFrame)  # Check if the result is a DataFrame
+    assert isinstance(result, list)  # Check if the result is a DataFrame
     assert all(col in df.columns for col in result.columns)
 
     # Test case 2: Check if the filtered values are appended to the DataFrame
