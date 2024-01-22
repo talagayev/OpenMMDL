@@ -5,14 +5,6 @@
 
 OpenMMDL  @ Molecular Design Lab
 =========================================================
-.. image::
-   https://img.shields.io/badge/License-MIT-blue.svg
-   :target: https://opensource.org/licenses/MIT
-
-.. image:: https://readthedocs.org/projects/openmmdl/badge/?version=latest
-    :target: https://openmmdl.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
-
 .. figure:: /_static/images/OpenMMDL_logo_2.png
    :figwidth: 600px
    :align: center
