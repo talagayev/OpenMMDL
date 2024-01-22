@@ -1,5 +1,6 @@
 import pytest
 import os
+import shutil
 import rdkit
 from rdkit import Chem
 import simtk.openmm.app as app
@@ -62,6 +63,7 @@ TEST_LIGAND_FILE = f"{test_data_directory}/CVV.sdf"
 TEST_MOL_FILE = f"{test_data_directory}/CVV.mol"
 TEST_MOL2_FILE = f"{test_data_directory}/CVV.mol2"
 TEST_PROTEIN = f"{test_data_directory}/6b73.pdb"
+TEST_PROTEIN_PRE_CONVERTED = f"{test_data_directory}/pre_converted_6b73.pdb"
 
 protein_pdb = pdbfixer.PDBFixer(str(TEST_PROTEIN))
 
@@ -108,6 +110,28 @@ def test_water_absolute_solvent_builder():
     protein_pdb = pdbfixer.PDBFixer(str(TEST_PROTEIN))
     protein_absolute_solved = water_absolute_solvent_builder(model_water, forcefield, water_box_x, water_box_y, water_box_z, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, protein)
     assert protein_absolute_solved is not None
+
+def test_water_conversion():
+    model_water = 'tip4pew'
+    protein_name = '6b73.pdb'
+    shutil.copy(str(TEST_PROTEIN_PRE_CONVERTED), '.')
+
+    # Call the function
+    water_conversion(model_water, modeller, protein_name)
+
+    # Check if the output files are created
+    preconverted_pdb_path = f"pre_converted_{protein_name}"
+    converted_pdb_path = f"converted_{protein_name}"
+
+    assert preconverted_pdb_path.exists()
+    assert converted_pdb_path.exists()
+
+    # You can add more assertions to check the correctness of the conversion if needed
+    # For example, compare the content of preconverted_pdb and converted_pdb files
+
+    # Clean up (optional)
+    preconverted_pdb_path.unlink()
+    converted_pdb_path.unlink()
 
 
 if __name__ == '__main__':
