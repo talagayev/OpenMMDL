@@ -8,7 +8,6 @@ from simtk.openmm import unit
 from simtk.openmm import Vec3
 
 
-
 def prepare_ligand(ligand_file, minimize_molecule=True):
     """Reads an SDF File into RDKit, adds hydrogens to the structure, minimizes it if selected, and creates an openforcefield Molecule object. Inspired by @teachopencadd T019.
 
@@ -365,9 +364,6 @@ def water_conversion(model_water, modeller_pre_conversion, protein_name):
 
     Returns:
         modeller (openmm.app.modeller.Modeller): The converted object.
-    """
-    modeller: openmm.app.modeller.Modeller
-        The converted object.
     """
     # Writes out the PDB of the preconverted pdb
     with open(f"pre_converted_{protein_name}", "w") as outfile:
