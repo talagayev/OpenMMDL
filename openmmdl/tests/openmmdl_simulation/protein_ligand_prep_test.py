@@ -126,13 +126,6 @@ def test_water_conversion():
     assert os.path.exists(preconverted_pdb_path)
     assert os.path.exists(converted_pdb_path)
 
-    # You can add more assertions to check the correctness of the conversion if needed
-    # For example, compare the content of preconverted_pdb and converted_pdb files
-
-    # Clean up (optional)
-    preconverted_pdb_path.unlink()
-    converted_pdb_path.unlink()
-
 
 if __name__ == '__main__':
     pytest.main()
