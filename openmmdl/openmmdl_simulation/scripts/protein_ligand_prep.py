@@ -99,11 +99,6 @@ def merge_protein_and_ligand(protein, ligand):
         complex_topology (simtk.openmm.app.topology.Topology): The merged topology.
         complex_positions (simtk.unit.quantity.Quantity): The merged positions.
     """
-    complex_topology: simtk.openmm.app.topology.Topology
-        The merged topology.
-    complex_positions: simtk.unit.quantity.Quantity
-        The merged positions.
-    """
     # combine topologies
     md_protein_topology = md.Topology.from_openmm(protein.topology)  # using mdtraj for protein top
     md_ligand_topology = md.Topology.from_openmm(
