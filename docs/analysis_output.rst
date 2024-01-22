@@ -56,11 +56,9 @@ Binding_Modes_Markov_States
    * - 100x_checkpoint.chk*
      - Checkpoint saved every 1000000 steps.
 
-MD Files
+RMSD
 ------------------------------
-**MD Files**: A folder that contains the files that were generated during the MD Simulation. This folder contains 3 subfolders.
-
-*Pre MD*: Folder that contains the files that were prepared by the script before the MD Simulation.
+**RMSD**: A folder that contains the files for the RMSD calculation during the simulation. The RMSD over time is default, while the RMSD between the frames is optional
 
 .. list-table::
    :header-rows: 1
@@ -68,14 +66,13 @@ MD Files
 
    * - Name
      - Description
-   * - prepared_no_solvent_protein_name.pdb
-     - Prepared PDB File without solvent or membrane.
-   * - solvent_padding_protein_name.pdb*
-     - Prepared PDB File with padding solvent.
-   * - solvent_absoulte_protein_name.pdb*
-     - Prepared PDB File with absolute solvent.
-   * - membrane_protein_name.pdb*
-     - Prepared PDB File with membrane.
+   * - RMSD_over_time.csv
+     - CSV File with the values of the RMSD  of the protein/backbone/ligand during the simulation time.
+   * - RMSD_over_time.png
+     - Figure of the RMSD of the protein/backbone/ligand during the simulation time.
+   * - RMSD_between_the_frames.png*
+     - Matrix figure displaying the RMSD between each consecutive frame.
+
 
 *Minimization Equilibration*: Folder that contains topology files after the minimization and equilibration with **OpenMM**.
 
