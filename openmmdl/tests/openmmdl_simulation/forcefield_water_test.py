@@ -35,6 +35,12 @@ def test_water_forcefield_selection():
     assert water_forcefield_selection('NonexistentWater', 'amber14-all.xml') is None
     assert water_forcefield_selection('TIP3P', 'NonexistentFF') is None
 
+    # Test when forcefield_selection is in old_amber
+    assert water_forcefield_selection('TIP3P', 'amber99sb.xml') == 'tip3p.xml'
+    assert water_forcefield_selection('TIP3P', 'amber99sbildn.xml') == 'tip3p.xml'
+    assert water_forcefield_selection('TIP3P', 'amber03.xml') == 'tip3p.xml'
+    assert water_forcefield_selection('TIP3P', 'amber10.xml') == 'tip3p.xml'
+    
     # Test cases for 'charmm36.xml' force field
     assert water_forcefield_selection('CHARMM default', 'charmm36.xml') == 'charmm36/water.xml'
     assert water_forcefield_selection('TIP3P-PME-B', 'charmm36.xml') == 'charmm36/tip3p-pme-b.xml'
