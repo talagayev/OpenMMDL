@@ -270,8 +270,6 @@ def main():
         ligand_rings = []
         ligand_no_hydrogens = mda.Universe("lig_no_h.pdb")
         lig_no_hydrogens = ligand_no_hydrogens.select_atoms("all")
-        complex_universe = mda.Universe("complex.pdb")
-        complex_lig = novel_complex.select_atoms(f"resname {ligand}")
 
         # Iterate through each ring, increase indices by 1, and print the updated rings
         for atom_ring in lig_rd_ring.AtomRings():
