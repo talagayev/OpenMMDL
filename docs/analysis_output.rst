@@ -49,12 +49,20 @@ Binding_Modes_Markov_States
 
    * - Name
      - Description
-   * - checkpoint.chk
-     - Checkpoint saved every 10000 steps.
-   * - 10x_checkpoint.chk
-     - Checkpoint saved every 100000 steps.
-   * - 100x_checkpoint.chk*
-     - Checkpoint saved every 1000000 steps.
+   * - all_binding_modes_arranged.png
+     - Figure of the 2D depictions of the top 10 binding modes with the interacting protein partners.
+   * - Binding_mode_x.pdb*
+     - PDB File of the representative frame of the binding mode.
+   * - Binding_mode_x.pml*
+     - PML File of the representative frame of the binding mode.
+   * - markov_chain_plot_1.png
+     - Markov Chain Figure displaying Binding modes with a minimum transition of 1% of the frames between the binding modes.
+   * - markov_chain_plot_2.png
+     - Markov Chain Figure displaying Binding modes with a minimum transition of 2% of the frames between the binding modes.
+   * - markov_chain_plot_5.png
+     - Markov Chain Figure displaying Binding modes with a minimum transition of 5% of the frames between the binding modes.
+   * - markov_chain_plot_10.png
+     - Markov Chain Figure displaying Binding modes with a minimum transition of 10% of the frames between the binding modes.
 
 RMSD
 ------------------------------
@@ -73,38 +81,9 @@ RMSD
    * - RMSD_between_the_frames.png*
      - Matrix figure displaying the RMSD between each consecutive frame.
 
-
-*Minimization Equilibration*: Folder that contains topology files after the minimization and equilibration with **OpenMM**.
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Name
-     - Description
-   * - Energyminimization_protein_name.pdb
-     - Prepared PDB File after OpenMM energy minimization.
-   * - Equilibration_protein_name.pdb
-     - Prepared PDB File after OpenMM energy minimization and equilibration.
-
-*MD Output*: Folder that contains the Output trajectory files generated during the MD Simulation.
-
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Name
-     - Description
-   * - output_protein_name.pdb
-     - PDB Topology File of the first frame of the simulation.
-   * - trajectory.dcd
-     - Trajectory of the OpenMM Simulation.
-
-
-MD Postprocessing
+Binding Modes Markov States
 ------------------------------
-**MD Postprocessing**: A folder that contains the postprocessing files after the MD Simulation.
+**Binding Modes Markov States**: A folder that contains the Figures for the binding modes, the pdb files and pml files of the representative frames of the binding modes and the markov chain figure with the transitions between the binding modes.
 
 .. list-table::
    :header-rows: 1
