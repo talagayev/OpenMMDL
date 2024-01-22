@@ -2,8 +2,6 @@ import os
 import itertools
 import pandas as pd
 from MDAnalysis.analysis import rms
-from tqdm import tqdm
-from pathlib import Path
 
 
 def gather_interactions(df, ligand_rings, peptide=None):
