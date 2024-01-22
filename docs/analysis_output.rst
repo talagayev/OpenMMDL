@@ -40,7 +40,7 @@ Barcodes
 Binding_Modes_Markov_States
 ------------------------------
 
-**Binding_Modes_Markov_States**: A folder that contains the figures of the Markov state figures and 2D depiction figure of the  top 10 occuring binding modes.
+**Binding_Modes_Markov_States**: A folder that contains the figures of the markov state figures and 2D depiction figure of the top 10 occuring binding modes in addition to PDB and PML files of the representative frames of the binding modes.
 
 
 .. list-table::
@@ -51,7 +51,7 @@ Binding_Modes_Markov_States
      - Description
    * - all_binding_modes_arranged.png
      - Figure of the 2D depictions of the top 10 binding modes with the interacting protein partners.
-   * - Binding_mode_x.pdb*
+   * - Binding_mode_x.pdb
      - PDB File of the representative frame of the binding mode.
    * - Binding_mode_x.pml*
      - PML File of the representative frame of the binding mode.
