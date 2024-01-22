@@ -111,6 +111,7 @@ def test_water_padding_solvent_builder_charmm_tip4pew():
     water_selected = water_forcefield_selection(water=water,forcefield_selection=ff_selection(ff))
     model_water = water_model_selection(water=water,forcefield_selection=ff_selection(ff))
     forcefield = generate_forcefield(protein_ff=forcefield_selected, solvent_ff=water_selected, add_membrane=add_membrane, rdkit_mol=ligand_prepared)
+    modeller = app.Modeller(protein_pdb.topology, protein_pdb.positions)
     protein_buffer_solved = water_padding_solvent_builder(model_water, forcefield, water_padding_distance, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, protein)
     assert protein_buffer_solved is not None
 
