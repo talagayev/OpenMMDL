@@ -424,9 +424,6 @@ def main():
         for _, row in grouped_frames_treshold.iterrows()
     ]
 
-    # Calculate the occurrences of each list in the result_list
-    treshold_occurrences = Counter(tuple(lst) for lst in treshold_result_list)
-
     # Create a new column 'fingerprint' in the DataFrame
     grouped_frames_treshold["fingerprint"] = None
 
