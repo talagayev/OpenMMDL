@@ -37,7 +37,7 @@ ff = 'AMBER14'
 water = 'SPC/E'
 add_membrane = False
 Water_Box = "Buffer"
-water_padding_distance = 1.0
+water_padding_distance = 0.1
 water_boxShape = 'cube'
 water_ionicstrength = 0.15
 water_positive_ion = 'Na+'
@@ -101,6 +101,16 @@ def test_merge_protein_and_ligand():
     assert complex_positions is not None
 
 def test_water_padding_solvent_builder():
+    protein_buffer_solved = water_padding_solvent_builder(model_water, forcefield, water_padding_distance, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, protein)
+    assert protein_buffer_solved is not None
+
+def test_water_padding_solvent_builder_charmm_tip4pew():
+    ff = 'CHARMM36'
+    water = 'TIP4P-Ew'
+    forcefield_selected = ff_selection(ff)
+    water_selected = water_forcefield_selection(water=water,forcefield_selection=ff_selection(ff))
+    model_water = water_model_selection(water=water,forcefield_selection=ff_selection(ff))
+    forcefield = generate_forcefield(protein_ff=forcefield_selected, solvent_ff=water_selected, add_membrane=add_membrane, rdkit_mol=ligand_prepared)
     protein_buffer_solved = water_padding_solvent_builder(model_water, forcefield, water_padding_distance, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, protein)
     assert protein_buffer_solved is not None
 
