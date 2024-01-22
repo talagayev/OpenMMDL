@@ -92,7 +92,7 @@ pygments_style = 'default'
 #
 html_theme = 'renku'
 html_static_path = ['_static']
-html_logo = "OpenMMDL_logo_2.png"
+html_logo = "_static/OpenMMDL_logo_2.png"
 html_theme_options = {
     'logo_only': True,
     'display_version': False,
