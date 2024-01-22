@@ -2,6 +2,7 @@ import MDAnalysis as mda
 import subprocess
 import os
 import re
+from rdkit import Chem
 from openbabel import pybel
 
 
