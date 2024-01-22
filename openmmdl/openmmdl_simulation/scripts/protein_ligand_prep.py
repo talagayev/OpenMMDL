@@ -355,7 +355,7 @@ def membrane_builder(
 
 
 def water_conversion(model_water, modeller_pre_conversion, protein_name):
-    """Convert the water model of an OpenMM object. Inspired by @teachopencadd T019.
+    """Convert the water model of an OpenMM object.
 
     Args:
         model_water (str): The name of the preferred converted Water model.
