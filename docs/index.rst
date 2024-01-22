@@ -62,7 +62,7 @@
 
 
 
-Indices and tables
+Introduction
 ==================
 
 * :ref:`genindex`
