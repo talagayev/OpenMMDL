@@ -3,8 +3,6 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-OpenMMDL  @ Molecular Design Lab
-=========================================================
 .. figure:: /_static/images/OpenMMDL_logo_2.png
    :figwidth: 600px
    :align: center
