@@ -122,9 +122,9 @@ def test_water_conversion():
     # Check if the output files are created
     preconverted_pdb_path = f"pre_converted_{protein_name}"
     converted_pdb_path = f"converted_{protein_name}"
-
-    assert preconverted_pdb_path.exists()
-    assert converted_pdb_path.exists()
+    
+    assert os.path.exists(preconverted_pdb_path)
+    assert os.path.exists(converted_pdb_path)
 
     # You can add more assertions to check the correctness of the conversion if needed
     # For example, compare the content of preconverted_pdb and converted_pdb files
