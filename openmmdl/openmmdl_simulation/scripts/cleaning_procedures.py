@@ -2,19 +2,14 @@ import os
 import shutil
 from typing import List
 
-
 def cleanup(protein_name):
-    """
-    Cleans up the PDB Reporter Output File and MDTraj Files of the performed simulation
+    """Cleans up the PDB Reporter Output File and MDTraj Files of the performed simulation.
 
-    Parameters
-    ----------
-    protein_name: str
-        Name of the protein pdb.
+    Args:
+        protein_name (str): Name of the protein PDB.
 
-    Returns
-    ----------
-    None
+    Returns:
+        None
     """
     print("Cleaning Up :)")
     try:
@@ -27,17 +22,13 @@ def cleanup(protein_name):
 
 
 def create_directory_if_not_exists(directory_path):
-    """
-    Create a directory if it doesn't exist, or overwrite it if already does.
+    """Create a directory if it doesn't exist, or overwrite it if already does.
 
-    Parameters
-    ----------
-    directory_path: str
-        Path of the directory that you want to create.
+    Args:
+        directory_path (str): Path of the directory that you want to create.
 
-    Returns
-    ----------
-    None
+    Returns:
+        None
     """
     if not os.path.exists(directory_path):
         os.mkdir(directory_path)
@@ -47,38 +38,28 @@ def create_directory_if_not_exists(directory_path):
 
 
 def copy_file(src, dest):
-    """
-    Copy a file to the destination path.
+    """Copy a file to the destination path.
 
-    Parameters
-    ----------
-    src: str
-        Path of the file that needs to be copied.
-    dest: str
-        Path of destination where the file needs to be copied to.
+    Args:
+        src (str): Path of the file that needs to be copied.
+        dest (str): Path of destination where the file needs to be copied to.
 
-    Returns
-    ----------
-    None
+    Returns:
+        None
     """
     if os.path.exists(src):
         shutil.copy(src, dest)
 
 
 def organize_files(source, destination):
-    """
-    Organizes the files and moves them from the source to the destination directory.
+    """Organizes the files and moves them from the source to the destination directory.
 
-    Parameters
-    ----------
-    source: str
-        Path of the file that needs to be moved.
-    destination: str
-        Path of destination where the file needs to be moved to.
+    Args:
+        source (str): Path of the file that needs to be moved.
+        destination (str): Path of destination where the file needs to be moved to.
 
-    Returns
-    ----------
-    None
+    Returns:
+        None
     """
     for file in source:
         if os.path.exists(file):
@@ -88,22 +69,16 @@ def organize_files(source, destination):
 def post_md_file_movement(
     protein_name: str, prmtop: str = None, inpcrd: str = None, ligands: List[str] = None
 ):
-    """
-    Organizes and moves the files after the MD simulation to their respective directories.
-    Parameters
-    ----------
-    protein_name : str
-        Name of the protein pdb.
-    prmtop : str (optional)
-        Path to the AMBER topology file.
-    inpcrd : str (optional)
-        Path to the AMBER coordinate file.
-    ligands : list of str (optional)
-        A list of strs that store the path to the ligand file.
+    """Organizes and moves the files after the MD simulation to their respective directories.
 
-    Returns
-    ----------
-    None
+    Args:
+        protein_name (str): Name of the protein PDB.
+        prmtop (str, optional): Path to the AMBER topology file.
+        inpcrd (str, optional): Path to the AMBER coordinate file.
+        ligands (List[str], optional): List of paths to the ligand files.
+
+    Returns:
+        None
     """
     # Create necessary directories
     create_directory_if_not_exists("Input_Files")
