@@ -2,6 +2,7 @@ import os
 import shutil
 from typing import List
 
+
 def cleanup(protein_name):
     """Cleans up the PDB Reporter Output File and MDTraj Files of the performed simulation.
 
