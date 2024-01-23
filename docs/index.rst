@@ -10,12 +10,11 @@
 
 **OpenMMDL** is an workflow, that allows an easy setup of **OpenMM** molecular dynamic simulations of protein-ligand complexes. **OpenMMDL** consists of:
 
-*OpenMMDL Setup* - A webserver tool that allows to modify the Protein and generate Input Files for MD Simulations.
+*OpenMMDL Setup* - A webserver tool that allows to modify the Protein and generate Input Files for MD simulations.
 
-*OpenMMDL Simulation* - Performs a OpenMM MD Simulation with your Input files and further postprocesses the MD Simulation with MDTraj and MDAnalysis.
+*OpenMMDL Simulation* - Performs a **OpenMM** MD simulation with your Input files and further postprocesses the MD simulation with MDTraj and MDAnalysis.
 
-*OpenMMDL Analysis* - Analyzes the protein-ligand interactions in the OpenMM MD Simulation trajectories.
-
+*OpenMMDL Analysis* - Analyzes the protein-ligand interactions in the **OpenMM** MD simulation trajectories.
 
 
 .. toctree::
