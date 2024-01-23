@@ -11,4 +11,4 @@ Forecfield_water functions
    :requestheader Authorization: `token`
    
 .. important::
-   The author name must be in URL encoded format.
+   The author name must be in URL encoded formataesd
