@@ -58,9 +58,9 @@ openmmdl_simulation.scripts.cleaning_procedures
     :param prmtop: Path to the AMBER topology file.
     :param inpcrd: Path to the AMBER coordinate file.
     :param ligands: List of paths to the ligand files.
-    :type prmtop: Optional[str]
-    :type inpcrd: Optional[str]
-    :type ligands: Optional[List[str]]
+    :type prmtop: Optional [str]
+    :type inpcrd: Optional [str]
+    :type ligands: Optional [List[str]]
 
 
     :returns: None.
