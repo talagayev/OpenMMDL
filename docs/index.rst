@@ -57,7 +57,9 @@
    :maxdepth: 1
    :caption: Developers:
 
-   api
+   rmsd_calcuation
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
