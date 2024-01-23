@@ -57,8 +57,8 @@
    :maxdepth: 1
    :caption: API Docs
    
-   openmmdl_simulation
-   openmmdl_analysis
+   openmmdl_simulation_functions
+   openmmdl_analysis_functions
 
 
 Introduction
