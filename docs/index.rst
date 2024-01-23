@@ -53,12 +53,6 @@
    tutorial_amber_path
 
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Developers:
-
-   api
-
 
 Introduction
 ==================
