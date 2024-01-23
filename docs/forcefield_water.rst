@@ -1,14 +1,15 @@
 Forecfield_water functions
 ------------------------------
 
-.. http:post:: /libapi/book
-   :noindex:
-   
-     Retrieves a list of books written by a specified author.
-	 
-   :query string:  author_name (*required*) -- The name the of the particular author
-   
-   :requestheader Authorization: `token`
+.. py:function:: _func(a, b)
+    :noindex:
+
+    :param int a: The first arg.
+    :param b: The second arg.
+    :type b: Optional[str]
+
+    :returns: Something.
+    :rtype: bool
    
 .. important::
    The author name must be in URL encoded formata56
