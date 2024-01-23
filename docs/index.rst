@@ -57,14 +57,14 @@
    :maxdepth: 1
    :caption: Developers:
 
-   rmsd_calcuation
+   rmsd_calculation
 
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   rmsd_calcuation
+   rmsd_calculation
    # Add other module names as needed
 
 
