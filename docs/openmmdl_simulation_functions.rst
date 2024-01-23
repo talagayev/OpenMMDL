@@ -3,18 +3,14 @@ OpenMMDL simulation functions
 
 This page displays all the functions of **OpenMMDL Simulation**.
 
+openmmdl_simulation.cleaning_procedures
+------------------------------
 
-
-
-.. py:function:: _func(a, b)
+.. py:function:: cleanup(protein_name)
     :noindex:
 
-    :param int a: The first arg.
-    :param b: The second arg.
-    :type b: Optional[str]
+    :param str protein_name: Name of the protein PDB.
 
-    :returns: Something.
-    :rtype: bool
+    :returns: None.
+    :rtype: None
    
-.. important::
-   The author name must be in URL encoded formata56
