@@ -57,7 +57,8 @@
    :maxdepth: 1
    :caption: API Docs
    
-   forcefield_water
+   openmmdl_simulation
+   openmmdl_analysis
 
 
 Introduction
