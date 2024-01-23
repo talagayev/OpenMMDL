@@ -89,3 +89,14 @@ openmmdl_simulation.scripts.forcefield_water
 
     :returns: The XML filename of the water forcefield.
     :rtype: str
+
+
+.. py:function:: water_model_selection(water, forcefield_selection)
+    
+    Selects the required water model forcefield XML file according to water selection and previous force field selection.
+    
+    :param str water: Water model input.
+    :param str forcefield_selection: Input of selected forcefield XML file.
+
+    :returns: Water model forcefield XML file.
+    :rtype: str
