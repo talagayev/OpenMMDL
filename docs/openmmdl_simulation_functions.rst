@@ -24,4 +24,14 @@ openmmdl_simulation.scripts.cleaning_procedures
 
     :returns: None.
     :rtype: None
-   
+
+
+.. py:function:: copy_file(src, dest)
+    
+    Copy a file to the destination path.
+    
+    :param str src: Path of the file that needs to be copied.
+    :param str dest: Path of destination where the file needs to be copied to.
+
+    :returns: None.
+    :rtype: None
