@@ -3,7 +3,7 @@ OpenMMDL simulation functions
 
 This page displays all the functions of **OpenMMDL Simulation**.
 
-openmmdl_simulation.cleaning_procedures
+openmmdl_simulation.scripts.cleaning_procedures
 ------------------------------
 
 .. py:function:: cleanup(protein_name)
