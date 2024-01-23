@@ -14,3 +14,6 @@ sphinx:
 python:
   install:
     - requirements: docs/readthedocs_templates.txt
+
+before_build:
+  - pip install -e .
