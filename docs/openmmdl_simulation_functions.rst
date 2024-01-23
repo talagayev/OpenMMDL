@@ -16,8 +16,6 @@ openmmdl_simulation.cleaning_procedures
     :rtype: None
    
 
-
-
 .. py:function:: create_directory_if_not_exists(directory_path)
     
     Create a directory if it doesn't exist, or overwrite it if already does.
