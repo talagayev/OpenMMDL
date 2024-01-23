@@ -65,3 +65,16 @@ openmmdl_simulation.scripts.cleaning_procedures
 
     :returns: None.
     :rtype: None
+
+
+openmmdl_simulation.scripts.forcefield_water
+------------------------------
+
+.. py:function:: ff_selection(ff)
+    
+    Selects the required XML forcefield file.
+    
+    :param str ff: Input forcefield.
+
+    :returns: Selected XML forcefield file.
+    :rtype: str
