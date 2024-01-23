@@ -1,5 +1,5 @@
 OpenMMDL simulation functions
-------------------------------
+=============================
 
 This page displays all the functions of **OpenMMDL Simulation**.
 
