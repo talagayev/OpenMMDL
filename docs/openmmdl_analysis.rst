@@ -13,7 +13,7 @@ This page details the variables required to run the analysis and showcases the a
 
 Variables
 ------------------------------
-OpenMMDL-Analysis consists of mandatory and optional variables. The following are listed down below:
+**OpenMMDL Analysis** consists of mandatory and optional variables. The following are listed down below:
 
 
 Mandatory:
@@ -22,13 +22,14 @@ Mandatory:
 
     -t = topology file of the simulation (in .pdb format)
     -d = trajectory file of the simulation (in .dcd format)
-    -l = ligand by itself as reference for the analysis (in .sdf format)
-    -n = name of the ligand in the topology file 
+
 
 Optional:
 
 .. code-block:: text
 
+    -n = name of the ligand in the topology file 
+    -l = ligand by itself as reference for the analysis (in .sdf format)
     -b = binding mode treshold. Is used to remove interactions under the defined procentual occurence from the binding mode generation. The default is 40% (accepted values: 0-100)
     -df = dataframe file. Can be used if previous analysis was allready performed and the dataframe file is available. This will skip the analysis of the trajectory and go straight to the output generation. The default name of this file is "interactions_gathered.csv"
     -m = minimal transition threshold. Is used for the display of the binding mode transitions in the markov state chains network figure. The default value is 1
