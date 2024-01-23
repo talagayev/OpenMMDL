@@ -35,3 +35,33 @@ openmmdl_simulation.scripts.cleaning_procedures
 
     :returns: None.
     :rtype: None
+
+
+.. py:function:: organize_files(source, destination)
+    
+    Organizes the files and moves them from the source to the destination directory.
+    
+    :param str source: Path of the file that needs to be moved.
+    :param str destination: Path of destination where the file needs to be moved to.
+
+    :returns: None.
+    :rtype: None
+
+
+
+
+.. py:function:: post_md_file_movement(protein_name: str, prmtop: str = None, inpcrd: str = None, ligands: List[str] = None)
+    
+    Organizes and moves the files after the MD simulation to their respective directories.
+    
+    :param str protein_name: Name of the protein PDB.
+    :param prmtop: Path to the AMBER topology file.
+    :param inpcrd: Path to the AMBER coordinate file.
+    :param ligands: List of paths to the ligand files.
+    :type prmtop: Optional[str]
+    :type inpcrd: Optional[str]
+    :type ligands: Optional[List[str]]
+
+
+    :returns: None.
+    :rtype: None
