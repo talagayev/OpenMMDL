@@ -1,4 +1,4 @@
-Forecfield_water functions
+Forecfield_wate functions
 ------------------------------
 
 .. py:function:: _func(a, b)
