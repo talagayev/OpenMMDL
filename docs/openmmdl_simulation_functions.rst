@@ -140,3 +140,18 @@ openmmdl_simulation.scripts.post_md_conversions
 
     :returns: None.
     :rtype: None
+
+
+.. py:function:: MDanalysis_conversion(post_mdtraj_pdb_file, post_mdtraj_dcd_file, mda_output, output_selection, ligand_name=None, special_ligname=None)
+    
+    Translate the trajectory so that all frames coincide with its center of geometry.
+    
+    :param str post_mdtraj_pdb_file: Name of the post-MDtraj PDB file.
+    :param str post_mdtraj_dcd_file: Name of the post-MDtraj DCD File.
+    :param str ligand_name: Ligand name saved in the PDB file.
+    :param str special_ligname: Special residue name saved in the PDB file.
+    :param str mda_output: Selection of output formats.
+    :param str output_selection: Selection of topologies with specific atom selections that will be created.
+
+    :returns: None.
+    :rtype: None
