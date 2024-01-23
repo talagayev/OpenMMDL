@@ -113,3 +113,30 @@ openmmdl_simulation.scripts.forcefield_water
 
     :returns: Forcefield with a registered small molecule.
     :rtype: simtk.openmm.app.Forcefield
+
+
+.. py:function:: generate_transitional_forcefield(protein_ff, solvent_ff, add_membrane, rdkit_mol=None)
+    
+    Generate an OpenMM transitional forcefield object with TIP3P water model for membrane building and register a small molecule.
+    
+    :param str protein_ff: Name of the force field in XML format.
+    :param str solvent_ff: Name of the water model force field in XML format.
+    :param bool add_membrane: Selection if the system should be built with a membrane.
+    :param rdkit.Chem.rdchem.Mol rdkit_mol: Small molecule to register in the force field.
+
+    :returns: A transitional forcefield with TIP3P water and a registered small molecule.
+    :rtype: simtk.openmm.app.Forcefield
+
+
+openmmdl_simulation.scripts.post_md_conversions
+------------------------------
+
+.. py:function:: mdtraj_conversion(pdb_file, mdtraj_output)
+    
+    Recenter and apply periodic boundary conditions to the molecules in each frame of the trajectory, and save the centered trajectory and its first frame.
+    
+    :param str pdb_file: Name of the PDB file. This PDB file stores the extracted frames from the MD trajectory.
+    :param str mdtraj_output: The selected format that will be used as an output of the topology and trajectory.
+
+    :returns: None.
+    :rtype: None
