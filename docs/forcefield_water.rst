@@ -1,7 +1,7 @@
 Forecfield_water functions
 ------------------------------
 
-.. http: ff_selection
+.. http:post:: /libapi/book
    :noindex:
    
      Retrieves a list of books written by a specified author.
