@@ -1,10 +1,15 @@
-rmsd_calcuation module
+rmsd_calculation module
 ======================
 
-.. automodule:: openmmdl.openmmdl_analysis.rmsd_calcuation
+.. automodule:: openmmdl
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automethod:: rmsd_calcuation.rmsd_for_atomgroups
-.. automethod:: rmsd_calcuation.RMSD_dist_frames
+.. automodule:: openmmdl.openmmdl_analysis.rmsd_calculation
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autofunction:: rmsd_for_atomgroups
+.. autofunction:: RMSD_dist_frames
