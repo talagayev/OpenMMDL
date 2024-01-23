@@ -28,13 +28,19 @@ Optional:
 
 .. code-block:: text
 
-    -n = name of the ligand in the topology file 
-    -l = ligand by itself as reference for the analysis (in .sdf format)
-    -b = binding mode treshold. Is used to remove interactions under the defined procentual occurence from the binding mode generation. The default is 40% (accepted values: 0-100)
-    -df = dataframe file. Can be used if previous analysis was allready performed and the dataframe file is available. This will skip the analysis of the trajectory and go straight to the output generation. The default name of this file is "interactions_gathered.csv"
-    -m = minimal transition threshold. Is used for the display of the binding mode transitions in the markov state chains network figure. The default value is 1
-    -c = CPU count. The number of CPU's to be used for interaction calculation. The default is is half of the available CPU's
-    -p = output .pml files. This will generate .pml files for each binding mode as well as a .pml of the point clouds. The default is False (accepted values: True/False)
+    -n = Ligand Name (3 Letter Code in PDB)
+    -l = Ligand in SDF Format
+    -b = Binding mode treshold. Is used to remove interactions under the defined procentual occurence from the binding mode generation. The default is 40% (accepted values: 0-100)
+    -df = Dataframe (use if the interactions were already calculated, default name would be "interactions_gathered.csv")
+    -m = Minimal transition percentage for markov state chain figures. The default value is 1
+    -c = CPU count, specify how many CPUs should be used, default is half of the CPU count.
+    -p = Generate .pml files for pharmacophore visualization. The default is False (accepted values: True/False)
+    -s = special ligand name to calculate interactions with special ligands.
+    -nuc = Treat nucleic acids as receptor
+    -pep = Calculate interactions with peptides. Give the peptides chain name as input. Defaults to None
+    -r = Calculate RMSD difference between frames. The default is False (accepted values: True/False)
+    -w = Perform stable water analysis. The default is False (accepted values: True/False)
+    --watereps = Set the Eps for clustering. Defines how big clusters can be spatially in Angstrom.
 
 Application
 ------------------------------
