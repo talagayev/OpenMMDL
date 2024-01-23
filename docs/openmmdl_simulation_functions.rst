@@ -1,4 +1,4 @@
-Forecfield_wate functions
+OpenMMDL simulation functions
 ------------------------------
 
 .. py:function:: _func(a, b)
