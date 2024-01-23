@@ -100,3 +100,16 @@ openmmdl_simulation.scripts.forcefield_water
 
     :returns: Water model forcefield XML file.
     :rtype: str
+
+
+.. py:function:: generate_forcefield(protein_ff, solvent_ff, add_membrane, rdkit_mol=None)
+    
+    Generate an OpenMM Forcefield object and register a small molecule.
+    
+    :param str protein_ff: Input of selected forcefield XML File.
+    :param str solvent_ff: Input of selected water model forcefield XML File.
+    :param bool add_membrane: Selection if the system should be built with a membrane.
+    :param rdkit.Chem.rdchem.Mol rdkit_mol: Small molecule to register in the force field.
+
+    :returns: Forcefield with a registered small molecule.
+    :rtype: simtk.openmm.app.Forcefield
