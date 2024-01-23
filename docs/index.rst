@@ -55,7 +55,7 @@
 
 .. toctree::
    :maxdepth: 1
-   :caption: Code
+   :caption: API Docs
    
    forcefield_water
 
