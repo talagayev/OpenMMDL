@@ -60,15 +60,6 @@
    api
 
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   rmsd_calculation
-   # Add other module names as needed
-
-
-
 Introduction
 ==================
 
