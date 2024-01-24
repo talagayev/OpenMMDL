@@ -356,6 +356,3 @@ def analyze_protein_and_water_interaction(
                 os.path.join(subdirectory_path, "interacting_residues.csv"), index=False
             )
             print(f"Exported interacting_residues.csv in {subdirectory_path}")
-                os.path.join(subdirectory_path, "interacting_residues.csv"), index=False
-            )
-            print(f"Exported interacting_residues.csv in {subdirectory_path}")
