@@ -15,12 +15,17 @@ import rdkit
 import matplotlib
 import pickle
 import json
+import Bio
+import multiprocessing
+import functools
+from Bio import PDB
 import cairosvg
 from collections import Counter
 from rdkit import Chem
 from rdkit.Chem import AllChem, Draw
 from rdkit.Chem.Draw import rdMolDraw2D
 from plip.basic import config
+from MDAnalysis.analysis import rms
 from tqdm import tqdm
 
 from openmmdl.openmmdl_analysis.preprocessing import (
@@ -76,7 +81,7 @@ from openmmdl.openmmdl_analysis.pml_writer import (
     generate_point_cloud_pml,
 )
 from openmmdl.openmmdl_analysis.find_stable_waters import (
-    process_trajectory_and_cluster,
+    stable_waters_pipeline,
     analyze_protein_and_water_interaction,
 )
 
@@ -202,7 +207,7 @@ def main():
     if not args.ligand_sdf and args.peptide == None and stable_water_analysis:
         print("All analyses will be run which can be done without a ligand present")
         # ...
-        process_trajectory_and_cluster(topology, trajectory, water_eps)
+        stable_waters_pipeline(topology, trajectory, water_eps)
         analyze_protein_and_water_interaction(
             topology, "representative_waters.pdb", water_eps
         )
@@ -270,6 +275,8 @@ def main():
         ligand_rings = []
         ligand_no_hydrogens = mda.Universe("lig_no_h.pdb")
         lig_no_hydrogens = ligand_no_hydrogens.select_atoms("all")
+        complex_universe = mda.Universe("complex.pdb")
+        complex_lig = novel_complex.select_atoms(f"resname {ligand}")
 
         # Iterate through each ring, increase indices by 1, and print the updated rings
         for atom_ring in lig_rd_ring.AtomRings():
@@ -423,6 +430,9 @@ def main():
         row[selected_columns].values.tolist()
         for _, row in grouped_frames_treshold.iterrows()
     ]
+
+    # Calculate the occurrences of each list in the result_list
+    treshold_occurrences = Counter(tuple(lst) for lst in treshold_result_list)
 
     # Create a new column 'fingerprint' in the DataFrame
     grouped_frames_treshold["fingerprint"] = None
@@ -816,7 +826,7 @@ def main():
     print("\033[1mAnalysis is Finished.\033[0m")
 
     if stable_water_analysis:
-        process_trajectory_and_cluster(topology, trajectory, water_eps)
+        stable_waters_pipeline(topology, trajectory, water_eps)
         analyze_protein_and_water_interaction(
             topology, "representative_waters.pdb", water_eps
         )
