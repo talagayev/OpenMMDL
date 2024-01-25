@@ -16,13 +16,13 @@ The following Files are generated and stored directly in the working folder wher
    * - Name
      - Description
    * - complex.pdb
-     - File displaying the barcodes for all hydrogen bond acceptor interactions.
+     - PDB file of the protein, ligand, waters 10Å around the ligand and special ligand if selected).
    * - df_all.csv
-     - File displaying the barcodes for all hydrogen bond donor interactions.
+     - CSV file of the calculated interaction together with the generated fingerprints.
    * - interactions_gathered.csv
-     - File displaying the barcodes for all halogen interactions.
+     - CSV File of the calculated interaction together without the generated fingerprints.
    * - lig.pdb
-     - File displaying the barcodes for all hydrophobic interactions.
+     - PDB file of the ligand with hydrogens.
    * - lig.smi
      - File displaying the barcodes for all metal interactions.
    * - ligand_numbering.png
