@@ -81,7 +81,7 @@ RMSD
    * - RMSD_between_the_frames.png*
      - Matrix figure displaying the RMSD between each consecutive frame.
 
-Binding Modes Markov States
+Visualization
 ------------------------------
 **Binding Modes Markov States**: A folder that contains the Figures for the binding modes, the pdb files and pml files of the representative frames of the binding modes and the markov chain figure with the transitions between the binding modes.
 
@@ -91,62 +91,11 @@ Binding Modes Markov States
 
    * - Name
      - Description
-   * - centered_old_coordinates_top.pdb
+   * - clouds.json
      - Topology File of the centered protein in PDB Format.
-   * - centered_old_coordinates_top.gro
+   * - interacting_waters.dcd
      - Topology File of the centered protein in Gromacs GRO Format.
-   * - centered_old_coordinates.dcd
+   * - interacting_waters.pdb
      - Trajectory File of the centered protein in DCD Format.
-   * - centered_old_coordinates.xtc
+   * - interacting_waters.pkl
      - Trajectory File of the centered protein in XTC Format.
-   * - centered_traj_unaligned.dcd
-     - Trajectory File of the unaligned centered protein in DCD Format with all atoms and new coordinates.
-   * - centered_traj_unaligned.xtc
-     - Trajectory File of the unaligned centered protein in XTC Format with all atoms and new coordinates.
-   * - prot_lig_traj_unaligned.dcd*
-     - Trajectory File of the unaligned centered protein in DCD Format with only protein and ligand atoms and new coordinates.
-   * - prot_lig_traj_unaligned.xtc*
-     - Trajectory File of the unaligned centered protein in XTC Format with only protein and ligand atoms and new coordinates.
-     
-Final Output
-------------------------------
-**Final Output**: A folder that contains the final files after the MD Simulation, ready to be analyzed. This folder contains 2 subfolders.
-
-1. *All Atoms*: Folder that contains the centered topology files of all atoms with new coordinates according to the center of mass.
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-   * - Name
-     - Description
-   * - centered_top.pdb*
-     - Topology File of the centered protein in PDB Format with all atoms and new coordinates.
-   * - centered_top.gro*
-     - Topology File of the centered protein in Gromacs GRO Format with all atoms and new coordinates.
-   * - centered_traj.dcd*
-     - Trajectory File of the aligned centered protein in DCD Format with all atoms and new coordinates.
-   * - centered_traj.xtc*
-     - Trajectory File of the aligned centered protein in XTC Format with all atoms and new coordinates.
-
-
-
-2. *Prot Lig*: Folder that contains the centered topology files of only the protein and ligand atoms with new coordinates according to the center of mass.
-
-
-
-.. list-table::
-   :header-rows: 1
-   :widths: 25 75
-
-
-   * - Name
-     - Description
-   * - prot_lig_top.pdb*
-     - Topology File of the centered protein in PDB Format with only protein and ligand atoms and new coordinates.
-   * - prot_lig_top.gro*
-     - Topology File of the centered protein in Gromacs GRO Format with only protein and ligand atoms and new coordinates.
-   * - prot_lig_traj.dcd*
-     - Trajectory File of the centered protein in DCD Format with only protein and ligand atoms and new coordinates.
-   * - prot_lig_traj.xtc*
-     - Trajectory File of the centered protein in XTC Format with only protein and ligand atoms and new coordinates.
