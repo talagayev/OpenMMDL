@@ -6,6 +6,35 @@ The **OpenMMDL Analysis** script creates output folders and files during and aft
 The following list contains an detailed overview of the folders and files:
 The Optional files are highlighted with an *asteriks**
 
+
+The following Files are generated and stored directly in the working folder where you start the **OpenMMDL Analysis** from:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Name
+     - Description
+   * - complex.pdb
+     - File displaying the barcodes for all hydrogen bond acceptor interactions.
+   * - df_all.csv
+     - File displaying the barcodes for all hydrogen bond donor interactions.
+   * - interactions_gathered.csv
+     - File displaying the barcodes for all halogen interactions.
+   * - lig.pdb
+     - File displaying the barcodes for all hydrophobic interactions.
+   * - lig.smi
+     - File displaying the barcodes for all metal interactions.
+   * - ligand_numbering.png
+     - File displaying the barcodes for all saltbridge interactions.
+   * - lig_no_h.pdb
+     - File displaying the barcodes for all pication interactions.
+   * - missing_frames_filled.csv
+     - File displaying the barcodes for all pistacking interactions.
+   * - top_10_binding_modes.csv
+     - File displaying the barcodes for all waterbridge interactions.
+
+
 Barcodes
 ------------------------------
 **Barcodes**: A folder that contains the figures of the barcodes for the interactions.
