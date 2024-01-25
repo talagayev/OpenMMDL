@@ -24,15 +24,15 @@ The following Files are generated and stored directly in the working folder wher
    * - lig.pdb
      - PDB file of the ligand with hydrogens.
    * - lig.smi
-     - File displaying the barcodes for all metal interactions.
+     - Smiles file of the ligand.
    * - ligand_numbering.png
-     - File displaying the barcodes for all saltbridge interactions.
+     - File that displays the ligand in 2D depiction with the correct assignment of atom numbers, which makes it easier to understand the interacting atoms.
    * - lig_no_h.pdb
-     - File displaying the barcodes for all pication interactions.
+     - PDB file of the ligand without hydrogens.
    * - missing_frames_filled.csv
-     - File displaying the barcodes for all pistacking interactions.
+     - CSV File of the calculated interactions with added frames for frames without interactions
    * - top_10_binding_modes.csv
-     - File displaying the barcodes for all waterbridge interactions.
+     - CSV File of the top 10 most occuring binding modes.
 
 
 Barcodes
