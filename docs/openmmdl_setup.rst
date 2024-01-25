@@ -20,11 +20,11 @@ Now that we have activated the `openmmdl` environment we can start **OpenMMDL Se
 
     openmmdl_setup
 
-This will open the **OpenMMDL Setup**, which you can use for the creation of the input files for OpenMMDL Simulation.
+This will open the **OpenMMDL Setup**, which you can use for the creation of the input files for **OpenMMDL Simulation**.
 
 There are two possible options to create the input files for **OpenMMDL Simulation**:
 
-1. The PDBFixer Path, where a `pdb` file of the protein is used as an input for the preparation and simulation.
+1. The PDBFixer path, where a `pdb` file of the protein is used as an input for the preparation and simulation.
 The tutorial for the PDBFixer Path can be found :doc:`here </tutorial_pdb_path>`.
 
 Here is the table of the currently available forcefields and water models for the PDBFixer path: 
@@ -33,7 +33,7 @@ Here is the table of the currently available forcefields and water models for th
    :figwidth: 725px
    :align: center
 
-2. The Amber Path, where `prmtop` and `inpcrd` files are used for the preparation and simulation. This path allows us to either use already prepared `prmtop` and `inpcrd` as an input or create the `prmtop` and `inpcrd` from PDB files of the receptor and ligand.
+2. The Amber path, where `prmtop` and `inpcrd` files are used for the preparation and simulation. This path allows us to either use already prepared `prmtop` and `inpcrd` as an input or create the `prmtop` and `inpcrd` from PDB files of the receptor and ligand.
 The tutorial for the Amber path can be found :doc:`here </tutorial_amber_path>`.
 
 .. figure:: /_static/images/amber_ff.png
