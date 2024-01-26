@@ -176,20 +176,7 @@ if ligand_select == "yes":
 modeller = app.Modeller(complex_topology, complex_positions)
 
 if add_membrane == True:
-    membrane_builder(
-        ff,
-        model_water,
-        forcefield,
-        transitional_forcefield,
-        protein_pdb,
-        modeller,
-        membrane_lipid_type,
-        membrane_padding,
-        membrane_positive_ion,
-        membrane_negative_ion,
-        membrane_ionicstrength,
-        protein,
-    )
+    membrane_builder(ff, model_water, forcefield, transitional_forcefield, protein_pdb, modeller, membrane_lipid_type, membrane_padding, membrane_positive_ion, membrane_negative_ion, membrane_ionicstrength, protein )
 
 elif add_membrane == False:
     if Water_Box == "Buffer":
