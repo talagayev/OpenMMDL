@@ -112,7 +112,7 @@ RMSD
 
 Visualization
 ------------------------------
-**Binding Modes Markov States**: A folder that contains the figures for the binding modes, the pdb files and pml files of the representative frames of the binding modes and the markov chain figure with the transitions between the binding modes.
+**Visualization**: A folder that contains the figures for the binding modes, the pdb files and pml files of the representative frames of the binding modes and the markov chain figure with the transitions between the binding modes.
 
 .. list-table::
    :header-rows: 1
