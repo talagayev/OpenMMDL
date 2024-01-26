@@ -2,7 +2,11 @@ import MDAnalysis as mda
 import subprocess
 import os
 import re
+import rdkit
 from rdkit import Chem
+from rdkit.Chem import Draw
+from rdkit.Chem import AllChem
+from rdkit.Chem.Draw import rdMolDraw2D
 from openbabel import pybel
 
 
@@ -11,7 +15,7 @@ def increase_ring_indices(ring, lig_index):
 
     Args:
         ring (str): A list of atom indices belonging to a ring that need to be modified.
-        lig_index (str): An integer that is the first number of the ligand atom indices obtained from the protein-ligand, which is used to modify the ring indices
+        lig_index (int): An integer that is the first number of the ligand atom indices obtained from the protein-ligand, which is used to modify the ring indices
 
     Returns:
         list:  A new list with modified atom indicies.
@@ -64,11 +68,11 @@ def process_pdb_file(input_pdb_filename):
 
 
 def extract_and_save_ligand_as_sdf(input_pdb_filename, output_filename, target_resname):
-    """Extract and save the ligand from the receptor ligand complex PDB file into a new PDB file by itself .
+    """Extract and save the ligand from the receptor ligand complex PDB file into a new PDB file by itself.
 
     Args:
         input_pdb_filename (str): name of the input PDB file
-        output_pdb_filename (str): name of the output PDB file
+        output_pdb_filename (str): name of the output SDF file
         target_resname (str): resname of the ligand in the original PDB file
     """
     # Load the PDB file using MDAnalysis
@@ -94,30 +98,13 @@ def extract_and_save_ligand_as_sdf(input_pdb_filename, output_filename, target_r
     os.remove("lig.pdb")
 
 
-def convert_pdb_to_sdf(input_pdb_filename, output_sdf_filename):
-    """Convert ligand PDB file to SDF file for analysis using Open Babel.
-
-    Args:
-        input_pdb_filename (str): name of the input PDB file
-        output_sdf_filename (str): name of the output SDF file
-    """
-    # Use subprocess to call Open Babel for the file format conversion
-    try:
-        subprocess.run(
-            ["obabel", input_pdb_filename, "-O", output_sdf_filename], check=True
-        )
-    except subprocess.CalledProcessError as e:
-        print(f"Error converting PDB to SDF: {e}")
-        return
-
-
 def renumber_atoms_in_residues(input_pdb_file, output_pdb_file, lig_name):
     """Renumer the atoms of the ligand in the topology PDB file.
 
     Args:
         input_pdb_file (str): Path to the initial PDB file.
         output_pdb_file (str): Path to the output PDB file.
-        lig_name (str): Name of the ligand in the PDB file.
+        lig_name (str): Name of the ligand in the input PDB file.
     """
     # Read the input PDB file
     with open(input_pdb_file, "r") as f:
@@ -129,6 +116,7 @@ def renumber_atoms_in_residues(input_pdb_file, output_pdb_file, lig_name):
     for line in pdb_lines:
         if line.startswith("ATOM"):
             # Extract information from the ATOM line
+            atom_serial = int(line[6:11])
             atom_name = line[12:16].strip()
             residue_name = line[17:20].strip()
 
@@ -191,4 +179,3 @@ def process_pdb(input_file, output_file):
 
     with open(output_file, "w") as f:
         f.write(modified_data)
-
