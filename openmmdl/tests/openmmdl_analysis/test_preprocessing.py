@@ -18,6 +18,92 @@ topology_metal = f"{test_data_directory}/metal_top.pdb"
 ligand_resname = "UNK"
 
 
+# Import the renumber_protein_residues function from your module
+from your_module_name import renumber_protein_residues
+
+# Define paths to test PDB files
+input_pdb_path = "test_input.pdb"
+reference_pdb_path = "test_reference.pdb"
+output_pdb_path = "test_output.pdb"  # New output PDB path
+
+# Fixture to create sample input PDB file
+@pytest.fixture
+def create_input_pdb():
+    # Save the sample input PDB content to a file
+    input_pdb_content = """
+    ATOM      1  N   ALA A   1      11.112  31.224  51.546  1.00  0.00
+    ATOM      2  CA  ALA A   1      11.207  31.756  50.180  1.00  0.00
+    ATOM      3  C   ALA A   1      12.635  31.978  49.720  1.00  0.00
+    ATOM      4  O   ALA A   1      13.349  32.835  50.348  1.00  0.00
+    TER
+    """
+    with open(input_pdb_path, "w") as f:
+        f.write(input_pdb_content)
+    return input_pdb_path
+
+# Fixture to create sample reference PDB file
+@pytest.fixture
+def create_reference_pdb():
+    # Save the sample reference PDB content to a file with the changed residue number
+    reference_pdb_content = """
+    ATOM      1  N   ALA A   5      10.112  30.224  50.546  1.00  0.00
+    ATOM      2  CA  ALA A   5      10.207  30.756  49.180  1.00  0.00
+    ATOM      3  C   ALA A   5      11.635  30.978  48.720  1.00  0.00
+    ATOM      4  O   ALA A   5      12.349  31.835  49.348  1.00  0.00
+    TER
+    """
+    with open(reference_pdb_path, "w") as f:
+        f.write(reference_pdb_content)
+    return reference_pdb_path
+
+# Fixture to create the output PDB path
+@pytest.fixture
+def create_output_pdb_path():
+    return output_pdb_path
+
+# Fixture to clean up test files after testing
+@pytest.fixture
+def clean_up_files():
+    # Code to clean up test files after testing
+    yield
+    if os.path.exists(input_pdb_path):
+        os.remove(input_pdb_path)
+    if os.path.exists(reference_pdb_path):
+        os.remove(reference_pdb_path)
+    if os.path.exists(output_pdb_path):
+        os.remove(output_pdb_path)
+
+# Pytest function to test renumber_protein_residues
+def test_renumber_protein_residues(create_input_pdb, create_reference_pdb, create_output_pdb_path, clean_up_files):
+    # Call the renumber_protein_residues function with the test files
+    renumber_protein_residues(create_input_pdb, create_reference_pdb, create_output_pdb_path)
+
+    # Load the output PDB file and check if the renumbering is correct
+    output_traj = md.load(output_pdb_path)
+    input_traj = md.load(create_input_pdb)
+    reference_traj = md.load(create_reference_pdb)
+
+    # Additional assertions based on your specific requirements
+    assert output_traj.n_frames == input_traj.n_frames
+    assert output_traj.n_atoms == input_traj.n_atoms
+    # Add more assertions if needed
+
+    # Check if the residue indices are correctly renumbered
+    for frame in range(output_traj.n_frames):
+        for chain_id in output_traj.topology.chain_ids:
+            output_residues = list(output_traj.topology.residues_in_chain(chain_id))
+            input_residues = list(input_traj.topology.residues_in_chain(chain_id))
+            reference_residues = list(reference_traj.topology.residues_in_chain(chain_id))
+
+            for i, output_residue in enumerate(output_residues):
+                output_residue_index = output_residue.index
+                input_residue_index = input_residues[i].index
+                reference_residue_index = reference_residues[i].index
+
+                # Add assertions to check if the renumbering is correct
+                assert output_residue_index == reference_residue_index - input_residue_index
+
+
 @pytest.fixture
 def sample_pdb_data():
     # Provide sample PDB data for testing
