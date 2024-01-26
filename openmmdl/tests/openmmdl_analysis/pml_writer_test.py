@@ -204,10 +204,6 @@ def test_generate_bindingmode_pharmacophore(tmp_path):
 def test_generate_bindingmode_pharmacophore_2(tmp_path):
     # Prepare inputs
     dict_bindingmode = {
-        "Acceptor_hbond": {
-            "PROTCOO": [[1, 2, 3]],
-            "LIGCOO": [[4, 5, 6]]
-        },
         "pistacking": {
             "PROTCOO": [[1, 2, 3]],
             "LIGCOO": [[4, 5, 6]]
