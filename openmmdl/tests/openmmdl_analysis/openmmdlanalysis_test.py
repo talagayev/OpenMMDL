@@ -93,7 +93,7 @@ def test_script_execution(test_data_dir):
     ligand_sdf_file = os.path.join(input_data_path, "lig.sdf")
     ligand_name = "UNK"
 
-    cmd = f" openmmdl_analysis -t {topology_file} -d {trajectory_file} -l {ligand_sdf_file} -n {ligand_name} -b 40 -c 2"
+    cmd = f" openmmdl_analysis -t {topology_file} -d {trajectory_file} -l {ligand_sdf_file} -n {ligand_name} -b 5 -c 2"
 
     result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=test_data_dir)
 
