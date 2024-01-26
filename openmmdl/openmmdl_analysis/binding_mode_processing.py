@@ -2,6 +2,8 @@ import os
 import itertools
 import pandas as pd
 from MDAnalysis.analysis import rms
+from tqdm import tqdm
+from pathlib import Path
 
 
 def gather_interactions(df, ligand_rings, peptide=None):
@@ -269,7 +271,7 @@ def filtering_values(threshold, frames, df, unique_columns_rings_grouped):
         unique_columns_rings_grouped (dict): Dictionary containing the grouped and unique values otained from gather_interactions.
 
     Returns:
-        dict: A dictionary with a single key named 'all' that contains a list of all combined values from all the sub-dictionaries.
+        list: A list of values, with unique values and their corresponding occurence counts.
     """
     # Call the function to remove duplicate keys
     unique_data = remove_duplicate_values(unique_columns_rings_grouped)
