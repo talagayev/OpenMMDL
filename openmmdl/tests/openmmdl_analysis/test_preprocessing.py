@@ -17,10 +17,6 @@ pdb_file = test_data_directory / "0_unk_hoh.pdb"
 topology_metal = f"{test_data_directory}/metal_top.pdb"
 ligand_resname = "UNK"
 
-
-# Import the renumber_protein_residues function from your module
-from your_module_name import renumber_protein_residues
-
 # Define paths to test PDB files
 input_pdb_path = "test_input.pdb"
 reference_pdb_path = "test_reference.pdb"
