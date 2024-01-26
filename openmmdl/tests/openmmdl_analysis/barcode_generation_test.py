@@ -20,19 +20,19 @@ def sample_dataframe_barcode_generation():
 def test_barcodegeneration(sample_dataframe_barcode_generation):
     interaction = 'Interaction1'
     barcode = barcodegeneration(sample_dataframe_barcode_generation, interaction)
-    
+
     assert isinstance(barcode, np.ndarray)
-    
+
     expected_barcode = np.array([1, 1, 0])
     assert np.array_equal(barcode, expected_barcode)
-    
+
 def test_waterids_barcode_generator(sample_dataframe_barcode_generation):
     interaction = 'Interaction2'
     waterid_barcode = waterids_barcode_generator(sample_dataframe_barcode_generation, interaction)
-    
+
     # Test if the output is a list
     assert isinstance(waterid_barcode, list)
-    
+
     # Test the expected waterid barcode for the sample dataframe and interaction
     expected_waterid_barcode = [0, 104, 105]
     assert waterid_barcode == expected_waterid_barcode
@@ -53,7 +53,7 @@ def test_plot_barcodes():
     plot_barcodes(barcode_data, "single_barcode.png")
     single_barcode = "single_barcode.png"
     assert single_barcode is not None
-    
+
     barcodes = {
         "Barcode 1": np.array([1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0]),
         "Barcode 2": np.array([0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]),
@@ -64,7 +64,7 @@ def test_plot_barcodes():
     files_in_working_directory = os.listdir(working_directory)
     print("Files in Working Directory after:", files_in_working_directory)
     save_path = "multiple_barcodes.png"
-    
+
     assert save_path is not None
 
 
@@ -107,3 +107,25 @@ def test_plot_waterbridge_piechart(tmp_path):
         # You can add more assertions based on your specific requirements
         # For example, check if the file size is greater than zero, etc.
         assert os.path.getsize(outname_png) > 0, f"File {outname_png} is empty."
+
+
+def test_plot_bacodes_grouped(tmp_path):
+    # Create a mock dataframe with all necessary columns
+    df_all = pd.DataFrame({
+        'column1': [1, 2, 3],
+        'column2': ['a', 'b', 'c'],
+        'FRAME': [0, 1, 2],
+        'atom1_atom2_interaction': [1, 0, 1],
+        'atom3_atom4_interaction': [0, 1, 1]
+    })
+
+    # Define interactions and interaction_type
+    interactions = ['atom1_atom2_interaction', 'atom3_atom4_interaction']
+    interaction_type = 'interaction'
+
+    working_directory = os.getcwd()
+    plot_bacodes_grouped(interactions, df_all, interaction_type)
+    # Check if the output files were created
+    assert os.path.exists(os.path.join(working_directory, "Barcodes", "atom2", f"atom2_{interaction_type}_barcodes.png"))
+    assert os.path.exists(os.path.join(working_directory, "Barcodes", "atom4", f"atom4_{interaction_type}_barcodes.png"))
+    assert os.path.exists(os.path.join(working_directory, "Barcodes", f"{interaction_type}_interactions.png"))
