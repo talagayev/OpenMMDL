@@ -8,44 +8,29 @@ import xml.etree.ElementTree as ET
 import pytest
 from openmmdl.openmmdl_analysis.pml_writer import *
 
-
-# pml_writer tests
+#pml_writer tests
 @pytest.fixture
 def sample_dataframe_generate_pharmacophore_centers():
     data = {
-        "Hydrophobic": [1, 1, 0, 1, 0],
-        "Ionic": [0, 1, 0, 0, 1],
-        "LIGCOO": [
-            "(1.0, 2.0, 3.0)",
-            "(2.0, 3.0, 4.0)",
-            "(3.0, 4.0, 5.0)",
-            "(4.0, 5.0, 6.0)",
-            "(5.0, 6.0, 7.0)",
-        ],
+        'Hydrophobic': [1, 1, 0, 1, 0],
+        'Ionic': [0, 1, 0, 0, 1],
+        'LIGCOO': ["(1.0, 2.0, 3.0)", "(2.0, 3.0, 4.0)", "(3.0, 4.0, 5.0)", "(4.0, 5.0, 6.0)", "(5.0, 6.0, 7.0)"]
     }
     df = pd.DataFrame(data)
     return df
 
-
 @pytest.fixture
 def sample_interactions_generate_pharmacophore_centers():
-    return ["Hydrophobic", "Ionic"]
+    return ['Hydrophobic', 'Ionic']
 
-
-def test_generate_pharmacophore_centers(
-    sample_dataframe_generate_pharmacophore_centers,
-    sample_interactions_generate_pharmacophore_centers,
-):
-    result = generate_pharmacophore_centers(
-        sample_dataframe_generate_pharmacophore_centers,
-        sample_interactions_generate_pharmacophore_centers,
-    )
-
+def test_generate_pharmacophore_centers(sample_dataframe_generate_pharmacophore_centers, sample_interactions_generate_pharmacophore_centers):
+    result = generate_pharmacophore_centers(sample_dataframe_generate_pharmacophore_centers, sample_interactions_generate_pharmacophore_centers)
+    
     expected_pharmacophore = {
-        "Hydrophobic": [2.333, 3.333, 4.333],
-        "Ionic": [3.5, 4.5, 5.5],
+        'Hydrophobic': [2.333, 3.333, 4.333],
+        'Ionic': [3.5, 4.5, 5.5]
     }
-
+    
     assert result == expected_pharmacophore
 
 
@@ -53,72 +38,57 @@ def test_generate_pharmacophore_centers(
 def sample_dataframe_generate_pharmacophore_vectors():
     # Create a sample dataframe for testing
     data = {
-        "HBDonors": [1, 0, 1, 0, 1],
-        "HBAcceptors": [0, 1, 0, 1, 0],
-        "LIGCOO": [
+        'HBDonors': [1, 0, 1, 0, 1],
+        'HBAcceptors': [0, 1, 0, 1, 0],
+        'LIGCOO': [
             "(1.0, 2.0, 3.0)",
             "(2.0, 3.0, 4.0)",
             "(3.0, 4.0, 5.0)",
             "(4.0, 5.0, 6.0)",
-            "(5.0, 6.0, 7.0)",
+            "(5.0, 6.0, 7.0)"
         ],
-        "PROTCOO": [
+        'PROTCOO': [
             "(0.5, 1.5, 2.5)",
             "(1.5, 2.5, 3.5)",
             "(2.5, 3.5, 4.5)",
             "(3.5, 4.5, 5.5)",
-            "(4.5, 5.5, 6.5)",
-        ],
+            "(4.5, 5.5, 6.5)"
+        ]
     }
     df = pd.DataFrame(data)
     return df
 
-
 @pytest.fixture
 def sample_interactions_generate_pharmacophore_vectors():
-    return ["HBDonors", "HBAcceptors"]
+    return ['HBDonors', 'HBAcceptors']
 
-
-def test_generate_pharmacophore_vectors(
-    sample_dataframe_generate_pharmacophore_vectors,
-    sample_interactions_generate_pharmacophore_vectors,
-):
-    result = generate_pharmacophore_vectors(
-        sample_dataframe_generate_pharmacophore_vectors,
-        sample_interactions_generate_pharmacophore_vectors,
-    )
-
+def test_generate_pharmacophore_vectors(sample_dataframe_generate_pharmacophore_vectors, sample_interactions_generate_pharmacophore_vectors):
+    result = generate_pharmacophore_vectors(sample_dataframe_generate_pharmacophore_vectors, sample_interactions_generate_pharmacophore_vectors)
+    
     expected_pharmacophore = {
-        "HBDonors": [[3.0, 4.0, 5.0], [2.5, 3.5, 4.5]],
-        "HBAcceptors": [[3.0, 4.0, 5.0], [2.5, 3.5, 4.5]],
+        'HBDonors': [
+            [3.0, 4.0, 5.0],
+            [2.5, 3.5, 4.5]
+        ],
+        'HBAcceptors': [
+            [3.0, 4.0, 5.0],
+            [2.5, 3.5, 4.5]
+        ]
     }
 
     assert result == expected_pharmacophore
 
-
 def test_generate_md_pharmacophore_cloudcenters(tmp_path):
     # Sample data for the DataFrame
     data = {
-        "Acceptor_hbond_1": [1, 0, 1, 0, 1],
-        "Donor_hbond_1": [0, 1, 0, 1, 0],
-        "pistacking_1": [1, 0, 0, 1, 1],
-        "hydrophobic_1": [0, 1, 0, 1, 0],
-        "PI_saltbridge_1": [1, 0, 1, 0, 1],
-        "NI_saltbridge_1": [0, 1, 0, 1, 0],
-        "LIGCOO": [
-            "(1.0, 2.0, 3.0)",
-            "(2.0, 3.0, 4.0)",
-            "(3.0, 4.0, 5.0)",
-            "(4.0, 5.0, 6.0)",
-            "(5.0, 6.0, 7.0)",
-        ],
-        "PROTCOO": [
-            "(7.0, 6.0, 5.0)",
-            "(6.0, 5.0, 4.0)",
-            "(5.0, 4.0, 3.0)",
-            "(4.0, 3.0, 2.0)",
-            "(3.0, 2.0, 1.0)",
-        ],
+        'Acceptor_hbond_1': [1, 0, 1, 0, 1],
+        'Donor_hbond_1': [0, 1, 0, 1, 0],
+        'pistacking_1': [1, 0, 0, 1, 1],
+        'hydrophobic_1': [0, 1, 0, 1, 0],
+        'PI_saltbridge_1': [1, 0, 1, 0, 1],
+        'NI_saltbridge_1': [0, 1, 0, 1, 0],
+        'LIGCOO': ['(1.0, 2.0, 3.0)', '(2.0, 3.0, 4.0)', '(3.0, 4.0, 5.0)', '(4.0, 5.0, 6.0)', '(5.0, 6.0, 7.0)'],
+        'PROTCOO': ['(7.0, 6.0, 5.0)', '(6.0, 5.0, 4.0)', '(5.0, 4.0, 3.0)', '(4.0, 3.0, 2.0)', '(3.0, 2.0, 1.0)'],
     }
 
     df = pd.DataFrame(data)
@@ -127,9 +97,7 @@ def test_generate_md_pharmacophore_cloudcenters(tmp_path):
     output_filename = tmp_path / "test_output.pml"
 
     # Call the function
-    generate_md_pharmacophore_cloudcenters(
-        df, "core_compound", output_filename, "system_name", id_num=0
-    )
+    generate_md_pharmacophore_cloudcenters(df, 'core_compound', output_filename, 'system_name', id_num=0)
 
     # Check if the output file is created
     assert os.path.isfile(output_filename), f"File {output_filename} not found."
@@ -144,54 +112,41 @@ def test_generate_md_pharmacophore_cloudcenters(tmp_path):
 def test_generate_pharmacophore_centers_all_points():
     # Sample data for the DataFrame
     data = {
-        "interaction1": [1, 0, 1, 0, 1],
-        "interaction2": [0, 1, 0, 1, 0],
-        "LIGCOO": [
-            "(1.0, 2.0, 3.0)",
-            "(2.0, 3.0, 4.0)",
-            "(3.0, 4.0, 5.0)",
-            "(4.0, 5.0, 6.0)",
-            "(5.0, 6.0, 7.0)",
-        ],
+        'interaction1': [1, 0, 1, 0, 1],
+        'interaction2': [0, 1, 0, 1, 0],
+        'LIGCOO': ['(1.0, 2.0, 3.0)', '(2.0, 3.0, 4.0)', '(3.0, 4.0, 5.0)', '(4.0, 5.0, 6.0)', '(5.0, 6.0, 7.0)'],
     }
 
     df = pd.DataFrame(data)
 
     # Sample interactions
-    interactions = ["interaction1", "interaction2"]
+    interactions = ['interaction1', 'interaction2']
 
     # Call the function
     pharmacophore = generate_pharmacophore_centers_all_points(df, interactions)
 
     # Check if the generated pharmacophore has the expected structure
     assert isinstance(pharmacophore, dict), "Pharmacophore should be a dictionary."
-
+    
     for interaction in interactions:
-        assert (
-            interaction in pharmacophore
-        ), f"{interaction} not found in the generated pharmacophore."
+        assert interaction in pharmacophore, f"{interaction} not found in the generated pharmacophore."
 
         points = pharmacophore[interaction]
-        assert isinstance(
-            points, list
-        ), f"Pharmacophore points for {interaction} should be a list."
-
+        assert isinstance(points, list), f"Pharmacophore points for {interaction} should be a list."
+        
         # Check if the points have the expected structure
         for point in points:
-            assert (
-                isinstance(point, list) and len(point) == 3
-            ), "Each point should be a list of three coordinates."
-
+            assert isinstance(point, list) and len(point) == 3, "Each point should be a list of three coordinates."
 
 def test_generate_point_cloud_pml(tmp_path):
     # Sample data for the cloud_dict
     cloud_dict = {
-        "feature1": {
-            "interaction1": [(1.0, 2.0, 3.0), (1.5, 2.5, 3.5), (2.0, 3.0, 4.0)],
-            "interaction2": [(2.0, 3.0, 4.0), (2.5, 3.5, 4.5), (3.0, 4.0, 5.0)],
+        'feature1': {
+            'interaction1': [(1.0, 2.0, 3.0), (1.5, 2.5, 3.5), (2.0, 3.0, 4.0)],
+            'interaction2': [(2.0, 3.0, 4.0), (2.5, 3.5, 4.5), (3.0, 4.0, 5.0)],
         },
-        "feature2": {
-            "interaction3": [(3.0, 4.0, 5.0), (3.5, 4.5, 5.5), (4.0, 5.0, 6.0)],
+        'feature2': {
+            'interaction3': [(3.0, 4.0, 5.0), (3.5, 4.5, 5.5), (4.0, 5.0, 6.0)],
         },
     }
 
@@ -210,30 +165,28 @@ def test_generate_point_cloud_pml(tmp_path):
         ET.parse(outname_pml)
     except ET.ParseError:
         pytest.fail(f"Invalid XML in {outname_pml}")
-
+        
 
 def test_generate_bindingmode_pharmacophore(tmp_path):
     # Prepare inputs
     dict_bindingmode = {
-        "Acceptor_hbond": {"PROTCOO": [[1, 2, 3]], "LIGCOO": [[4, 5, 6]]}
+        "Acceptor_hbond": {
+            "PROTCOO": [[1, 2, 3]],
+            "LIGCOO": [[4, 5, 6]]
+        }
     }
     core_compound = "ligand"
     sysname = "system"
     id_num = 0
 
     # Create a symbolic link in the temporary directory
-    os.symlink(
-        os.path.abspath("./Binding_Modes_Markov_States"),
-        f"{tmp_path}/Binding_Modes_Markov_States",
-    )
+    os.symlink(os.path.abspath("./Binding_Modes_Markov_States"), f"{tmp_path}/Binding_Modes_Markov_States")
 
     # Prepare the output filename
     outname = "test_output"
 
     # Call the function
-    generate_bindingmode_pharmacophore(
-        dict_bindingmode, core_compound, sysname, outname, id_num
-    )
+    generate_bindingmode_pharmacophore(dict_bindingmode, core_compound, sysname, outname, id_num)
 
     # Prepare the full output path
     outname_pml = f"{tmp_path}/Binding_Modes_Markov_States/{outname}.pml"
@@ -244,5 +197,55 @@ def test_generate_bindingmode_pharmacophore(tmp_path):
     # Check if the generated XML is valid
     try:
         ET.parse(outname_pml)
+    except ET.ParseError:
+        pytest.fail(f"Invalid XML in {outname_pml}")
+
+
+def test_generate_bindingmode_pharmacophore_2(tmp_path):
+    # Prepare inputs
+    dict_bindingmode = {
+        "Acceptor_hbond": {
+            "PROTCOO": [[1, 2, 3]],
+            "LIGCOO": [[4, 5, 6]]
+        },
+        "pistacking": {
+            "PROTCOO": [[1, 2, 3]],
+            "LIGCOO": [[4, 5, 6]]
+        },
+        "hydrophobic": {
+            "LIGCOO": [[4, 5, 6]]
+        }
+    }
+    core_compound = "ligand"
+    sysname = "system"
+    id_num = 0
+
+    # Create a symbolic link in the temporary directory
+    os.symlink(os.path.abspath("./Binding_Modes_Markov_States"), f"{tmp_path}/Binding_Modes_Markov_States")
+
+    # Prepare the output filename
+    outname = "test_output"
+
+    # Call the function
+    generate_bindingmode_pharmacophore(dict_bindingmode, core_compound, sysname, outname, id_num)
+
+    # Prepare the full output path
+    outname_pml = f"{tmp_path}/Binding_Modes_Markov_States/{outname}.pml"
+
+    # Check if the output file is created
+    assert os.path.isfile(outname_pml), f"File {outname_pml} not found."
+
+    # Check if the generated XML is valid
+    try:
+        tree = ET.parse(outname_pml)
+        root = tree.getroot()
+
+        # Additional checks for AR and H cases
+        ar_elements = root.findall(".//plane")
+        h_elements = root.findall(".//point[@name='H']")
+
+        assert len(ar_elements) == 1, "AR feature not found."
+        assert len(h_elements) == 1, "H feature not found."
+
     except ET.ParseError:
         pytest.fail(f"Invalid XML in {outname_pml}")
