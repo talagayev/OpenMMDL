@@ -69,13 +69,6 @@ openmmdl = [
 [tool.setuptools.dynamic]
 version = { attr = "openmmdl._version.__version__" }
 
-[tool.versioningit.vcs]
-method = "git"
-match = ["*"]
-default-tag = "v0.0.11"  # Change to your desired initial version tag
-
-[tool.versioningit.write]
-file = "openmmdl/_version.py"
 
 [project.scripts]
 openmmdl_setup = "openmmdl.openmmdl_setup.openmmdlsetup:main"
