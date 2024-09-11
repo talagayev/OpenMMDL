@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0", "versioningit~=2.0"]
+requires = ["setuptools>=61.0", "versioningit"]
 build-backend = "setuptools.build_meta"
 
 # Self-descriptive entries which should always be present
@@ -18,7 +18,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 # Declare any run-time dependencies that should be installed with the package.
 dependencies = [
 
@@ -69,9 +69,8 @@ openmmdl = [
 [tool.setuptools.dynamic]
 version = { attr = "openmmdl._version.__version__" }
 
-
 [project.scripts]
 openmmdl_setup = "openmmdl.openmmdl_setup.openmmdlsetup:main"
 openmmdl_simulation = "openmmdl.openmmdl_simulation.openmmdlsimulation:main"
 openmmdl_analysis = "openmmdl.openmmdl_analysis.openmmdlanalysis:main"
-openmmdl_visualization = "openmmdl.openmmdl_analysis.visualization_functions:run_visualization"
+openmmdl_visualization = "openmmdl.openmmdl_analysis.visualization_functions:run_visualizati
