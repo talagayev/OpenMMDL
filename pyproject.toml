@@ -66,8 +66,8 @@ openmmdl = [
     "py.typed"
 ]
 
-[tool.versioningit]
-default-version = "0.0.11"  # Change to your desired initial version
+[tool.setuptools.dynamic]
+version = { attr = "openmmdl._version.__version__" }
 
 [tool.versioningit.vcs]
 method = "git"
