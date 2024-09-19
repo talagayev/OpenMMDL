@@ -22,7 +22,17 @@ def mock_data():
             "spLig": True,
             "addType": "addWater",
             "boxType": "cube",
-            "dist": "10.0"
+            "dist": "10.0",
+            "addType": "addMembrane",
+            "lipid_tp": "other_lipid_tp",
+            "other_lipid_tp_input": "custom_lipid",
+            "lipid_ratio": "1",
+            "lipid_ff": "other_lipid_ff",
+            "other_lipid_ff_input": "custom_lipid_ff",
+            "dist2Border": "10.0",
+            "padDist": "5.0",
+            "water_ff": "tip3p",
+            "other_water_ff_input": "custom_water_ff"
         },
         "uploadedFiles": {
             "protFile": [("file1", "protein.pdb")],
@@ -35,7 +45,6 @@ def mock_data():
             "frcmodFile": [("file8", "ligand.frcmod")]
         }
     }
-
 
 @pytest.fixture
 def base_mock_data():
@@ -339,3 +348,229 @@ def test_add_solvation_commands(mock_data):
     ]
 
     assert amber_script == expected_output
+    
+
+@pytest.fixture
+def mock_data_membrane():
+    """Fixture to provide mock session and uploadedFiles data for membrane commands."""
+    return {
+        "session": {
+            "addType": "addMembrane",
+            "lipid_tp": "custom_lipid",
+            "other_lipid_tp_input": "custom_lipid",
+            "lipid_ratio": "1",
+            "lipid_ff": "custom_lipid_ff",
+            "other_lipid_ff_input": "custom_lipid_ff",
+            "dist2Border": "10.0",
+            "padDist": "5.0"
+        },
+        "uploadedFiles": {}
+    }
+
+def test_add_membrane_commands(mock_data_membrane):
+    """Test if add_membrane_commands correctly appends commands for membrane settings."""
+    session, uploadedFiles = mock_data_membrane["session"], mock_data_membrane["uploadedFiles"]
+    amber_script_gen = AmberScriptGenerator(session, uploadedFiles)
+
+    amber_script = []
+    amber_script_gen.add_membrane_commands(amber_script)
+
+    # Define the expected output lines
+    expected_output = [
+        "lipid_tp=custom_lipid",
+        "lipid_ratio=1",
+        "lipid_ff=custom_lipid_ff",
+        "dist2Border=10.0  # The minimum distance between the maxmin values for x y and z to the box boundaries. Flag --dist",
+        "padDist=5.0  # The width of the water layer over the membrane or protein in the z axis. Flag --dist_wat"
+    ]
+
+    # Print the actual amber_script for debugging
+    print("Actual amber_script content:")
+    for line in amber_script:
+        print(line)
+
+    # Check that the length of the amber_script matches the expected output
+    assert len(amber_script) == len(expected_output), "The number of lines in amber_script does not match the expected output."
+
+    # Verify each line in amber_script matches the expected output
+    for i, (actual, expected) in enumerate(zip(amber_script, expected_output)):
+        assert actual == expected, f"Line {i} does not match: {actual}"
+
+def test_add_water_ff_commands():
+    """Test if add_water_ff_commands correctly appends commands for water force field settings."""
+    # Define a mock session and uploadedFiles
+    session = {
+        "water_ff": "tip3p",  # Change this value to test different water force fields
+        "addType": "addWater",
+        # "other_water_ff_input" can be defined if water_ff is "other_water_ff"
+    }
+    uploadedFiles = {}  # No uploaded files needed for this test
+
+    # Instantiate the generator
+    amber_script_gen = AmberScriptGenerator(session, uploadedFiles)
+
+    # Initialize the amber_script list
+    amber_script = []
+    amber_script_gen.add_water_ff_commands(amber_script)
+
+    # Define the expected output lines
+    expected_output = [
+        "water_ff=tip3p",
+        "solvent=TIP3PBOX  # set the water box"
+    ]
+
+    # Print the actual amber_script for debugging
+    print("Actual amber_script content:")
+    for line in amber_script:
+        print(line)
+
+    # Check that the length of the amber_script matches the expected output
+    assert len(amber_script) == len(expected_output), "The number of lines in amber_script does not match the expected output."
+
+    # Verify each line in amber_script matches the expected output
+    for i, (actual, expected) in enumerate(zip(amber_script, expected_output)):
+        assert actual == expected, f"Line {i} does not match: {actual}"
+        
+def test_add_ion_commands():
+    """Test if add_ion_commands correctly appends commands for ion settings."""
+    # Define mock sessions for different scenarios
+    sessions = [
+        {
+            "pos_ion": "Na+",
+            "neg_ion": "Cl-",
+            "addType": "addWater",
+            "other_pos_ion_input": "custom_pos_ion",
+            "other_neg_ion_input": "custom_neg_ion",
+            "ionConc": "0.15"
+        },
+        {
+            "pos_ion": "other_pos_ion",
+            "neg_ion": "other_neg_ion",
+            "other_pos_ion_input": "custom_pos_ion",
+            "other_neg_ion_input": "custom_neg_ion",
+            "addType": "addMembrane",
+            "ionConc": "0.15"
+        }
+    ]
+
+    expected_outputs = [
+        [
+            "pos_ion=Na+",
+            "neg_ion=Cl-",
+            "numIon=0 # `numIon` is the flag for `addions` in tleap. When set to 0, the system will be neutralized",
+            "\n"
+        ],
+        [
+            "pos_ion=custom_pos_ion  # In development!",
+            "neg_ion=custom_neg_ion  # In development!",
+            "ionConc=0.15",
+            "\n"
+        ]
+    ]
+
+    for session, expected_output in zip(sessions, expected_outputs):
+        # Instantiate the generator
+        amber_script_gen = AmberScriptGenerator(session, {})
+
+        # Initialize the amber_script list
+        amber_script = []
+        amber_script_gen.add_ion_commands(amber_script)
+
+        # Print the actual amber_script for debugging
+        print("Actual amber_script content:")
+        for line in amber_script:
+            print(line)
+
+        # Check that the length of the amber_script matches the expected output
+        assert len(amber_script) == len(expected_output), "The number of lines in amber_script does not match the expected output."
+
+        # Verify each line in amber_script matches the expected output
+        for i, (actual, expected) in enumerate(zip(amber_script, expected_output)):
+            assert actual == expected, f"Line {i} does not match: {actual}"
+            
+def test_add_membrane_building_commands():
+    """Test if add_membrane_building_commands correctly appends commands for membrane settings."""
+    
+    # Define mock sessions for different scenarios
+    sessions = [
+        {
+            "addType": "addMembrane",
+            "nmLig": False,
+            "spLig": False,
+            "lipid_tp": "custom_lipid",
+            "lipid_ratio": "1",
+            "dist2Border": "10.0",
+            "padDist": "5.0",
+            "pos_ion": "Na+",
+            "ionConc": "0.15"
+        },
+        {
+            "addType": "addMembrane",
+            "nmLig": True,
+            "spLig": False,
+            "lipid_tp": "custom_lipid",
+            "lipid_ratio": "1",
+            "dist2Border": "10.0",
+            "padDist": "5.0",
+            "pos_ion": "Na+",
+            "ionConc": "0.15"
+        },
+        {
+            "addType": "addMembrane",
+            "nmLig": False,
+            "spLig": True,
+            "lipid_tp": "custom_lipid",
+            "lipid_ratio": "1",
+            "dist2Border": "10.0",
+            "padDist": "5.0",
+            "pos_ion": "Na+",
+            "ionConc": "0.15"
+        }
+    ]
+
+    expected_outputs = [
+        [
+            "## Build the membrane",
+            "packmol-memgen --pdb ${rcp_nm}_cnt_rmv.pdb --lipids ${lipid_tp} --ratio ${lipid_ratio} --preoriented --dist ${dist2Border} --dist_wat ${padDist} --salt --salt_c ${pos_ion} --saltcon ${ionConc} --nottrim --overwrite --notprotonate\n",
+            "## Clean the complex pdb by `pdb4amber` for further `tleap` process",
+            "pdb4amber -i bilayer_${rcp_nm}_cnt_rmv.pdb -o clean_bilayer_${rcp_nm}.pdb",
+            "grep -v '^CONECT' clean_bilayer_${rcp_nm}.pdb > clean_bilayer_${rcp_nm}_cnt_rmv.pdb",
+            "\n"
+        ],
+        [
+            "## Build the membrane",
+            "packmol-memgen --pdb comp.pdb --lipids ${lipid_tp} --ratio ${lipid_ratio} --preoriented --dist ${dist2Border} --dist_wat ${padDist} --salt --salt_c ${pos_ion} --saltcon ${ionConc} --nottrim --overwrite --notprotonate\n",
+            "## Clean the complex pdb by `pdb4amber` for further `tleap` process",
+            "pdb4amber -i bilayer_comp.pdb -o clean_bilayer_comp.pdb",
+            "grep -v '^CONECT' clean_bilayer_comp.pdb > clean_bilayer_comp_cnt_rmv.pdb",
+            "\n"
+        ],
+        [
+            "## Build the membrane",
+            "packmol-memgen --pdb comp.pdb --lipids ${lipid_tp} --ratio ${lipid_ratio} --preoriented --dist ${dist2Border} --dist_wat ${padDist} --salt --salt_c ${pos_ion} --saltcon ${ionConc} --nottrim --overwrite --notprotonate\n",
+            "## Clean the complex pdb by `pdb4amber` for further `tleap` process",
+            "pdb4amber -i bilayer_comp.pdb -o clean_bilayer_comp.pdb",
+            "grep -v '^CONECT' clean_bilayer_comp.pdb > clean_bilayer_comp_cnt_rmv.pdb",
+            "\n"
+        ]
+    ]
+
+    for session, expected_output in zip(sessions, expected_outputs):
+        # Instantiate the generator
+        amber_script_gen = AmberScriptGenerator(session, {})
+
+        # Initialize the amber_script list
+        amber_script = []
+        amber_script_gen.add_membrane_building_commands(amber_script)
+
+        # Print the actual amber_script for debugging
+        print("Actual amber_script content:")
+        for line in amber_script:
+            print(line)
+
+        # Check that the length of the amber_script matches the expected output
+        assert len(amber_script) == len(expected_output), "The number of lines in amber_script does not match the expected output."
+
+        # Verify each line in amber_script matches the expected output
+        for i, (actual, expected) in enumerate(zip(amber_script, expected_output)):
+            assert actual == expected, f"Line {i} does not match: {actual}"
