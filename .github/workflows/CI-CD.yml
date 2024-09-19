@@ -41,9 +41,10 @@ jobs:
 
       - name: Install pytest and run tests
         run: |
-          pip install pytest pytest-cov
+          pip install pytest pytest-cov coverage
           if [ "${{ matrix.python-version }}" = "3.12" ]; then
             pytest -vv --cov=openmmdl --cov-report=xml --cov-report=html --color=yes openmmdl/tests/
+            coverage report
           else
             pytest openmmdl/tests/
           fi
