@@ -231,7 +231,7 @@ def test_create_forcefield_with_ligand():
         forcefield_selected="amber14-all.xml",
         water_forcefield="tip3p.xml",
         water_selected="tip3p",
-        prepared_ligand=mock_config.ligand
+        prepared_ligand=mock_config_gaff.ligand
     )
 
     # Initialize ForcefieldConfigurator
@@ -240,7 +240,7 @@ def test_create_forcefield_with_ligand():
         forcefield_selected="amber14-all.xml",
         water_forcefield="tip3p.xml",
         water_selected="tip3p",
-        prepared_ligand=mock_config.ligand
+        prepared_ligand=mock_config_smirnoff.ligand
     )
     
     forcefield_gaff = configurator_gaff.create_forcefield()
