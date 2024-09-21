@@ -73,7 +73,7 @@ def test_generate_forcefield(generator):
         protein_ff=protein_ff,
         solvent_ff=solvent_ff,
         add_membrane=False,
-        smallMoleculeForceField="smirnoff",
+        smallMoleculeForceField="gaff",
         rdkit_mol=rdkit_mol
     )
     
@@ -92,7 +92,7 @@ def test_generate_transitional_forcefield(generator):
         protein_ff=protein_ff,
         solvent_ff=solvent_ff,
         add_membrane=True,
-        smallMoleculeForceField="smirnoff",
+        smallMoleculeForceField="gaff",
         rdkit_mol=rdkit_mol
     )
     
@@ -115,7 +115,7 @@ def test_forcefield_preparation():
 
 
 class MockConfigParser:
-    def __init__(self, smallMoleculeForceField="smirnoff", add_membrane=False, ligand=None):
+    def __init__(self, smallMoleculeForceField="gaff", add_membrane=False, ligand=None):
         self.smallMoleculeForceField = smallMoleculeForceField
         self.add_membrane = add_membrane
         self.ligand = ligand
