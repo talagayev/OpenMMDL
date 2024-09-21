@@ -136,18 +136,31 @@ def test_generate_transitional_forcefield(generator):
     solvent_ff = "tip3p.xml"
     rdkit_mol = Chem.MolFromSmiles('CCO')
     
-    # Call the method with membrane set to True.
-    transitional_forcefield = generator.generate_transitional_forcefield(
+    # Call the method with gaff.
+    transitional_forcefield_gaff = generator.generate_transitional_forcefield(
         protein_ff=protein_ff,
         solvent_ff=solvent_ff,
         add_membrane=True,
         smallMoleculeForceField="gaff",
         rdkit_mol=rdkit_mol
     )
+
+    # Call the method with smirnoff.
+    transitional_forcefield_smirnoff = generator.generate_transitional_forcefield(
+        protein_ff=protein_ff,
+        solvent_ff=solvent_ff,
+        add_membrane=True,
+        smallMoleculeForceField="smirnoff",
+        rdkit_mol=rdkit_mol
+    )
     
-    # Check if a ForceField object is returned.
-    assert isinstance(transitional_forcefield, ForceField)
-    assert len(transitional_forcefield.getGenerators()) > 0
+    # Check if a ForceField object is returned with GAFF.
+    assert isinstance(transitional_forcefield_gaff, ForceField)
+    assert len(transitional_forcefield_gaff.getGenerators()) > 0
+
+    # Check if a ForceField object is returned with SMIRNOFF.
+    assert isinstance(transitional_forcefield_smirnoff, ForceField)
+    assert len(transitional_forcefield_smirnoff.getGenerators()) > 0
 
 class MockForcefieldSelector:
     def ff_selection(self, ff):
@@ -193,30 +206,51 @@ def test_forcefield_preparation():
     assert water_forcefield == "amber14/tip3p.xml"
     assert model_water == "tip3p"
 
-class MockConfigParser:
+class MockConfigParserGaff:
     def __init__(self, smallMoleculeForceField="gaff", add_membrane=False, ligand=None):
+        self.smallMoleculeForceField = smallMoleculeForceField
+        self.add_membrane = add_membrane
+        self.ligand = ligand
+
+class MockConfigParserSmirnoff:
+    def __init__(self, smallMoleculeForceField="smirnoff", add_membrane=False, ligand=None):
         self.smallMoleculeForceField = smallMoleculeForceField
         self.add_membrane = add_membrane
         self.ligand = ligand
 
 def test_create_forcefield_with_ligand():
     # Create the mock configuration
-    mock_config = MockConfigParser()
-    mock_config.ligand = Chem.MolFromSmiles("CCO")  # Example ligand (ethanol)
+    mock_config_gaff = MockConfigParserGaff()
+    mock_config_smirnoff = MockConfigParserGaff()
+    mock_config_gaff.ligand = Chem.MolFromSmiles("CCO")  # Example ligand (ethanol)
+    mock_config_smirnoff.ligand = Chem.MolFromSmiles("CCO")  # Example ligand (ethanol)
     
     # Initialize ForcefieldConfigurator
-    configurator = ForcefieldConfigurator(
-        config_parser=mock_config,
+    configurator_gaff = ForcefieldConfigurator(
+        config_parser=mock_config_gaff,
         forcefield_selected="amber14-all.xml",
         water_forcefield="tip3p.xml",
         water_selected="tip3p",
         prepared_ligand=mock_config.ligand
     )
 
-    forcefield = configurator.create_forcefield()
+    # Initialize ForcefieldConfigurator
+    configurator_smirnoff = ForcefieldConfigurator(
+        config_parser=mock_config_smirnoff,
+        forcefield_selected="amber14-all.xml",
+        water_forcefield="tip3p.xml",
+        water_selected="tip3p",
+        prepared_ligand=mock_config.ligand
+    )
+    
+    forcefield_gaff = configurator_gaff.create_forcefield()
+    forcefield_smirnoff = configurator_smirnoff.create_forcefield()
     
     # Check if the forcefield is generated successfully
-    assert forcefield is not None
+    assert forcefield_gaff is not None
+
+    # Check if the forcefield is generated successfully
+    assert forcefield_smirnoff is not None
 
 def test_generate_transitional_forcefield_with_membrane():
     # Create the mock configuration
