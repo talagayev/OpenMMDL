@@ -142,6 +142,38 @@ def test_generate_transitional_forcefield(generator):
     assert isinstance(transitional_forcefield, ForceField)
     assert len(transitional_forcefield.getGenerators()) > 0
 
+class MockForcefieldSelector:
+    def ff_selection(self, ff):
+        # Return a mocked forcefield selection
+        return f"Selected Forcefield: {ff}"
+
+    def water_forcefield_selection(self, water, forcefield_selection):
+        # Return a mocked water forcefield selection
+        return f"Selected Water: {water} with {forcefield_selection}"
+
+    def water_model_selection(self, water, forcefield_selection):
+        # Return a mocked water model selection
+        return f"Model Water: {water} for {forcefield_selection}"
+
+@pytest.fixture
+def forcefield_generator():
+    # Set up the ForcefieldGenerator with the mock selector
+    generator = ForcefieldGenerator()
+    generator.forcefield_selector = MockForcefieldSelector()
+    generator.ff = "amber14"  # Example forcefield
+    generator.water = "TIP3P"  # Example water model
+    return generator
+
+
+def test_prepare_forcefield_and_water(forcefield_generator):
+    forcefield_selected, water_selected, model_water = forcefield_generator.prepare_forcefield_and_water()
+    
+    # Check if the selections are as expected
+    assert forcefield_selected == "Selected Forcefield: amber14"
+    assert water_selected == "Selected Water: TIP3P with Selected Forcefield: amber14"
+    assert model_water == "Model Water: TIP3P for Selected Forcefield: amber14"
+
+
 def test_forcefield_preparation():
     prep = ForcefieldPreparation(forcefield_name="AMBER14", water_model="TIP3P")
     
@@ -153,8 +185,6 @@ def test_forcefield_preparation():
     water_forcefield, model_water = prep.select_water_model()
     assert water_forcefield == "amber14/tip3p.xml"
     assert model_water == "tip3p"
-
-
 
 class MockConfigParser:
     def __init__(self, smallMoleculeForceField="gaff", add_membrane=False, ligand=None):
