@@ -254,7 +254,7 @@ def test_create_forcefield_with_ligand():
 
 def test_generate_transitional_forcefield_with_membrane():
     # Create the mock configuration
-    mock_config = MockConfigParser(add_membrane="True")
+    mock_config = MockConfigParserGaff(add_membrane="True")
 
     # Initialize ForcefieldConfigurator
     configurator = ForcefieldConfigurator(
@@ -272,7 +272,7 @@ def test_generate_transitional_forcefield_with_membrane():
 
 def test_generate_transitional_forcefield_without_membrane():
     # Create the mock configuration (default is False)
-    mock_config = MockConfigParser()
+    mock_config = MockConfigParserGaff()
 
     # Initialize ForcefieldConfigurator
     configurator = ForcefieldConfigurator(
