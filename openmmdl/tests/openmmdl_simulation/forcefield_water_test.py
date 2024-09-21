@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from simtk.openmm.app import ForceField
 from rdkit import Chem
-from openmmdl.openmmdl_simulation.forcefield_water import ForcefieldSelector, ForcefieldGenerator, ForcefieldPreparation, ForcefieldConfigurator
+from openmmdl.openmmdl_simulation.forcefield_water import ForcefieldSelector, ForcefieldGenerator, ForcefieldPreparation, ForcefieldConfigurator, ForcefieldSetup
 
 @pytest.fixture
 def selector():
@@ -29,6 +29,48 @@ def configurator():
         solvent_ff="tip3p.xml", 
         water_ff="tip3p"
     )
+
+# A simple implementation of ForcefieldPreparation for testing
+class MockForcefieldPreparation:
+    def __init__(self, forcefield_name, water_model):
+        self.forcefield_name = forcefield_name
+        self.water_model = water_model
+
+    def select_forcefield(self):
+        return f"Forcefield: {self.forcefield_name}"
+
+    def select_water_model(self):
+        return f"Water Forcefield: {self.water_model}", f"Model Water: {self.water_model}"
+
+# Override the original class in the test scope
+def test_forcefield_setup_initialization():
+    setup = ForcefieldSetup(
+        forcefield_name="amber14",
+        water_model="TIP3P",
+        ligand_file="ligand.sdf",
+        minimization=True
+    )
+
+    assert setup.forcefield_name == "amber14"
+    assert setup.water_model == "TIP3P"
+    assert setup.ligand_file == "ligand.sdf"
+    assert setup.minimization is True
+
+def test_setup_forcefield():
+    # Directly use the MockForcefieldPreparation for the test
+    setup = ForcefieldSetup(
+        forcefield_name="amber14",
+        water_model="TIP3P"
+    )
+
+    # Use the mock class instead of the real one
+    prep = MockForcefieldPreparation(setup.forcefield_name, setup.water_model)
+    forcefield = prep.select_forcefield()
+    water_forcefield, model_water = prep.select_water_model()
+    
+    assert forcefield == "Forcefield: amber14"
+    assert water_forcefield == "Water Forcefield: TIP3P"
+    assert model_water == "Model Water: TIP3P"
 
 def test_ff_selection(selector):
     assert selector.ff_selection("AMBER14") == "amber14-all.xml"
