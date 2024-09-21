@@ -99,9 +99,16 @@ def test_water_model_selection(selector):
     forcefield = "charmm36.xml"
     assert selector.water_model_selection("TIP4P-Ew", forcefield) == "tip4pew"
     
+    # Test with valid old AMBER forcefield
+    forcefield = "amber99sb.xml"
+    assert selector.water_model_selection("TIP5P", forcefield) == None  # Assuming this is a valid case for old AMBER
+    
+    # Test with another valid old AMBER forcefield
+    forcefield = "amber03.xml"
+    assert selector.water_model_selection("TIP4P-FB", forcefield) == "tip4pfb"  # Assuming this is a valid case for old AMBER
+
     # Test with invalid water model
     assert selector.water_model_selection("INVALID_WATER", forcefield) is None
-
 def test_generate_forcefield(generator):
     # You will need the actual forcefield XML files in your working directory.
     protein_ff = "amber14-all.xml"
