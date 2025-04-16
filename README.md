@@ -1,4 +1,4 @@
-OpenMMDL @ Molecular Design Lab
+OpenMMDL @ Molecular Design Lab1
 ==============================
 
 <img src="https://github.com/wolberlab/OpenMMDL/blob/main/openmmdl/openmmdl_setup/static/OpenMMDL_logo_2.png" height="250">
