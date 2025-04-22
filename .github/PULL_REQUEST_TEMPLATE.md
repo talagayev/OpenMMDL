@@ -14,4 +14,4 @@ Changes made:
  - [ ] Tests updated/added?
  - [ ] Documentation updated/added?
  - [ ] `CHANGELOG` file updated?
- - [ ] Is your name in `package/AUTHORS`?
+ - [ ] Is your name in `AUTHORS`?
