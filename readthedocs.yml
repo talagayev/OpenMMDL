@@ -5,11 +5,8 @@ build:
   tools:
     python: "3.10"
 
+conda:
+  environment: environment.yml
+
 sphinx:
   configuration: docs/conf.py
-
-python:
-  install:
-    - method: pip
-      path: .
-    - requirements: docs/readthedocs_templates.txt
