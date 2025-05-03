@@ -9,4 +9,4 @@ molecule in IPywidgets.
    :maxdepth: 2
    :caption: API MarkovChainAnalysis:
 
-   modules/markov
+   modules/markovchains
