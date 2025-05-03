@@ -1,9 +1,12 @@
 API Documentation
 =================
 
-.. autosummary::
-   :toctree: autosummary
 
-   openmmdl
-   
+The following API represents the MarkovChainAnalysis, which is responsible for the display of the
+molecule in IPywidgets.
 
+.. toctree::
+   :maxdepth: 2
+   :caption: API MarkovChainAnalysis:
+
+   modules/markov
