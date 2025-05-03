@@ -1,3 +1,5 @@
+# readthedocs.yml
+
 version: 2
 
 build:
@@ -5,9 +7,11 @@ build:
   tools:
     python: "3.10"
 
-pip:
-  install:
-    - -r requirements.txt  # Install dependencies from requirements.txt
-
 sphinx:
   configuration: docs/conf.py
+
+# Explicitly set the version of Python and its requirements
+python:
+  install:
+    - requirements: docs/readthedocs_templates.txt
+    - requirements: requirements.txt
