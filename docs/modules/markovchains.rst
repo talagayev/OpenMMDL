@@ -2,7 +2,7 @@ API Documentation for Markov
 ============================
 
 
-.. automodule:: openmmdl.analysis.analysis.markovchains
+.. automodule:: openmmdl.openmmdl_analysis.analysis.markovchains
    :members:
    :undoc-members:
    :show-inheritance:
