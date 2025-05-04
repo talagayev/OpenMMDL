@@ -61,6 +61,7 @@
    
    openmmdl_simulation_functions
    openmmdl_analysis_functions
+   modules/trajectories
 
 
 Introduction
