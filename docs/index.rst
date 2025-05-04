@@ -56,7 +56,7 @@
 
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: API Docs
    
    modules/markovchains
