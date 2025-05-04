@@ -706,8 +706,17 @@ openmmdl_analysis.visualization_functions
    :members:
    :undoc-members:
    :show-inheritance:
-   :inherited-members:
    :exclude-members: __init__
    :noindex:
 
-.. autofunction:: openmmdl.openmmdl_analysis.analysis.markovchains.MarkovChainAnalysis.__init__
+Constructor
+-----------
+
+.. automethod:: yourmodule.MarkovChainAnalysis.__init__
+
+Methods
+-------
+
+.. automethod:: openmmdl.openmmdl_analysis.analysis.markovchains.MarkovChainAnalysis.calculate_min_transitions
+
+.. automethod:: openmmdl.openmmdl_analysis.analysis.markovchains.MarkovChainAnalysis.generate_transition_graph
