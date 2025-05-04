@@ -2,14 +2,12 @@ API Documentation for Markov
 ============================
 
 
-.. automodule:: openmmdl.openmmdl_analysis.analysis.markovchains
+.. autoclass:: openmmdl.openmmdl_analysis.analysis.markovchains.MarkovChainAnalysis
    :members:
    :undoc-members:
    :show-inheritance:
-   :noindex:  # Avoid indexing this module in the API section
+   :inherited-members:
+   :exclude-members: __init__
+   :noindex:
 
-.. autosummary::
-   :toctree: autosummary
-   :recursive:
-
-   MarkovChainAnalysis
+.. autofunction:: openmmdl.openmmdl_analysis.analysis.markovchains.MarkovChainAnalysis.__init__
