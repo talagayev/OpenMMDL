@@ -10,3 +10,9 @@ molecule in IPywidgets.
    :caption: API MarkovChainAnalysis:
 
    modules/markovchains
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API TrajectorySaver:
+
+   modules/trajectories
