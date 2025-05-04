@@ -700,3 +700,14 @@ openmmdl_analysis.visualization_functions
 
     :returns: None
     :rtype: None
+
+
+.. autoclass:: openmmdl.openmmdl_analysis.analysis.markovchains.MarkovChainAnalysis
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :inherited-members:
+   :exclude-members: __init__
+   :noindex:
+
+.. autofunction:: openmmdl.openmmdl_analysis.analysis.markovchains.MarkovChainAnalysis.__init__
