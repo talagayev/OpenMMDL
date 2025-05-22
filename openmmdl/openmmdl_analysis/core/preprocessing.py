@@ -209,7 +209,6 @@ class Preprocessing:
         for line in pdb_lines:
             if line.startswith("ATOM"):
                 # Extract information from the ATOM line
-                atom_serial = int(line[6:11])
                 atom_name = line[12:16].strip()
                 residue_name = line[17:20].strip()
 
