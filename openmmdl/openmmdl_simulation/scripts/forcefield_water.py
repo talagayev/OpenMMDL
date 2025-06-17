@@ -224,7 +224,7 @@ def generate_transitional_forcefield(
         elif smallMoleculeForceField == "smirnoff":
             smirnoff = SMIRNOFFTemplateGenerator(
                 molecules=Molecule.from_rdkit(rdkit_mol, allow_undefined_stereo=True),
-                forcefield="openff-2.2.0",
+                forcefield="openff-2.2.1",
             )
             transitional_forcefield.registerTemplateGenerator(smirnoff.generator)
 
