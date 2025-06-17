@@ -25,6 +25,7 @@ def sample_rdkit_molecule():
 
 
 def test_ff_selection():
+    assert ff_selection("AMBER19") == "amber19-all.xml"
     assert ff_selection("AMBER14") == "amber14-all.xml"
     assert ff_selection("AMBER99SB") == "amber99sb.xml"
     assert ff_selection("AMBER99SB-ILDN") == "amber99sbildn.xml"
@@ -35,6 +36,32 @@ def test_ff_selection():
 
 
 def test_water_forcefield_selection():
+    # Test cases for 'amber19-all.xml' force field
+    assert water_forcefield_selection("TIP3P", "amber19-all.xml") == "amber19/tip3p.xml"
+    assert (
+        water_forcefield_selection("TIP3P-FB", "amber19-all.xml")
+        == "amber19/tip3pfb.xml"
+    )
+    assert water_forcefield_selection("SPC/E", "amber19-all.xml") == "amber19/spce.xml"
+    assert (
+        water_forcefield_selection("TIP4P-Ew", "amber19-all.xml")
+        == "amber19/tip4pew.xml"
+    )
+    assert (
+        water_forcefield_selection("TIP4P-FB", "amber19-all.xml")
+        == "amber19/tip4pfb.xml"
+    )
+    assert (
+        water_forcefield_selection("OPC", "amber19-all.xml")
+        == "amber19/opc.xml"
+    )
+    assert (
+        water_forcefield_selection("OPC3", "amber19-all.xml")
+        == "amber19/opc3.xml"
+    )
+    assert water_forcefield_selection("TIP5P", "amber19-all.xml") is None
+    assert water_forcefield_selection("NonexistentWater", "amber19-all.xml") is None
+    assert water_forcefield_selection("TIP3P", "NonexistentFF") is None
     # Test cases for 'amber14-all.xml' force field
     assert water_forcefield_selection("TIP3P", "amber14-all.xml") == "amber14/tip3p.xml"
     assert (
@@ -49,6 +76,14 @@ def test_water_forcefield_selection():
     assert (
         water_forcefield_selection("TIP4P-FB", "amber14-all.xml")
         == "amber14/tip4pfb.xml"
+    )
+    assert (
+        water_forcefield_selection("OPC", "amber14-all.xml")
+        == "amber14/opc.xml"
+    )
+    assert (
+        water_forcefield_selection("OPC3", "amber14-all.xml")
+        == "amber14/opc3.xml"
     )
     assert water_forcefield_selection("TIP5P", "amber14-all.xml") is None
     assert water_forcefield_selection("NonexistentWater", "amber14-all.xml") is None
@@ -104,6 +139,16 @@ def test_water_model_selection():
     assert water_model_selection("TIP4P-FB", "amber03.xml") == "tip4pfb"
     assert water_model_selection("TIP4P-FB", "amber10.xml") == "tip4pfb"
 
+    assert water_model_selection("OPC", "amber99sb.xml") == "opc"
+    assert water_model_selection("OPC", "amber99sbildn.xml") == "opc"
+    assert water_model_selection("OPC", "amber03.xml") == "opc"
+    assert water_model_selection("OPC", "amber10.xml") == "opc"
+
+    assert water_model_selection("OPC3", "amber99sb.xml") == "opc3"
+    assert water_model_selection("OPC3", "amber99sbildn.xml") == "opc3"
+    assert water_model_selection("OPC3", "amber03.xml") == "opc3"
+    assert water_model_selection("OPC3", "amber10.xml") == "opc3"
+
     assert water_model_selection("TIP5P", "amber99sb.xml") is None
     assert water_model_selection("TIP5P", "amber99sbildn.xml") is None
     assert water_model_selection("TIP5P", "amber03.xml") is None
@@ -154,6 +199,8 @@ def test_generate_forcefield_without_small_molecule():
     forcefield = generate_forcefield("amber14-all.xml", "amber14/tip3p.xml", False)
     assert isinstance(forcefield, app.ForceField)
     # Add additional assertions specific to the case without a small molecule
+    forcefield = generate_forcefield("amber19-all.xml", "amber19/opc3.xml", False)
+    assert isinstance(forcefield, app.ForceField)
 
 
 def test_generate_forcefield_membrane_logic(sample_rdkit_molecule):
