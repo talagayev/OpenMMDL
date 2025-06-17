@@ -15,7 +15,7 @@ def ff_selection(ff):
         str: Selected XML forcefield file.
     """
     forcefield_dict = {
-        "AMBER19": "amber19-all.xml"
+        "AMBER19": "amber19-all.xml",
         "AMBER14": "amber14-all.xml",
         "AMBER99SB": "amber99sb.xml",
         "AMBER99SB-ILDN": "amber99sbildn.xml",
