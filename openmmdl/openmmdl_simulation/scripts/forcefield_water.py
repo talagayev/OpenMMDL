@@ -167,7 +167,7 @@ def generate_forcefield(protein_ff, solvent_ff, add_membrane, smallMoleculeForce
         forcefield = app.ForceField(protein_ff, solvent_ff)
     # If a ligand is present, a Forcefield with GAFF or SMIRNOFF will be created for the ligand
     if rdkit_mol is not None:
-        if smallMoleculeForceField == "Gaff":
+        if smallMoleculeForceField == "gaff":
             gaff = GAFFTemplateGenerator(
                 molecules=Molecule.from_rdkit(rdkit_mol, allow_undefined_stereo=True),
                 forcefield="gaff-2.11",
