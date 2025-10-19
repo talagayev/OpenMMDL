@@ -20,7 +20,6 @@ from collections import Counter
 from rdkit import Chem
 from rdkit.Chem import AllChem, Draw
 from rdkit.Chem.Draw import rdMolDraw2D
-from plip.basic import config
 from MDAnalysis.analysis import rms
 from MDAnalysis.coordinates.DCD import DCDWriter
 from tqdm import tqdm
@@ -375,11 +374,6 @@ def main():
                 fig_type, lig=f"{ligand}"
             )
             print("\033[1mRMSD calculated\033[0m")
-
-    if receptor_nucleic:
-        config.DNARECEPTOR = True
-    if peptide != None:
-        config.PEPTIDES = [peptide]
 
     md_len = args.frames
     if md_len is None:

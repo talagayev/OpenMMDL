@@ -668,7 +668,7 @@ class PharmacophoreGenerator:
 #     """generates dict for visualization of interaction clouds. Later saved as .json file.
 
 #     Args:
-#         df_all (pandas dataframe): dataframe containing all interactions from plip analysis (typicaly df_all)
+#         df_all (pandas dataframe): dataframe containing all interactions from ProLIF analysis (typically df_all)
 
 #     Returns:
 #         dict: dict containing all interaction clouds
