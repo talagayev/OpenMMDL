@@ -4,8 +4,8 @@ API Documentation for interactions
 
 .. py:class:: InteractionAnalyzer(pdb_md, dataframe, num_processes, lig_name, special_ligand, peptide, md_len)
 
-    Analyzes molecular interactions between a protein and a ligand/peptide 
-    throughout an MD trajectory using PLIP (Protein-Ligand Interaction Profiler).
+    Analyzes molecular interactions between a protein and a ligand/peptide
+    throughout an MD trajectory using ProLIF.
 
     :ivar mda.Universe pdb_md: MDAnalysis Universe object representing the topology and trajectory.
     :ivar str or None dataframe: Path to an existing interaction CSV file. If None, the trajectory will be processed anew.
@@ -16,40 +16,32 @@ API Documentation for interactions
     :ivar int md_len: Number of frames in the trajectory.
     :ivar pd.DataFrame interaction_list: DataFrame storing the extracted interactions across the trajectory.
 
-    .. py:method:: _retrieve_plip_interactions(self, pdb_file, lig_name)
+    .. py:method:: _select_ligand_group(self, frame)
 
-        Retrieves the interactions from PLIP.
+        Determine the MDAnalysis atom selections corresponding to the ligand and
+        receptor for a given frame.
 
-        :param str pdb_file: The path of the PDB file of the complex.
-        :param str lig_name: Name of the Ligand in the complex topology that will be analyzed.
-        :returns: A dictionary of the binding sites and the interactions.
-        :rtype: dict
+        :param int frame: Frame index to extract atom selections from.
+        :returns: Tuple containing the ligand and receptor atom groups.
+        :rtype: tuple
 
-    .. py:method:: _retrieve_plip_interactions_peptide(self, pdb_file)
+    .. py:method:: _run_prolif(self, frame)
 
-        Retrives the interactions from PLIP for a peptide.
+        Executes the ProLIF fingerprint calculation for the requested frame.
 
-        :param str pdb_file: The path of the PDB file of the complex.
-        :returns: A dictionary of the binding sites and the interactions.
-        :rtype: dict
-
-    .. py:method:: _create_df_from_binding_site(self, selected_site_interactions, interaction_type="hbond")
-
-        Creates a data frame from a binding site and interaction type.
-
-        :param dict selected_site_interactions: Precaluclated interactions from PLIP for the selected site.
-        :param str, optional interaction_type: The interaction type of interest (default set to hydrogen bond). Defaults to "hbond".
-        :returns: DataFrame with information retrieved from PLIP.
+        :param int frame: Frame index to evaluate.
+        :returns: Raw ProLIF dataframe containing interaction information.
         :rtype: pd.DataFrame
 
-    .. py:method:: _change_lig_to_residue(self, file_path, new_residue_name)
+    .. py:method:: _convert_prolif_dataframe(self, prolif_df, frame)
 
-        Reformats the topology file to change the ligand to a residue. This is needed for interactions with special ligands such as metal ions.
+        Convert the raw ProLIF dataframe into the legacy PLIP-like schema used by
+        the rest of the analysis pipeline.
 
-        :param str file_path: Filepath of the topology file.
-        :param str new_residue_name: New residue name of the ligand now changed to mimic an amino acid residue.
-        :returns: None. Modifies and writes out new topology file.
-        :rtype: None
+        :param pd.DataFrame prolif_df: Raw results produced by ProLIF.
+        :param int frame: Frame index associated with the dataframe.
+        :returns: DataFrame with information retrieved from ProLIF.
+        :rtype: pd.DataFrame
 
     .. py:method:: _process_frame(self, frame)
 
@@ -59,19 +51,11 @@ API Documentation for interactions
         :returns: A dataframe conatining the interaction data for the processed frame.
         :rtype: pd.DataFrame
 
-    .. py:method:: _process_frame_special(self, frame)
-
-        Function extension of process_frame to process special ligands.
-
-        :param int frame: Number of the frame that will be processed.
-        :returns: List of dataframes containing the interaction data for the processed frame with the special ligand.
-        :rtype: list of pd.DataFrame 
-
-    .. py:method:: _process_frame_wrapper(self, args)
+    .. py:method:: _process_frame_wrapper(self, frame_idx)
 
         Wrapper for the MD Trajectory procession.
 
-        :param tuple args: Tuple containing (frame_idx: int - number of the frame to be processed).
+        :param int frame_idx: Number of the frame to be processed.
         :returns: Tuple containing the frame index and the result of from the process_frame function.
         :rtype: tuple
 

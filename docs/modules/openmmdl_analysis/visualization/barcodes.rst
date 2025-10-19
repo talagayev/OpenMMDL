@@ -5,7 +5,7 @@ API Documentation for barcodes
 
     Generates binary barcodes representing the presence of interactions across MD frames.
 
-    :param pd.DataFrame df: DataFrame containing all interactions extracted from PLIP analysis.
+    :param pd.DataFrame df: DataFrame containing all interactions extracted from ProLIF analysis.
     :ivar dict interactions: Dictionary mapping interaction types to their corresponding columns in the DataFrame.
 
     .. py:method:: generate_barcode(interaction)

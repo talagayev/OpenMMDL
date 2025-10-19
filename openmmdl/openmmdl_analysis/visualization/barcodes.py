@@ -10,7 +10,7 @@ class BarcodeGenerator:
     Attributes
     ----------
     df : pd.DataFrame
-        DataFrame containing all interactions extracted from PLIP analysis.
+        DataFrame containing all interactions extracted from ProLIF analysis.
     interactions : dict
         Dictionary mapping interaction types to their corresponding columns in the DataFrame.
     """

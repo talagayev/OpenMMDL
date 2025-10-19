@@ -21,7 +21,7 @@ classifiers = [
 requires-python = ">=3.10"
 # Declare any run-time dependencies that should be installed with the package.
 dependencies = [
-
+  "prolif>=0.3.1",
 ]
 
 # Update the urls once the hosting is set up.
