@@ -311,7 +311,7 @@ def membrane_builder(
 
     # Adds a membrane to the selected protein
     # The Water Models TIP4P and TIP5P require an transitional forcefield
-    if ff == "CHARMM36":
+    if ff in {"CHARMM36", "CHARMM36_2024"}:
         protein_pdb.addMembrane(
             lipidType=membrane_lipid_type,
             minimumPadding=membrane_padding * unit.nanometer,
