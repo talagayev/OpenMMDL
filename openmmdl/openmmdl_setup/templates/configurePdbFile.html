@@ -33,6 +33,7 @@ Select the pdb input file and options for how to model it.
         <option value="AMBER03">AMBER03</option>
         <option value="AMBER10">AMBER10</option>
         <option value="CHARMM36">CHARMM36</option>
+        <option value="CHARMM36_2024">CHARMM36_2024</option>
     </select></div>
     </div>
     <div id="waterModelRow" class="form-group">
@@ -123,7 +124,7 @@ function optionChanged() {
             models = newAmberWaterModels;
         else if (forcefield == "AMBER19")
             models = newAmberWaterModels;
-        else if (forcefield == "CHARMM36")
+        else if (forcefield == "CHARMM36" || forcefield == "CHARMM36_2024")
             models = charmm36WaterModels;
         else if (forcefield == "AMOEBA2018")
             models = amoebaWaterModels;
