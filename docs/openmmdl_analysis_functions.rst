@@ -11,7 +11,7 @@ openmmdl_analysis.barcode_generation
     Generates barcodes for a given interaction.
     
     :param str protein_name: Name of the protein PDB.
-    :param pandas.dataframe df: Dataframe containing all interactions from plip analysis (typicaly df_all)
+    :param pandas.dataframe df: Dataframe containing all interactions from ProLIF analysis (typicaly df_all)
     :param str interaction: name of the interaction to generate a barcode for
 
     :returns: binary array of wit 1 representing the interaction is present in the corresponding frame
@@ -21,7 +21,7 @@ openmmdl_analysis.barcode_generation
 
     Generates a barcode containing coresponding water ids for a given interaction.
 
-    :param pandas.dataframe df: Dataframe containing all interactions from plip analysis (typicaly df_all)
+    :param pandas.dataframe df: Dataframe containing all interactions from ProLIF analysis (typicaly df_all)
     :param str interaction: name of the interaction to generate a barcode for
 
     :returns: returns a list of waterids for the frames where the interaction is present 0 if no interaction present
@@ -42,7 +42,7 @@ openmmdl_analysis.barcode_generation
 
     Generates piecharts for each waterbridge interaction with the water ids of the interacting waters.
 
-    :param pandas.dataframe df_all: Dataframe containing all interactions from plip analysis (typicaly df_all)
+    :param pandas.dataframe df_all: Dataframe containing all interactions from ProLIF analysis (typicaly df_all)
     :param list waterbridge_barcodes: list of np arrays containing the barcodes for each waterbridge interaction
     :param list waterbridge_interactions: list of strings containing waterbridge interactions
 
@@ -54,7 +54,7 @@ openmmdl_analysis.barcode_generation
     Generates barcode figures and groups them by ligandatom, aswell as total interaction barcode for a giveen lingenatom.
 
     :param list interactions: list of pandas.indexes that contain the interactions to generate barcodes for
-    :param pandas.dataframe df_all: Dataframe containing all interactions from plip analysis (typicaly df_all)
+    :param pandas.dataframe df_all: Dataframe containing all interactions from ProLIF analysis (typicaly df_all)
     :param str interaction_type: name of the interaction to generate a barcode for
     
     :returns: None 
@@ -245,11 +245,11 @@ openmmdl_analysis.interaction_gathering
     :param str binding_site_id: A string that specifies the identifier of the binding site
 
     :returns:  A object representing the interactions if. If Binding site is not found returns None
-    :rtype: plip.pdb_complex.basic.interaction_sets
+    :rtype: dict
 
-.. py:function:: retrieve_plip_interactions(pdb_file, lig_name)
+.. py:function:: retrieve_prolif_interactions(pdb_file, lig_name)
 
-    Retrieves the interactions from PLIP.
+    Retrieves the interactions from ProLIF.
 
     :param str pdb_file: Path to the PDB file.
     :param str lig_name: Name of the ligand in the topology.
@@ -257,9 +257,9 @@ openmmdl_analysis.interaction_gathering
     :returns: A dictionary of the binding sites and the interactions.
     :rtype: dict
 
-.. py:function:: retrieve_plip_interactions_peptide(pdb_file, peptide)
+.. py:function:: retrieve_prolif_interactions_peptide(pdb_file, peptide)
 
-    Retrives the interactions from PLIP for a peptide.
+    Retrives the interactions from ProLIF for a peptide.
 
     :param str pdb_file: Path to the PDB file.
     :param str peptide: Name of the peptide chainid in the original topology.
@@ -271,10 +271,10 @@ openmmdl_analysis.interaction_gathering
 
     Creates a data frame from a binding site and interaction type.
 
-    :param dict selected_site_interactions: Precaluclated interactions from PLIP for the selected site
+    :param dict selected_site_interactions: Precaluclated interactions from ProLIF for the selected site
     :param str interaction_type: The interaction type of interest (default set to hydrogen bond). Defaults to "hbond".
 
-    :returns: DataFrame with information retrieved from PLIP.
+    :returns: DataFrame with information retrieved from ProLIF.
     :rtype: pandas.DataFrame
 
 .. py:function:: change_lig_to_residue(file_path, old_residue_name, new_residue_name)
@@ -313,11 +313,11 @@ openmmdl_analysis.interaction_gathering
     :returns: list of dataframes containing the interaction data for the processed frame with the special ligand.
     :rtype: list   
 
-.. py:function:: process_frame_wrapper(args)
+.. py:function:: process_frame_wrapper(frame_idx)
 
     Wrapper for the MD Trajectory procession.
 
-    :param tuple args: Tuple containing (frame_idx: int - number of the frame to be processed,
+    :param int frame_idx: Number of the frame to be processed,
                                         pdb_md: mda.universe - MDA Universe class representation of the topology and the trajectory of the file that is being processed,
                                         lig_name: str - Name of the ligand in the complex that will be analyzed,
                                         special_ligand: str - Name of the special ligand that will be analysed,
@@ -382,7 +382,7 @@ openmmdl_analysis.pml_writer
     
     Generates pharmacophore points for interactions that are points such as hydrophobic and ionic interactions
 
-    :param pandas.dataframe df: Dataframe containing all interactions from plip analysis (typicaly df_all)
+    :param pandas.dataframe df: Dataframe containing all interactions from ProLIF analysis (typicaly df_all)
     :param list interactions: list of strings containing the interactions to generate pharmacophore points for
 
     :returns: Dict of interactions from which pharmacophore is generated as key and list of coordinates as value
@@ -392,7 +392,7 @@ openmmdl_analysis.pml_writer
 
     Generates pharmacophore points for interactions that are vectors such as hydrogen bond donors or acceptors
 
-    :param pandas.dataframe df: Dataframe containing all interactions from plip analysis (typicaly df_all)
+    :param pandas.dataframe df: Dataframe containing all interactions from ProLIF analysis (typicaly df_all)
     :param list interactions: list of strings containing the interactions to generate pharmacophore points for
 
     :returns:  Dict of interactions from which pharmacophore is generated as key and list of coordinates as value (first coords are ligand side, second are protein side)
@@ -403,7 +403,7 @@ openmmdl_analysis.pml_writer
     Generates pharmacophore from all interactions formed in the MD simulation.
     A feature is generated for each interaction at the center of all its ocurrences.
 
-    :param pandas.dataframe df: Dataframe containing all interactions from plip analysis (typicaly df_all)
+    :param pandas.dataframe df: Dataframe containing all interactions from ProLIF analysis (typicaly df_all)
     :param str core_compound: Name of the ligand.
     :param str output_filename: Name of the output file.
     :param str sysname: Name of the system.
@@ -429,7 +429,7 @@ openmmdl_analysis.pml_writer
 
     Generates pharmacophore points for all interactions to generate point cloud.
 
-    :param pandas.dataframe df: Dataframe containing all interactions from plip analysis (typicaly df_all)
+    :param pandas.dataframe df: Dataframe containing all interactions from ProLIF analysis (typicaly df_all)
     :param list interactions: list of strings containing the interactions to generate pharmacophore points for.
 
     :returns: Dict of interactions from which pharmacophore is generated as key and list of coordinates as value
@@ -653,7 +653,7 @@ openmmdl_analysis.visualization_functions
 
     Generates a list of all water ids that form water bridge interactions.
 
-    :param pandas.dataframe df_all: Dataframe containing all interactions from plip analysis (typicaly df_all)
+    :param pandas.dataframe df_all: Dataframe containing all interactions from ProLIF analysis (typicaly df_all)
     :param list waterbridge_interactions: list of strings containing waterbridge interactions
 
     :returns: list of all unique water ids that form water bridge interactions
@@ -677,7 +677,7 @@ openmmdl_analysis.visualization_functions
     
     Generates dict for visualization of interaction clouds. Later saved as .json file.
 
-    :param pandas.dataframe df_all: Dataframe containing all interactions from plip analysis (typicaly df_all)
+    :param pandas.dataframe df_all: Dataframe containing all interactions from ProLIF analysis (typicaly df_all)
 
     :returns: Dict containing all interaction clouds
     :rtype: dict
