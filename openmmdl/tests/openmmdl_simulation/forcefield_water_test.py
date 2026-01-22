@@ -299,8 +299,13 @@ def test_generate_forcefield_membrane_logic(sample_rdkit_molecule):
         "amber19-all.xml", "amber19/tip3p.xml", False, "gaff", "gaff-2.1", sample_rdkit_molecule
     )
 
+    forcefield_13 = generate_forcefield(
+        "amber19-all.xml", "amber19/tip3p.xml", False, "smirnoff", "openff-2.3.0.offxml", sample_rdkit_molecule
+    )
+
     assert isinstance(forcefield_11, app.ForceField)
     assert isinstance(forcefield_12, app.ForceField)
+    assert isinstance(forcefield_13, app.ForceField)
 
 def test_generate_transitional_forcefield(sample_rdkit_molecule):
     transitional_forcefield = generate_transitional_forcefield(
@@ -308,10 +313,10 @@ def test_generate_transitional_forcefield(sample_rdkit_molecule):
     )
     assert isinstance(transitional_forcefield, app.ForceField)
 
-    transitional_forcefield = generate_transitional_forcefield(
+    transitional_forcefield_1 = generate_transitional_forcefield(
         "amber14-all.xml", "tip3p.xml", True, "smirnoff", "openff-2.2.0.offxml", sample_rdkit_molecule
     )
-    assert isinstance(transitional_forcefield, app.ForceField)
+    assert isinstance(transitional_forcefield_1, app.ForceField)
 
     # Additional tests for different force field combinations
     transitional_forcefield_2 = generate_transitional_forcefield(
@@ -320,25 +325,31 @@ def test_generate_transitional_forcefield(sample_rdkit_molecule):
     assert isinstance(transitional_forcefield_2, app.ForceField)
 
     # Additional tests for different force field combinations
-    transitional_forcefield_2 = generate_transitional_forcefield(
-        "amber03.xml", "amber14/tip3p.xml", False, "smirnoff", "openff-2.2.0.offxml", sample_rdkit_molecule
-    )
-    assert isinstance(transitional_forcefield_2, app.ForceField)
-    
-    # Additional tests for membrane flag logic
     transitional_forcefield_3 = generate_transitional_forcefield(
-        "amber14-all.xml", "tip3p.xml", False, "gaff", "gaff-2.1", sample_rdkit_molecule
+        "amber03.xml", "amber14/tip3p.xml", False, "smirnoff", "openff-2.2.0.offxml", sample_rdkit_molecule
     )
     assert isinstance(transitional_forcefield_3, app.ForceField)
 
-    # Additional tests for GAFF registration
+    # Additional tests for membrane flag logic
     transitional_forcefield_4 = generate_transitional_forcefield(
-        "amber14-all.xml", "tip3p.xml", True
+        "amber14-all.xml", "tip3p.xml", False, "gaff", "gaff-2.1", sample_rdkit_molecule
     )
     assert isinstance(transitional_forcefield_4, app.ForceField)
 
-    # Test for amber19
+    # Additional tests for GAFF registration
     transitional_forcefield_5 = generate_transitional_forcefield(
-        "amber19-all.xml", "amber19/tip3p.xml", False, "gaff", "gaff-2.1", sample_rdkit_molecule
+        "amber14-all.xml", "tip3p.xml", True
     )
     assert isinstance(transitional_forcefield_5, app.ForceField)
+
+    # Test for amber19
+    transitional_forcefield_6 = generate_transitional_forcefield(
+        "amber19-all.xml", "amber19/tip3p.xml", False, "gaff", "gaff-2.1", sample_rdkit_molecule
+    )
+    assert isinstance(transitional_forcefield_6, app.ForceField)
+
+    # Test for smirnoff 2.3.0
+    transitional_forcefield_7 = generate_transitional_forcefield(
+        "amber19-all.xml", "amber19/tip3p.xml", False, "smirnoff", "openff-2.3.0.offxml", sample_rdkit_molecule
+    )
+    assert isinstance(transitional_forcefield_7, app.ForceField)
