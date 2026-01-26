@@ -178,6 +178,10 @@ autoapi_ignore = [
     "**/6b73_simulation/**",
     "**/5wyz_simulation/**",
 
+    "*migrations*",
+    "*6b73_simulation*",
+    "*5wyz_simulation*",
+    
     # Your named items (modules/files)
     "**/test_rmsd.py",
     "**/test_utils.py",
