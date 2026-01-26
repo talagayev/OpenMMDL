@@ -1,2 +1,3 @@
 sphinx-rtd-theme
 renku-sphinx-theme
+sphinx-autoapi==3.6.1
