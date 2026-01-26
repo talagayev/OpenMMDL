@@ -164,3 +164,38 @@ texinfo_documents = [
 ]
 
 # -- Extension configuration -------------------------------------------------
+# AutoAPI: exclude tests, example outputs, and script-y modules
+autoapi_ignore = [
+    "*migrations*",          # keep default ignore from AutoAPI docs :contentReference[oaicite:1]{index=1}
+
+    # Generic test exclusion
+    "**/tests/**",
+    "**/test_*.py",
+    "**/*_test.py",
+    "**/*_test_*.py",
+
+    # Your named items (directories)
+    "**/6b73_simulation/**",
+    "**/5wyz_simulation/**",
+
+    # Your named items (modules/files)
+    "**/test_rmsd.py",
+    "**/test_utils.py",
+    "**/test_figures.py",
+    "**/test_barcodes.py",
+    "**/test_trajectories.py",
+    "**/test_highlighting.py",
+    "**/test_markovchains.py",
+    "**/test_bindingmodes.py",
+    "**/test_preprocessing.py",
+    "**/test_pharmacophore.py",
+    "**/test_post_md_conversions.py",
+
+    "**/forcefield_water.py",
+    "**/post_md_conversions.py",
+    "**/cleaning_procedures.py",
+    "**/protein_ligand_prep.py",
+    "**/forcefield_water_test.py",
+    "**/protein_ligand_prep_test.py",
+    "**/cleaning_procedures_test.py",
+]
