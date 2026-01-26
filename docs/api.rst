@@ -45,3 +45,8 @@ Here is the API of the **visualization** modules:
    modules/openmmdl_analysis/visualization/highlighting
    modules/openmmdl_analysis/visualization/pharmacophore
    modules/openmmdl_analysis/visualization/visualization
+
+.. toctree::
+   :maxdepth: 2
+
+   autoapi/index
