@@ -409,6 +409,9 @@ def createAmberBashScript():
         a_script.append(
             "antechamber -fi pdb -fo prepc -i ${nmLigFile}_amber.pdb -o ${nmLigFile}.prepc -c ${charge_method} -at ${lig_ff} -nc ${charge_value} -pf y"
         )
+        a_script.append(
+            "antechamber -fi pdb -fo mol2 -i ${nmLigFile}_amber.pdb -o ${nmLigFile}.mol2 -c ${charge_method} -at ${lig_ff} -nc ${charge_value} -pf y"
+        )
         a_script.append("parmchk2 -f prepc -i ${nmLigFile}.prepc -o ${nmLigFile}.frcmod\n")
         a_script.append("## Rename ligand pdb")
         a_script.append("antechamber -i ${nmLigFile}.prepc -fi prepc -o rename_${nmLigFile}.pdb -fo pdb\n")
