@@ -76,6 +76,150 @@
                 setTimeout(function() {animateSpinner()}, 1000)
             }
         </script>
+
+        <script>
+            // Back button helper: use browser history when the referrer is same-origin; otherwise fall back.
+            function omGoBack(fallbackUrl) {
+                try {
+                    if (document.referrer) {
+                        var refOrigin = new URL(document.referrer).origin;
+                        if (refOrigin === window.location.origin) {
+                            window.history.back();
+                            return;
+                        }
+                    }
+                } catch (e) {}
+                window.location.href = fallbackUrl;
+            }
+        </script>
+
+        <script>
+            // File extension validation based on <input accept="..."> (works for Browse + drag&drop).
+            function omParseAcceptExts(accept) {
+                if (!accept) return [];
+                return accept.split(',')
+                    .map(function(s){ return (s || '').trim().toLowerCase(); })
+                    .filter(function(s){ return s && s[0] === '.'; });
+            }
+
+            function omNameMatchesExt(name, exts) {
+                var n = (name || '').toLowerCase();
+                for (var i = 0; i < exts.length; i++) {
+                    if (n.endsWith(exts[i])) return true;
+                }
+                return false;
+            }
+
+            function omClearFileInput(input) {
+                try { input.value = ''; } catch (e) {}
+                // Clear label if present.
+                var lbl = document.getElementById(input.id + "_label");
+                if (lbl) lbl.textContent = "";
+            }
+
+            // Called by onchange in templates. Return true if OK; false if rejected and cleared.
+            function omValidateFileInput(input) {
+                var allowed = omParseAcceptExts(input.getAttribute('accept'));
+                if (!allowed.length) return true; // no restriction
+                if (!input.files || input.files.length === 0) return true;
+
+                for (var i = 0; i < input.files.length; i++) {
+                    var f = input.files[i];
+                    if (!omNameMatchesExt(f.name, allowed)) {
+                        alert("Invalid file type: " + f.name + "\nAllowed: " + allowed.join(', '));
+                        omClearFileInput(input);
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            // Used by drag&drop to keep only acceptable files (or reject entirely if none acceptable).
+            function omFilterFilesForInput(input, files) {
+                var allowed = omParseAcceptExts(input.getAttribute('accept'));
+                if (!allowed.length) return Array.prototype.slice.call(files);
+                var kept = [];
+                for (var i = 0; i < files.length; i++) {
+                    if (omNameMatchesExt(files[i].name, allowed)) kept.push(files[i]);
+                }
+                if (!kept.length) {
+                    alert("Invalid file type.\nAllowed: " + allowed.join(', '));
+                    return null;
+                }
+                if (!input.multiple && kept.length > 1) kept = [kept[0]];
+                return kept;
+            }
+        </script>
+
+        <script>
+            /* File drag & drop */
+            (function() {
+                function wire(zone) {
+                    var inputId = zone.getAttribute('data-file-input');
+                    if (!inputId) return;
+                    var input = document.getElementById(inputId);
+                    if (!input) return;
+
+                    function setDrag(active) {
+                        if (active) zone.classList.add('is-dragover');
+                        else zone.classList.remove('is-dragover');
+                    }
+
+                    // Click anywhere on the widget to open the file picker.
+                    zone.addEventListener('click', function(e) {
+                        if (input.disabled) return;
+                        // Avoid double-triggering when clicking the native Browse label.
+                        if (e.target && (e.target.tagName === 'INPUT')) return;
+                        input.click();
+                    });
+
+                    zone.addEventListener('dragenter', function(e) {
+                        if (input.disabled) return;
+                        e.preventDefault();
+                        setDrag(true);
+                    });
+
+                    zone.addEventListener('dragover', function(e) {
+                        if (input.disabled) return;
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'copy';
+                        setDrag(true);
+                    });
+
+                    zone.addEventListener('dragleave', function(e) {
+                        setDrag(false);
+                    });
+
+                    zone.addEventListener('drop', function(e) {
+                        if (input.disabled) return;
+                        e.preventDefault();
+                        setDrag(false);
+
+                        var files = (e.dataTransfer && e.dataTransfer.files) ? e.dataTransfer.files : null;
+                        if (!files || files.length === 0) return;
+
+                        var filtered = omFilterFilesForInput(input, files);
+                        if (!filtered || filtered.length === 0) return;
+
+                        var dt = new DataTransfer();
+                        for (var i = 0; i < filtered.length; i++) dt.items.add(filtered[i]);
+                        input.files = dt.files;
+
+                        // Trigger existing onchange handlers (optionChanged()).
+                        input.dispatchEvent(new Event('change', { bubbles: true }));
+                    });
+                }
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    var zones = document.querySelectorAll('.om-filedrop[data-file-input]');
+                    for (var i = 0; i < zones.length; i++) wire(zones[i]);
+                });
+
+                // Prevent the browser from navigating away when dropping files outside dropzones.
+                window.addEventListener('dragover', function(e) { e.preventDefault(); });
+                window.addEventListener('drop', function(e) { e.preventDefault(); });
+            })();
+        </script>    
     </head>
     <body>
         <div class="container-fluid om-shell">
