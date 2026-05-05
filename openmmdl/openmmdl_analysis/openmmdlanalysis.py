@@ -224,9 +224,14 @@ def run_analysis(args) -> int:
 
     # TODO maybe put this part into a function possibly in visualization_functions.py TrajectorySaver
     # Writing out the complex of the protein and ligand with water around 10A of the ligand
-    complex = pdb_md.select_atoms(
-        f"protein or nucleic or resname {ligand} or (resname HOH and around 10 resname {ligand}) or resname {special_ligand}"
-    )
+    if peptide is not None:
+        complex = pdb_md.select_atoms(
+            f"protein or nucleic or (resname HOH and around 10 chainID {peptide}) or resname {special_ligand}"
+        )
+    else:
+        complex = pdb_md.select_atoms(
+            f"protein or nucleic or resname {ligand} or (resname HOH and around 10 resname {ligand}) or resname {special_ligand}"
+        )
     complex.write("complex.pdb")
     preprocessor.renumber_atoms_in_residues("complex.pdb", "complex.pdb", ligand)
     preprocessor.process_pdb("complex.pdb", "complex.pdb")
