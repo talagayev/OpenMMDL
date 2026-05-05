@@ -291,9 +291,14 @@ class InteractionAnalyzer:
         pd.DataFrame
             A dataframe conatining the interaction data for the processed frame.
         """
-        atoms_selected = self.pdb_md.select_atoms(
-            f"protein or nucleic or resname {self.lig_name} or (resname HOH and around 10 resname {self.lig_name}) or resname {self.special}"
-        )
+        if self.peptide is not None:
+            atoms_selected = self.pdb_md.select_atoms(
+                f"protein or nucleic or (resname HOH and around 10 chainID {self.peptide}) or resname {self.special}"
+            )
+        else:
+            atoms_selected = self.pdb_md.select_atoms(
+                f"protein or nucleic or resname {self.lig_name} or (resname HOH and around 10 resname {self.lig_name}) or resname {self.special}"
+            )
         for num in self.pdb_md.trajectory[(frame) : (frame + 1)]:
             atoms_selected.write(f"processing_frame_{frame}.pdb")
         if self.peptide is None:
