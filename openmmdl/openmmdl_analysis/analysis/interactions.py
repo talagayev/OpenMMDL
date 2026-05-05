@@ -167,8 +167,14 @@ class InteractionAnalyzer:
         dict
             A dictionary of the binding sites and the interactions.
         """
+        config.PEPTIDES = [self.peptide]
+
         protlig = PDBComplex()
         protlig.load_pdb(pdb_file)  # load the pdb file
+
+        if not protlig.ligands:
+            raise ValueError(f"PLIP did not detect peptide chain {self.peptide!r} as a ligand")
+
         protlig.characterize_complex(protlig.ligands[-1])  # find ligands and analyze interactions
         sites = {}
         # loop over binding sites
