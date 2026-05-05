@@ -926,7 +926,8 @@ class InteractionAnalyzer:
             )
         else:
             # peptide treated as ligand chain; pocket = rest of protein
-            ligand_ag = self.pdb_md.select_atoms(f"chainID {self.peptide}")
+            lig_sel = f"chainID {self.peptide}"
+            ligand_ag = self.pdb_md.select_atoms(lig_sel)
             base = "protein or nucleic" if getattr(config, "DNARECEPTOR", False) else "protein"
             protein_ag = self.pdb_md.select_atoms(f"({base}) and not chainID {self.peptide}")
 
