@@ -290,7 +290,7 @@ def run_analysis(args) -> int:
         )
         if frame_rmsd:
             pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(
-                fig_type, lig=f"{ligand}", nucleic=True
+                fig_type, lig_selection=f"resname {ligand}", nucleic=True
             )
             logger.info("\033[1mRMSD calculated\033[0m")
     elif peptide is not None:
@@ -300,7 +300,9 @@ def run_analysis(args) -> int:
             selection2=["protein", f"chainID {peptide}"],
         )
         if frame_rmsd:
-            pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(fig_type, lig=f"chainID {peptide}")
+            pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(
+                fig_type, lig_selection=f"chainID {peptide}"
+            )
             logger.info("\033[1mRMSD calculated\033[0m")
     else:
         rmsd_analyzer.rmsd_for_atomgroups(
@@ -309,7 +311,9 @@ def run_analysis(args) -> int:
             selection2=["protein", f"resname {ligand}"],
         )
         if frame_rmsd:
-            pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(fig_type, lig=f"{ligand}")
+            pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(
+                fig_type, lig_selection=f"resname {ligand}"
+            )
             logger.info("\033[1mRMSD calculated\033[0m")
 
     if receptor_nucleic:
