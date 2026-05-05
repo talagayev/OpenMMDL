@@ -160,7 +160,7 @@ def run_analysis(args) -> int:
     topology = os.path.abspath(args.topology)
     trajectory = os.path.abspath(args.trajectory)
 
-    if args.ligand_name is None:
+    if args.ligand_name is None and args.peptide is None:
         logger.error("Ligand name is missing. Add the name of your ligand from your topology file")
         sys.exit(1)
     # set variables for analysis and preprocess input files
@@ -213,7 +213,7 @@ def run_analysis(args) -> int:
     preprocessor.process_pdb_file(topology)
     logger.info("\033[1mFiles are preprocessed\033[0m")
 
-    if ligand_sdf is None:
+    if peptide is None and ligand_sdf is None:
         preprocessor.extract_and_save_ligand_as_sdf(topology, "./ligand_prepared.sdf", ligand)
         ligand_sdf = "./ligand_prepared.sdf"
 
