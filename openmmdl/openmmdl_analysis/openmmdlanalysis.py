@@ -287,7 +287,20 @@ def run_analysis(args) -> int:
 
     os.makedirs("RMSD", exist_ok=True)
     rmsd_analyzer = RMSDAnalyzer(f"{topology}", f"{trajectory}")
-    if receptor_nucleic:
+    if peptide is not None:
+        rmsd_analyzer.rmsd_for_atomgroups(
+            fig_type,
+            selection1="nucleicbackbone" if receptor_nucleic else "backbone",
+            selection2=["nucleic" if receptor_nucleic else "protein", f"chainID {peptide}"],
+        )
+        if frame_rmsd:
+            pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(
+                fig_type,
+                lig_selection=f"chainID {peptide}",
+                nucleic=receptor_nucleic,
+            )
+            logger.info("\033[1mRMSD calculated\033[0m")
+    elif receptor_nucleic:
         rmsd_analyzer.rmsd_for_atomgroups(
             fig_type,
             selection1="nucleicbackbone",
@@ -296,17 +309,6 @@ def run_analysis(args) -> int:
         if frame_rmsd:
             pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(
                 fig_type, lig_selection=f"resname {ligand}", nucleic=True
-            )
-            logger.info("\033[1mRMSD calculated\033[0m")
-    elif peptide is not None:
-        rmsd_analyzer.rmsd_for_atomgroups(
-            fig_type,
-            selection1="backbone",
-            selection2=["protein", f"chainID {peptide}"],
-        )
-        if frame_rmsd:
-            pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(
-                fig_type, lig_selection=f"chainID {peptide}"
             )
             logger.info("\033[1mRMSD calculated\033[0m")
     else:
