@@ -164,9 +164,8 @@ Start the analysis with the following Inputs:
 
 -d = trajectory file of the simulation (in .dcd format)
 
--n = Ligand name (3 letter code in PDB)
-
 #### Optional:
+-n = Ligand name (3 letter code in PDB)
 
 -l = Ligand in SDF format
 
