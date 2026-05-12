@@ -70,7 +70,7 @@ class RMSDAnalyzer:
 
         return rmsd_df
 
-    def rmsd_dist_frames(self, fig_type, lig, nucleic=False):
+    def rmsd_dist_frames(self, fig_type, lig_selection, nucleic=False):
         """
         Calculate the RMSD between all frames in a matrix.
 
@@ -78,8 +78,8 @@ class RMSDAnalyzer:
         ----------
         fig_type : str
             Type of the figure to save (e.g., 'png', 'jpg').
-        lig : str
-            Ligand name saved in the above PDB file. Selection string for the MDAnalysis AtomGroup to be investigated, also used during alignment.
+        lig_selection : str
+            Selection string for the MDAnalysis AtomGroup to be investigated.
         nucleic : bool, optional
             Bool indicating if the receptor to be analyzed contains nucleic acids. Defaults to False.
 
@@ -94,8 +94,8 @@ class RMSDAnalyzer:
             pairwise_rmsd_prot = diffusionmap.DistanceMatrix(self.universe, select="nucleic").run().dist_matrix
         else:
             pairwise_rmsd_prot = diffusionmap.DistanceMatrix(self.universe, select="protein").run().dist_matrix
-        pairwise_rmsd_lig = diffusionmap.DistanceMatrix(self.universe, f"resname {lig}").run().dist_matrix
-
+        pairwise_rmsd_lig = diffusionmap.DistanceMatrix(self.universe, select=lig_selection).run().dist_matrix
+        
         max_dist = max(np.amax(pairwise_rmsd_lig), np.amax(pairwise_rmsd_prot))
 
         fig, ax = plt.subplots(1, 2)

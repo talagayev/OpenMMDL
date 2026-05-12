@@ -101,6 +101,18 @@ def test_rmsd_for_atomgroups_with_multiple_selections(mock_savefig, mock_to_csv,
         assert len(result) == 3
         assert result.columns.tolist() == ["protein", "resname LIG"]
 
+@patch("matplotlib.pyplot.savefig")
+@patch("openmmdl.openmmdl_analysis.analysis.rmsd.diffusionmap.DistanceMatrix")
+def test_rmsd_dist_frames_uses_full_ligand_selection(mock_distance_matrix, mock_savefig, analyzer, test_dir):
+    """rmsd_dist_frames must pass peptide chain selections through unchanged."""
+    mock_distance_matrix.return_value.run.return_value.dist_matrix = np.array(
+        [[0.0, 1.0], [1.0, 0.0]]
+    )
+
+    analyzer.rmsd_dist_frames("png", lig_selection="chainID B")
+
+    assert mock_distance_matrix.call_args_list[0].kwargs["select"] == "protein"
+    assert mock_distance_matrix.call_args_list[1].kwargs["select"] == "chainID B"
 
 def test_calc_rmsd_2frames(analyzer):
     """Test RMSD calculation between two frames."""

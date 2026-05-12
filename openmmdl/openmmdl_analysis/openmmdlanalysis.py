@@ -160,7 +160,7 @@ def run_analysis(args) -> int:
     topology = os.path.abspath(args.topology)
     trajectory = os.path.abspath(args.trajectory)
 
-    if args.ligand_name is None:
+    if args.ligand_name is None and args.peptide is None:
         logger.error("Ligand name is missing. Add the name of your ligand from your topology file")
         sys.exit(1)
     # set variables for analysis and preprocess input files
@@ -213,7 +213,7 @@ def run_analysis(args) -> int:
     preprocessor.process_pdb_file(topology)
     logger.info("\033[1mFiles are preprocessed\033[0m")
 
-    if ligand_sdf is None:
+    if peptide is None and ligand_sdf is None:
         preprocessor.extract_and_save_ligand_as_sdf(topology, "./ligand_prepared.sdf", ligand)
         ligand_sdf = "./ligand_prepared.sdf"
 
@@ -224,9 +224,14 @@ def run_analysis(args) -> int:
 
     # TODO maybe put this part into a function possibly in visualization_functions.py TrajectorySaver
     # Writing out the complex of the protein and ligand with water around 10A of the ligand
-    complex = pdb_md.select_atoms(
-        f"protein or nucleic or resname {ligand} or (resname HOH and around 10 resname {ligand}) or resname {special_ligand}"
-    )
+    if peptide is not None:
+        complex = pdb_md.select_atoms(
+            f"protein or nucleic or (resname HOH and around 10 chainID {peptide}) or resname {special_ligand}"
+        )
+    else:
+        complex = pdb_md.select_atoms(
+            f"protein or nucleic or resname {ligand} or (resname HOH and around 10 resname {ligand}) or resname {special_ligand}"
+        )
     complex.write("complex.pdb")
     preprocessor.renumber_atoms_in_residues("complex.pdb", "complex.pdb", ligand)
     preprocessor.process_pdb("complex.pdb", "complex.pdb")
@@ -282,7 +287,20 @@ def run_analysis(args) -> int:
 
     os.makedirs("RMSD", exist_ok=True)
     rmsd_analyzer = RMSDAnalyzer(f"{topology}", f"{trajectory}")
-    if receptor_nucleic:
+    if peptide is not None:
+        rmsd_analyzer.rmsd_for_atomgroups(
+            fig_type,
+            selection1="nucleicbackbone" if receptor_nucleic else "backbone",
+            selection2=["nucleic" if receptor_nucleic else "protein", f"chainID {peptide}"],
+        )
+        if frame_rmsd:
+            pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(
+                fig_type,
+                lig_selection=f"chainID {peptide}",
+                nucleic=receptor_nucleic,
+            )
+            logger.info("\033[1mRMSD calculated\033[0m")
+    elif receptor_nucleic:
         rmsd_analyzer.rmsd_for_atomgroups(
             fig_type,
             selection1="nucleicbackbone",
@@ -290,17 +308,8 @@ def run_analysis(args) -> int:
         )
         if frame_rmsd:
             pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(
-                fig_type, lig=f"{ligand}", nucleic=True
+                fig_type, lig_selection=f"resname {ligand}", nucleic=True
             )
-            logger.info("\033[1mRMSD calculated\033[0m")
-    elif peptide is not None:
-        rmsd_analyzer.rmsd_for_atomgroups(
-            fig_type,
-            selection1="backbone",
-            selection2=["protein", f"chainID {peptide}"],
-        )
-        if frame_rmsd:
-            pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(fig_type, lig=f"chainID {peptide}")
             logger.info("\033[1mRMSD calculated\033[0m")
     else:
         rmsd_analyzer.rmsd_for_atomgroups(
@@ -309,7 +318,9 @@ def run_analysis(args) -> int:
             selection2=["protein", f"resname {ligand}"],
         )
         if frame_rmsd:
-            pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(fig_type, lig=f"{ligand}")
+            pairwise_rmsd_prot, pairwise_rmsd_lig = rmsd_analyzer.rmsd_dist_frames(
+                fig_type, lig_selection=f"resname {ligand}"
+            )
             logger.info("\033[1mRMSD calculated\033[0m")
 
     if receptor_nucleic:

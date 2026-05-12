@@ -22,13 +22,12 @@ Mandatory:
 
     -t = topology file of the simulation (in .pdb format)
     -d = trajectory file of the simulation (in .dcd format)
-    -n = Ligand name (3 letter code in PDB)
-
 
 Optional:
 
 .. code-block:: text
 
+    -n = Ligand name (3 letter code in PDB)
     -l = Ligand in SDF format
     -b = binding mode threshold. Is used to remove interactions under the defined procentual occurence from the binding mode generation. The default is 40% (accepted values: 0-100)
     -df = Dataframe (use if the interactions were already calculated, default name would be "interactions_gathered.csv")

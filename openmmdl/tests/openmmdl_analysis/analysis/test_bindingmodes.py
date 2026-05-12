@@ -105,3 +105,34 @@ def test_interactions_all_includes_rare_contacts_for_ligand_schema(sample_intera
     # But "all interactions" must still contain them
     assert "ligand_5_Acceptor_hbond" in bm_lig_high_thresh.unique_data_all
     assert "ligand_7_hydrophobic" in bm_lig_high_thresh.unique_data_all
+
+
+def test_peptide_ligand_schema_does_not_require_ligand_name():
+    """Peptide binding-mode processing should work with ligand=None."""
+    interaction_list = pd.DataFrame(
+        [
+            {
+                "FRAME": 1,
+                "INTERACTION": "hbond",
+                "Prot_partner": "12GLYA",
+                "PROTISDON": True,
+                "RESNR_LIG": 3,
+                "RESTYPE_LIG": "GLY",
+            }
+        ]
+    )
+
+    bm_pep = BindingModeProcesser(
+        pdb_md=None,
+        ligand=None,
+        peptide="B",
+        special=None,
+        ligand_rings=None,
+        interaction_list=interaction_list,
+        threshold=0,
+        total_frames=10,
+        schema="ligand",
+    )
+
+    assert "ligand_3GLY_Acceptor_hbond" in bm_pep.unique_data
+    assert bm_pep.interaction_list.loc[0, "ligand_3GLY_Acceptor_hbond"] == 1

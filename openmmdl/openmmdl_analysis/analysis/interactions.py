@@ -167,8 +167,14 @@ class InteractionAnalyzer:
         dict
             A dictionary of the binding sites and the interactions.
         """
+        config.PEPTIDES = [self.peptide]
+
         protlig = PDBComplex()
         protlig.load_pdb(pdb_file)  # load the pdb file
+
+        if not protlig.ligands:
+            raise ValueError(f"PLIP did not detect peptide chain {self.peptide!r} as a ligand")
+
         protlig.characterize_complex(protlig.ligands[-1])  # find ligands and analyze interactions
         sites = {}
         # loop over binding sites
@@ -285,9 +291,14 @@ class InteractionAnalyzer:
         pd.DataFrame
             A dataframe conatining the interaction data for the processed frame.
         """
-        atoms_selected = self.pdb_md.select_atoms(
-            f"protein or nucleic or resname {self.lig_name} or (resname HOH and around 10 resname {self.lig_name}) or resname {self.special}"
-        )
+        if self.peptide is not None:
+            atoms_selected = self.pdb_md.select_atoms(
+                f"protein or nucleic or (resname HOH and around 10 chainID {self.peptide}) or resname {self.special}"
+            )
+        else:
+            atoms_selected = self.pdb_md.select_atoms(
+                f"protein or nucleic or resname {self.lig_name} or (resname HOH and around 10 resname {self.lig_name}) or resname {self.special}"
+            )
         for num in self.pdb_md.trajectory[(frame) : (frame + 1)]:
             atoms_selected.write(f"processing_frame_{frame}.pdb")
         if self.peptide is None:
@@ -926,7 +937,8 @@ class InteractionAnalyzer:
             )
         else:
             # peptide treated as ligand chain; pocket = rest of protein
-            ligand_ag = self.pdb_md.select_atoms(f"chainID {self.peptide}")
+            lig_sel = f"chainID {self.peptide}"
+            ligand_ag = self.pdb_md.select_atoms(lig_sel)
             base = "protein or nucleic" if getattr(config, "DNARECEPTOR", False) else "protein"
             protein_ag = self.pdb_md.select_atoms(f"({base}) and not chainID {self.peptide}")
 
