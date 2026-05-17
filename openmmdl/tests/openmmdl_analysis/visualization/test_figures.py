@@ -4,6 +4,7 @@ import shutil
 from PIL import Image
 from pathlib import Path
 from openmmdl.openmmdl_analysis.visualization.figures import (
+    FigureMerger,
     FigureArranger,
     PeptideBindingModeFigureGenerator,
 )
