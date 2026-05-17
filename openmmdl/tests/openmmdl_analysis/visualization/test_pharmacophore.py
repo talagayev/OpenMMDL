@@ -7,7 +7,10 @@ import xml.etree.ElementTree as ET
 from unittest.mock import patch, mock_open
 from io import StringIO
 
-from openmmdl.openmmdl_analysis.visualization.pharmacophore import PharmacophoreGenerator
+from openmmdl.openmmdl_analysis.visualization.pharmacophore import (
+    PharmacophoreGenerator,
+    parse_coord_triplet,
+)
 
 
 @pytest.fixture
@@ -40,7 +43,8 @@ def test_init(sample_df):
     assert generator.df_all.equals(sample_df)
     assert generator.ligand_name == "test_ligand"
     assert generator.complex_name == "test_ligand_complex"
-    assert isinstance(generator.coord_pattern, re.Pattern)
+    assert generator.occurrence_threshold is None
+    assert generator.total_frames is None
     assert isinstance(generator.clouds, dict)
 
 
@@ -198,18 +202,34 @@ def test_format_clouds():
     assert formatted_clouds["acceptor"]["radius"] == 0.1
 
 
-def test_coordinate_parsing():
-    """Test the coordinate pattern regex."""
-    generator = PharmacophoreGenerator(pd.DataFrame(), "test_ligand")
-    
-    coord_str = "(1.234, 2.345, 3.456)"
-    match = generator.coord_pattern.match(coord_str)
-    
-    assert match is not None
-    x, y, z = map(float, match.groups())
-    assert x == 1.234
-    assert y == 2.345
-    assert z == 3.456
+@pytest.mark.parametrize(
+    "coord_str, expected",
+    [
+        ("(1.234, 2.345, 3.456)", [1.234, 2.345, 3.456]),
+        ("[1.234, 2.345, 3.456]", [1.234, 2.345, 3.456]),
+        (
+            "(np.float64(30.156), np.float64(41.233), np.float64(92.595))",
+            [30.156, 41.233, 92.595],
+        ),
+    ],
+)
+def test_coordinate_parsing(coord_str, expected):
+    """Test robust coordinate parsing, including numpy scalar repr strings."""
+    assert parse_coord_triplet(coord_str) == expected
+
+
+@pytest.mark.parametrize("coord_str", [None, 0, "0", "skip", "not a coordinate"])
+def test_coordinate_parsing_returns_none_for_missing_values(coord_str):
+    assert parse_coord_triplet(coord_str) is None
+
+
+def test_coordinate_parsing_does_not_parse_float64_width_as_coordinate():
+    parsed = parse_coord_triplet(
+        "(np.float64(30.156), np.float64(41.233), np.float64(92.595))"
+    )
+
+    assert parsed == [30.156, 41.233, 92.595]
+    assert 64.0 not in parsed
 
 
 def test_empty_dataframe():
@@ -220,3 +240,84 @@ def test_empty_dataframe():
     clouds = generator.clouds
     for interaction in clouds:
         assert len(clouds[interaction]["coordinates"]) == 0
+
+
+def test_init_uses_safe_name_for_peptide_pharmacophore():
+    generator = PharmacophoreGenerator(pd.DataFrame(), None)
+
+    assert generator.ligand_name == "peptide"
+    assert generator.complex_name == "peptide_complex"
+
+
+def test_saltbridge_centers_parse_numpy_float_coordinates():
+    df = pd.DataFrame(
+        {
+            "FRAME": [0, 1],
+            "INTERACTION": ["saltbridge", "saltbridge"],
+            "LIGCOO": [
+                "(np.float64(30.156), np.float64(41.233), np.float64(92.595))",
+                "(np.float64(32.156), np.float64(43.233), np.float64(94.595))",
+            ],
+            "PROTCOO": ["0", "0"],
+            "TARGETCOO": ["0", "0"],
+            "PROTISDON": ["False", "False"],
+            "PROTISPOS": ["False", "False"],
+            "PI_saltbridge": [1, 1],
+        }
+    )
+
+    generator = PharmacophoreGenerator(df, "peptide_chain_B")
+
+    assert generator._generate_pharmacophore_centers(["PI_saltbridge"]) == {
+        "PI_saltbridge": [31.156, 42.233, 93.595]
+    }
+
+
+def test_occurrence_threshold_filters_low_frequency_features():
+    df = pd.DataFrame(
+        {
+            "FRAME": list(range(10)),
+            "INTERACTION": ["hydrophobic"] * 10,
+            "LIGCOO": ["(1.0, 2.0, 3.0)"] * 10,
+            "PROTCOO": ["0"] * 10,
+            "TARGETCOO": ["0"] * 10,
+            "PROTISDON": ["False"] * 10,
+            "PROTISPOS": ["False"] * 10,
+            "hydrophobic": [1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        }
+    )
+
+    generator = PharmacophoreGenerator(
+        df,
+        "peptide_chain_B",
+        occurrence_threshold=40,
+        total_frames=10,
+    )
+
+    assert generator._generate_pharmacophore_centers(["hydrophobic"]) == {}
+
+
+def test_occurrence_threshold_keeps_features_at_cutoff():
+    df = pd.DataFrame(
+        {
+            "FRAME": list(range(10)),
+            "INTERACTION": ["hydrophobic"] * 10,
+            "LIGCOO": ["(1.0, 2.0, 3.0)"] * 10,
+            "PROTCOO": ["0"] * 10,
+            "TARGETCOO": ["0"] * 10,
+            "PROTISDON": ["False"] * 10,
+            "PROTISPOS": ["False"] * 10,
+            "hydrophobic": [1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+        }
+    )
+
+    generator = PharmacophoreGenerator(
+        df,
+        "peptide_chain_B",
+        occurrence_threshold=40,
+        total_frames=10,
+    )
+
+    assert generator._generate_pharmacophore_centers(["hydrophobic"]) == {
+        "hydrophobic": [1.0, 2.0, 3.0]
+    }

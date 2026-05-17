@@ -3,7 +3,11 @@ import os
 import shutil
 from PIL import Image
 from pathlib import Path
-from openmmdl.openmmdl_analysis.visualization.figures import FigureMerger, FigureArranger
+from openmmdl.openmmdl_analysis.visualization.figures import (
+    FigureArranger,
+    PeptideBindingModeFigureGenerator,
+)
+
 
 test_data_directory = Path(
     "openmmdl/tests/data/openmmdl_analysis/rdkit_figure_generation"
@@ -179,6 +183,76 @@ def test_arranged_figure_generation():
     # Check if the output file was created
 
     assert output_path is not None
+
+
+def test_peptide_interaction_annotations_are_parsed():
+    generator = PeptideBindingModeFigureGenerator(
+        complex_pdb_file="dummy.pdb",
+        peptide_chain_id="B",
+    )
+
+    values = {
+        "44GLUA_176LYS_LYS_PI_saltbridge",
+        "81ASPA_182LYS_LYS_PI_saltbridge",
+        "53SERA_180TYR_hydrophobic",
+        "12GLUA_177LYS_Donor_hbond",
+    }
+
+    residue_to_interactions, residue_to_details = generator._extract_interaction_annotations(values)
+
+    assert residue_to_interactions == {
+        176: {"saltbridge"},
+        182: {"saltbridge"},
+        180: {"hydrophobic"},
+        177: {"hbond"},
+    }
+
+    assert {
+        "peptide_label": "176LYS",
+        "protein_label": "44GLUA",
+        "interaction_type": "saltbridge",
+        "extra_detail": "LYS_PI",
+    } in residue_to_details[176]
+
+
+def test_peptide_residue_label_map_is_stable_and_sorted():
+    generator = PeptideBindingModeFigureGenerator(
+        complex_pdb_file="dummy.pdb",
+        peptide_chain_id="B",
+    )
+
+    residue_to_details = {
+        182: [{"peptide_label": "182LYS"}],
+        176: [{"peptide_label": "176LYS"}],
+        180: [{"peptide_label": "180TYR"}],
+    }
+
+    assert generator._build_residue_label_map(residue_to_details) == {
+        176: 1,
+        180: 2,
+        182: 3,
+    }
+
+
+def test_figure_arranger_moves_individual_figures_to_subfolder(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+
+    Image.new("RGB", (20, 20), "white").save("Binding_Mode_1.png")
+    Image.new("RGB", (20, 20), "white").save("Binding_Mode_2.png")
+
+    arranger = FigureArranger(
+        merged_image_paths=["Binding_Mode_1.png", "Binding_Mode_2.png"],
+        output_path="all_binding_modes_arranged.png",
+    )
+
+    arranger.arranged_figure_generation()
+
+    assert os.path.exists("Binding_Modes_Markov_States/all_binding_modes_arranged.png")
+    assert os.path.exists("Binding_Modes_Markov_States/individual_figures/Binding_Mode_1.png")
+    assert os.path.exists("Binding_Modes_Markov_States/individual_figures/Binding_Mode_2.png")
+
+    assert not os.path.exists("Binding_Mode_1.png")
+    assert not os.path.exists("Binding_Mode_2.png")
 
 
 # Run the tests

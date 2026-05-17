@@ -3,7 +3,22 @@ import numpy as np
 import xml.etree.ElementTree as ET
 
 
-COORD_RE = re.compile(r"\(\s*([-\d.]+)\s*,\s*([-\d.]+)\s*,\s*([-\d.]+)\s*\)")
+FLOAT_RE = re.compile(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?")
+NUMPY_FLOAT_WRAPPER_RE = re.compile(
+    r"(?:np\.)?float\d*\(\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)\s*\)"
+)
+
+
+def parse_coord_triplet(value):
+    if value is None or value == 0 or value == "0" or value == "skip":
+        return None
+
+    text = NUMPY_FLOAT_WRAPPER_RE.sub(r"\1", str(value))
+    nums = FLOAT_RE.findall(text)
+    if len(nums) < 3:
+        return None
+
+    return [float(nums[0]), float(nums[1]), float(nums[2])]
 
 
 class PharmacophoreGenerator:
@@ -27,12 +42,46 @@ class PharmacophoreGenerator:
         Dictionary containing interaction types and associated 3D coordinates with visualization metadata.
     """
 
-    def __init__(self, df_all, ligand_name):
+    def __init__(self, df_all, ligand_name, occurrence_threshold=None, total_frames=None):
         self.df_all = df_all
-        self.ligand_name = ligand_name
-        self.complex_name = f"{ligand_name}_complex"
-        self.coord_pattern = re.compile(r"\(([\d.-]+), ([\d.-]+), ([\d.-]+)\)")
+        self.ligand_name = str(ligand_name) if ligand_name is not None else "peptide"
+        self.complex_name = f"{self.ligand_name}_complex"
+        self.occurrence_threshold = self._normalize_occurrence_threshold(occurrence_threshold)
+        self.total_frames = total_frames
         self.clouds = self._generate_clouds()
+
+    @staticmethod
+    def _normalize_occurrence_threshold(occurrence_threshold):
+        if occurrence_threshold is None:
+            return None
+        occurrence_threshold = float(occurrence_threshold)
+        if occurrence_threshold > 1:
+            occurrence_threshold /= 100
+        return occurrence_threshold
+
+    def _interaction_passes_occurrence_threshold(self, interaction):
+        if self.occurrence_threshold is None:
+            return True
+        if interaction not in self.df_all.columns:
+            return False
+
+        df_hits = self.df_all[self.df_all[interaction] == 1]
+        if df_hits.empty:
+            return False
+
+        if self.total_frames is not None:
+            total_frames = int(self.total_frames)
+        elif "FRAME" in self.df_all.columns:
+            total_frames = int(self.df_all["FRAME"].nunique())
+        else:
+            total_frames = len(self.df_all)
+
+        if total_frames <= 0:
+            return False
+
+        occurrence_count = df_hits["FRAME"].nunique() if "FRAME" in df_hits.columns else len(df_hits)
+        return occurrence_count >= self.occurrence_threshold * total_frames
+
 
     def to_dict(self):
         """
@@ -178,41 +227,46 @@ class PharmacophoreGenerator:
                     )
             elif interaction == "pistacking":
                 pharm = self._generate_pharmacophore_vectors(self.df_all.filter(regex=interaction).columns)
-                feature_id_counter += 1
-                lig_loc = position[0]
-                prot_loc = position[1]
+                for feature_name, position in pharm.items():
+                    feature_id_counter += 1
+                    lig_loc = position[0]
+                    prot_loc = position[1]
 
-                vector = np.array(lig_loc) - np.array(prot_loc)
-                normal_vector = vector / np.linalg.norm(vector)
-                x, y, z = normal_vector
+                    vector = np.array(lig_loc) - np.array(prot_loc)
+                    norm = np.linalg.norm(vector)
+                    if norm == 0:
+                        continue
 
-                plane = ET.SubElement(
-                    pharmacophore,
-                    "plane",
-                    name=feature_type,
-                    featureId=interaction,
-                    optional="false",
-                    disabled="false",
-                    weight="1.0",
-                    coreCompound=self.ligand_name,
-                    id=f"feature{str(feature_id_counter)}",
-                )
-                ET.SubElement(
-                    plane,
-                    "position",
-                    x3=str(lig_loc[0]),
-                    y3=str(lig_loc[1]),
-                    z3=str(lig_loc[2]),
-                    tolerance="0.9",
-                )
-                ET.SubElement(
-                    plane,
-                    "normal",
-                    x3=str(x),
-                    y3=str(y),
-                    z3=str(z),
-                    tolerance="0.43633232",
-                )
+                    normal_vector = vector / norm
+                    x, y, z = normal_vector
+
+                    plane = ET.SubElement(
+                        pharmacophore,
+                        "plane",
+                        name=feature_type,
+                        featureId=feature_name,
+                        optional="false",
+                        disabled="false",
+                        weight="1.0",
+                        coreCompound=self.ligand_name,
+                        id=f"feature{str(feature_id_counter)}",
+                    )
+                    ET.SubElement(
+                        plane,
+                        "position",
+                        x3=str(lig_loc[0]),
+                        y3=str(lig_loc[1]),
+                        z3=str(lig_loc[2]),
+                        tolerance="0.9",
+                    )
+                    ET.SubElement(
+                        plane,
+                        "normal",
+                        x3=str(x),
+                        y3=str(y),
+                        z3=str(z),
+                        tolerance="0.43633232",
+                    )
 
         tree = ET.ElementTree(root)
         tree.write(f"{output_filename}.pml", encoding="UTF-8", xml_declaration=True)
@@ -478,9 +532,9 @@ class PharmacophoreGenerator:
 
         for index, row in self.df_all.iterrows():
             if row["LIGCOO"] != 0:
-                coord_match = self.coord_pattern.match(row["LIGCOO"])
-                if coord_match:
-                    x, y, z = map(float, coord_match.groups())
+                coord = parse_coord_triplet(row["LIGCOO"])
+                if coord is not None:
+                    x, y, z = coord
                     x, y, z = round(x, 3), round(y, 3), round(z, 3)
                     interaction = row["INTERACTION"]
                     if interaction == "hbond":
@@ -492,9 +546,9 @@ class PharmacophoreGenerator:
 
         for index, row in self.df_all.iterrows():
             if row["TARGETCOO"] != 0:
-                coord_match = self.coord_pattern.match(row["TARGETCOO"])
-                if coord_match:
-                    x, y, z = map(float, coord_match.groups())
+                coord = parse_coord_triplet(row["TARGETCOO"])
+                if coord is not None:
+                    x, y, z = coord
                     x, y, z = round(x, 3), round(y, 3), round(z, 3)
                     if row["INTERACTION"] == "metal":
                         interaction_coords["metal"].append([x, y, z])
@@ -544,6 +598,8 @@ class PharmacophoreGenerator:
             # Only rows where this interaction occurs
             if interaction not in self.df_all.columns:
                 continue
+            if not self._interaction_passes_occurrence_threshold(interaction):
+                continue
             df_hits = self.df_all[self.df_all[interaction] == 1]
             if df_hits.empty:
                 continue
@@ -552,10 +608,10 @@ class PharmacophoreGenerator:
             sum_x = sum_y = sum_z = 0.0
 
             for _, row in df_hits.iterrows():
-                m = COORD_RE.search(str(row.get("LIGCOO", "")))
-                if not m:
+                coord = parse_coord_triplet(row.get("LIGCOO", ""))
+                if coord is None:
                     continue
-                x, y, z = map(float, m.groups())
+                x, y, z = coord
                 sum_x += x
                 sum_y += y
                 sum_z += z
@@ -579,6 +635,8 @@ class PharmacophoreGenerator:
         for interaction in interactions:
             if interaction not in self.df_all.columns:
                 continue
+            if not self._interaction_passes_occurrence_threshold(interaction):
+                continue
             df_hits = self.df_all[self.df_all[interaction] == 1]
             if df_hits.empty:
                 continue
@@ -588,15 +646,15 @@ class PharmacophoreGenerator:
             sum_a = sum_b = sum_c = 0.0
 
             for _, row in df_hits.iterrows():
-                lig_m = COORD_RE.search(str(row.get("LIGCOO", "")))
-                prot_m = COORD_RE.search(str(row.get("PROTCOO", "")))
+                lig_coord = parse_coord_triplet(row.get("LIGCOO", ""))
+                prot_coord = parse_coord_triplet(row.get("PROTCOO", ""))
 
                 # Only count frames where BOTH ends are available
-                if not lig_m or not prot_m:
+                if lig_coord is None or prot_coord is None:
                     continue
 
-                x, y, z = map(float, lig_m.groups())
-                a, b, c = map(float, prot_m.groups())
+                x, y, z = lig_coord
+                a, b, c = prot_coord
 
                 sum_x += x
                 sum_y += y
@@ -633,13 +691,14 @@ class PharmacophoreGenerator:
         coord_pattern = re.compile(r"\(([\d.-]+), ([\d.-]+), ([\d.-]+)\)")
         pharmacophore = {}
         for interaction in interactions:
+            if not self._interaction_passes_occurrence_threshold(interaction):
+                continue
             pharmacophore_points = []
             for index, row in self.df_all.iterrows():
                 if row[interaction] == 1:
-                    coord_match = coord_pattern.match(row["LIGCOO"])
-                    if coord_match:
-                        x, y, z = map(float, coord_match.groups())
-                        pharmacophore_points.append([x, y, z])
+                    coord = parse_coord_triplet(row["LIGCOO"])
+                    if coord is not None:
+                        pharmacophore_points.append(coord)
 
             if pharmacophore_points:
                 pharmacophore[interaction] = pharmacophore_points
