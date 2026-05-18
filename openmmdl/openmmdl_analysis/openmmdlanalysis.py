@@ -18,7 +18,7 @@ def _load_analysis_dependencies():
     global Preprocessing, RMSDAnalyzer, InteractionAnalyzer, BindingModeProcesser
     global MarkovChainAnalysis
     global FigureHighlighter, LigandImageGenerator
-    global FigureArranger, FigureMerger
+    global FigureArranger, FigureMerger, PeptideBindingModeFigureGenerator
     global BarcodeGenerator, BarcodePlotter
     global TrajectorySaver, PharmacophoreGenerator, StableWaters
     global update_dict, update_values
@@ -46,6 +46,7 @@ def _load_analysis_dependencies():
     from openmmdl.openmmdl_analysis.visualization.figures import (
         FigureArranger,
         FigureMerger,
+        PeptideBindingModeFigureGenerator,
     )
     from openmmdl.openmmdl_analysis.visualization.barcodes import (
         BarcodeGenerator,
@@ -73,6 +74,9 @@ def pushd(path: str):
 
 
 _FLOAT_RE = re.compile(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?")
+_NUMPY_FLOAT_WRAPPER_RE = re.compile(
+    r"(?:np\.)?float\d*\(\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)\s*\)"
+)
 
 _TRUE_BOOL_VALUES = {"1", "true", "t", "yes", "y", "on"}
 _FALSE_BOOL_VALUES = {"0", "false", "f", "no", "n", "off"}
@@ -104,6 +108,7 @@ def parse_xyz(val):
     if val is None or val == 0 or val == "0":
         return None
     s = str(val)
+    s = _NUMPY_FLOAT_WRAPPER_RE.sub(r"\1", s)
     nums = _FLOAT_RE.findall(s)
     if len(nums) < 3:
         return None
@@ -639,6 +644,34 @@ def run_analysis(args) -> int:
                         fig_type,
                     )
                     generator.generate_image()
+                else:
+                    matplotlib.use("Agg")
+                    merged_image_paths = []
+
+                    peptide_figure_generator = PeptideBindingModeFigureGenerator(
+                        complex_pdb_file=complex_pdb,
+                        peptide_chain_id=peptide,
+                        rdkit_max_residues=12,
+                    )
+
+                    for binding_mode, values in columns_with_value_1.items():
+                        occurrence_count = top_10_nodes_with_occurrences[binding_mode]
+                        occurrence_percent = 100 * occurrence_count / total_frames
+
+                        output_png = peptide_figure_generator.generate_binding_mode_figure(
+                            binding_mode=binding_mode,
+                            interaction_values=values,
+                            occurrence_percent=occurrence_percent,
+                            output_dir=".",
+                        )
+
+                        merged_image_paths.append(output_png)
+
+                    figure_arranger = FigureArranger(
+                        merged_image_paths,
+                        "all_binding_modes_arranged.png",
+                    )
+                    figure_arranger.arranged_figure_generation()
                     logger.info(f"\033[1m{schema} bindig mode: Binding mode figure generated\033[0m")
             except Exception:
                 logger.warning("Ligand could not be recognized, use the -l option")
@@ -646,7 +679,13 @@ def run_analysis(args) -> int:
 
             df_all = pd.read_csv("df_all.csv")
 
-            pham_generator = PharmacophoreGenerator(df_all, ligand)
+            pharmacophore_partner_name = ligand if ligand is not None else f"peptide_chain_{peptide}"
+            pham_generator = PharmacophoreGenerator(
+                df_all,
+                pharmacophore_partner_name,
+                occurrence_threshold=threshold,
+                total_frames=total_frames,
+            )
             # get the top 10 bindingmodes with the most occurrences
             binding_modes = grouped_frames_treshold["Binding_fingerprint_treshold"].str.split("\n")
             all_binding_modes = [mode.strip() for sublist in binding_modes for mode in sublist]
@@ -661,9 +700,12 @@ def run_analysis(args) -> int:
                 "Percentage Occurrence": [],
             }
             if generate_representative_frame:
-                DM = rmsd_analyzer.calculate_distance_matrix(
-                    f"protein or nucleic or resname {ligand} or resname {special_ligand}", n_frames=md_len - 1
+                representative_selection = (
+                    f"protein or nucleic or chainID {peptide} or resname {special_ligand}"
+                    if peptide is not None
+                    else f"protein or nucleic or resname {ligand} or resname {special_ligand}"
                 )
+                DM = rmsd_analyzer.calculate_distance_matrix(representative_selection, n_frames=md_len - 1)
                 modes_to_process = top_10_binding_modes.index
                 for mode in tqdm(modes_to_process):
                     result_dict["Binding Mode"].append(mode)

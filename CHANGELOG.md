@@ -24,6 +24,7 @@ talagayev
 - Added `openmmdl check` for testing correct installation (2026-05-03, PR#207)
 
 ### Fixed
+- Fixed peptide pharmacophore error (2026-05-18, PR#209)
 - Fixed remaining water type recognition errors (2026-04-29, PR#205)
 - Fixed `OPC` water recognition error (2026-04-28, PR#204)
 
