@@ -158,7 +158,7 @@
             <label><input type="radio" name="rcpType" value='carboRcp' id="carboRcp" oninput="optionChanged()"> Carbohydrates
             </label>
           </div>
-          
+
           <div id="carboOptions">
             <div class="form-group">
               <div class="row">
@@ -166,7 +166,7 @@
                   <label for="carboFile"> Receptor File (.pdb) </label>
                   {{ fileinput('carboFile', accept='.pdb') }}
                 </div>
-          
+
                 <div class="col-lg-4">
                   <label for="carbo_ff"> Force Field</label>
                   <select name="carbo_ff" id="carbo_ff" class="form-control" onchange="optionChanged()">
@@ -175,13 +175,68 @@
                     <option value="other_carbo_ff">other</option>
                   </select>
                 </div>
-          
+
                 <!-- Add a container for the text field and hide it by default-->
                 <div class="col-lg-4" id="other_carbo_ff_container" style="display: none;">
                   <label for="other_carbo_ff_input" style="color:grey;">Other Force Field</label>
                   {{ textfield('other_carbo_ff_input', 'See the supported force fields in the original file at `$AMBERHOME/dat/leap/cmd/`')}}
                 </div>
-          
+
+              </div>
+            </div>
+          </div>
+
+          <!--Glycoproteins-->
+          <div class="form-group">
+            <label><input type="radio" name="rcpType" value='glycoprotRcp' id="glycoprotRcp" oninput="optionChanged()"> Glycoprotein
+            </label>
+          </div>
+
+          <div id="glycoprotOptions">
+            <div class="form-group" style="padding-left: 30px">
+              <div class="alert alert-info" style="margin-bottom: 10px">
+                OpenMMDL detects sugar residues by PDB name (NAG, NDG, BMA, MAN, FUC, FUL),
+                renames them and their atoms to GLYCAM conventions, and emits explicit
+                glycosidic-bond statements in the generated tleap script. The detected
+                sites are listed as <code>##</code> comments at the top of the script
+                preview on the right.
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="row">
+                <div class="col-lg-6" style="padding-left: 30px">
+                  <label for="glycoprotFile">Glycoprotein File (.pdb)</label>
+                  {{ fileinput('glycoprotFile', accept='.pdb') }}
+                </div>
+
+                <div class="col-lg-4">
+                  <label for="glycoprot_prot_ff">Protein Force Field</label>
+                  <select name="glycoprot_prot_ff" id="glycoprot_prot_ff" class="form-control" onchange="optionChanged()">
+                    <option value="leaprc.protein.ff14SB" selected>ff14SB (recommended with GLYCAM_06j-1)</option>
+                    <option value="leaprc.protein.ff19SB">ff19SB</option>
+                    <option value="leaprc.ff99SB">ff99SB</option>
+                    <option value="leaprc.protein.ff14SBonlysc">ff14SBonlysc</option>
+                    <option value="other_glycoprot_prot_ff">other</option>
+                  </select>
+                </div>
+
+                <div class="col-lg-4" id="other_glycoprot_prot_ff_container" style="display: none;">
+                  <label for="glycoprot_other_prot_ff_input" style="color:grey;">Other Protein Force Field</label>
+                  {{ textfield('glycoprot_other_prot_ff_input', 'See the supported force fields in the original file at `$AMBERHOME/dat/leap/cmd/`')}}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-lg-6" style="padding-left: 30px">
+                  <label for="glycoprot_glycan_ff">Glycan Force Field</label>
+                  <select name="glycoprot_glycan_ff" id="glycoprot_glycan_ff" class="form-control" onchange="optionChanged()">
+                    <option value="leaprc.GLYCAM_06j-1" selected>GLYCAM_06j-1 (ff14SB / ff19SB compatible)</option>
+                    <option value="leaprc.GLYCAM_06j">GLYCAM_06j</option>
+                    <option value="leaprc.GLYCAM_06EPb">GLYCAM_06EPb</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -570,6 +625,8 @@ function optionChanged() {
   document.getElementById('rnaOptions').hidden = !rnaRcp;
   carboRcp = document.getElementById("carboRcp").checked;
   document.getElementById('carboOptions').hidden = !carboRcp;
+  glycoprotRcp = document.getElementById("glycoprotRcp").checked;
+  document.getElementById('glycoprotOptions').hidden = !glycoprotRcp;
 
   protFile = document.getElementById("protFile").files;
   document.getElementById("protFile_label").textContent = (protFile.length == 0 ? "" : protFile[0].name);
@@ -579,6 +636,8 @@ function optionChanged() {
   document.getElementById("rnaFile_label").textContent = (rnaFile.length == 0 ? "" : rnaFile[0].name);
   carboFile = document.getElementById("carboFile").files;
   document.getElementById("carboFile_label").textContent = (carboFile.length == 0 ? "" : carboFile[0].name);
+  glycoprotFile = document.getElementById("glycoprotFile").files;
+  document.getElementById("glycoprotFile_label").textContent = (glycoprotFile.length == 0 ? "" : glycoprotFile[0].name);
 
   //for tab 'Add Water/Membrane'
   addWater = document.getElementById("addWater").checked;
@@ -620,6 +679,7 @@ function optionChanged() {
     { id: 'dna_ff', containerId: 'other_dna_ff_container' },
     { id: 'rna_ff', containerId: 'other_rna_ff_container' },
     { id: 'carbo_ff', containerId: 'other_carbo_ff_container' },
+    { id: 'glycoprot_prot_ff', containerId: 'other_glycoprot_prot_ff_container' },
 
     { id: 'lipid_tp', containerId: 'other_lipid_tp_container' },
     { id: 'lipid_tp', containerId: 'lipid_ratio' },

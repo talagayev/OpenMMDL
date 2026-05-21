@@ -102,3 +102,14 @@ The tutorial for the Amber path can be found :doc:`here </tutorial_amber_path>`.
    :align: center
 
 In the table, the first row is the default setting, and the term `other` allows users to type their desired forcefields from those accessible in AmberTools 22.0 into the designated textbox.
+
+**Glycoprotein receptors (Amber path)**
+
+The Amber path additionally offers a *Glycoprotein* receptor type for proteins with covalently attached N- or O-linked glycans. When selected, OpenMMDL Setup:
+
+1. Detects sugar residues by PDB residue name (NAG, NDG, BMA, MAN, FUC, FUL) and finds glycosidic linkages from CONECT records (falling back to a distance scan if absent).
+2. Renames residues and atoms to GLYCAM-06j-1 conventions (e.g. NAG → 0YB / 4YB, MAN → 0MA / 3MA / 6MA, with the trimannose branch point as VMB).
+3. Emits explicit ``bond`` statements for every protein-glycan and glycan-glycan covalent link, injected into the generated ``tleap.in`` after ``loadpdb``.
+4. Sources both the chosen protein force field (e.g. ``leaprc.protein.ff14SB``) and the glycan force field (``leaprc.GLYCAM_06j-1`` by default).
+
+Only the common N-glycan core sugars listed above are currently supported. Unrecognised PDB sugar codes or non-canonical linkage patterns raise a descriptive error; see ``openmmdl/openmmdl_setup/glycoprotein.py`` for the verified GLYCAM tables.

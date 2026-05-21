@@ -21,6 +21,10 @@ The rules for this file:
 talagayev
 
 ### Added
+- Added native glycoprotein support in `OpenMMDL Setup` AMBER path
+  (2026-05-20, PR#TBD)
+- Added glycan-aware PBC imaging in `OpenMMDL Simulation`
+  postprocessing (2026-05-20, PR#TBD)
 - Added `openmmdl check` for testing correct installation (2026-05-03, PR#207)
 
 ### Fixed

@@ -18,6 +18,7 @@ from flask import (
 )
 from werkzeug.utils import secure_filename
 import datetime
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -48,13 +49,70 @@ fixer = None
 scriptOutput = None
 simulationProcess = None
 
+
 def _normalize_resname(value, default):
     cleaned = "".join(ch for ch in (value or "").upper() if ch.isalnum())[:3]
     return cleaned if len(cleaned) == 3 else default
 
+
 def _resnames_are_unique(names):
     filtered = [name for name in names if name]
     return len(filtered) == len(set(filtered))
+
+
+def _read_uploaded_pdb_to_path(upload_key):
+    """Write an uploaded PDB to a temp file; return its path (or None)."""
+    if upload_key not in uploadedFiles:
+        return None
+    temp_handle, _orig_name = uploadedFiles[upload_key][0]
+    temp_handle.seek(0)
+    data = temp_handle.read()
+    if isinstance(data, bytes):
+        data = data.decode("utf-8", errors="replace")
+    fd, path = tempfile.mkstemp(suffix=".pdb")
+    try:
+        with os.fdopen(fd, "w") as fh:
+            fh.write(data)
+    except Exception:
+        try:
+            os.unlink(path)
+        except OSError:
+            pass
+        raise
+    return path
+
+
+def _run_glycoprotein_detection(upload_key="glycoprotFile"):
+    """Run glycan detection on the uploaded PDB; return a dict with glycans,
+    protein_links, glycan_glycan_links, rename_map (None if no upload)."""
+    from openmmdl.openmmdl_setup.glycoprotein import (
+        detect_glycans,
+        detect_glycosylation_sites,
+        detect_glycan_glycan_links,
+        determine_glycam_names,
+    )
+
+    pdb_path = _read_uploaded_pdb_to_path(upload_key)
+    if pdb_path is None:
+        return None
+    try:
+        glycans = detect_glycans(pdb_path)
+        sites = detect_glycosylation_sites(pdb_path)
+        links = detect_glycan_glycan_links(pdb_path)
+        rename_map = determine_glycam_names(glycans, sites, links)
+    finally:
+        try:
+            os.unlink(pdb_path)
+        except OSError:
+            pass
+
+    return {
+        "glycans": glycans,
+        "protein_links": sites,
+        "glycan_glycan_links": links,
+        "rename_map": rename_map,
+    }
+
 
 def saveUploadedFiles():
     uploadedFiles.clear()
@@ -128,16 +186,22 @@ def configureFiles():
         session["ligandMinimization"] = request.form.get("ligandMinimization", "")
         session["ligandSanitization"] = request.form.get("ligandSanitization", "")
         session["smallMoleculeMode"] = request.form.get("smallMoleculeMode", "none")
-        session["highThroughputSimulation"] = "True" if session["smallMoleculeMode"] == "library" else "False"
+        session["highThroughputSimulation"] = (
+            "True" if session["smallMoleculeMode"] == "library" else "False"
+        )
         session["sdfFile"] = uploadedFiles["sdfFile"][0][1] if "sdfFile" in uploadedFiles else ""
         session["companionFiles"] = [name for _, name in uploadedFiles.get("companionFile", [])]
         session["sdfResname"] = _normalize_resname(request.form.get("sdfResname", ""), "UNK")
         raw_companion_resnames = request.form.getlist("companionResname")
         session["companionResnames"] = [
-            _normalize_resname(raw_companion_resnames[i] if i < len(raw_companion_resnames) else "", f"L{i+1:02d}")
+            _normalize_resname(
+                raw_companion_resnames[i] if i < len(raw_companion_resnames) else "", f"L{i+1:02d}"
+            )
             for i in range(len(session["companionFiles"]))
         ]
-        all_resnames = ([session["sdfResname"]] if session["sdfFile"] else []) + session["companionResnames"]
+        all_resnames = ([session["sdfResname"]] if session["sdfFile"] else []) + session[
+            "companionResnames"
+        ]
         if not _resnames_are_unique(all_resnames):
             raise ValueError("Ligand topology codes must be unique.")
         configureDefaultOptions()
@@ -204,6 +268,11 @@ def setAmberOptions():
     session["other_rna_ff_input"] = request.form.get("other_rna_ff_input", "")
     session["carbo_ff"] = request.form.get("carbo_ff", "")
     session["other_carbo_ff_input"] = request.form.get("other_carbo_ff_input", "")
+    session["glycoprot_prot_ff"] = request.form.get("glycoprot_prot_ff", "")
+    session["glycoprot_other_prot_ff_input"] = request.form.get(
+        "glycoprot_other_prot_ff_input", ""
+    )
+    session["glycoprot_glycan_ff"] = request.form.get("glycoprot_glycan_ff", "leaprc.GLYCAM_06j-1")
 
     rcpType = session["rcpType"]
     if rcpType == "protRcp":
@@ -217,10 +286,24 @@ def setAmberOptions():
             return "# Upload an RNA receptor PDB file to generate the AMBER setup script.\n"
     elif rcpType == "carboRcp":
         if "carboFile" not in uploadedFiles:
-            return "# Upload a carbohydrate receptor PDB file to generate the AMBER setup script.\n"
+            return (
+                "# Upload a carbohydrate receptor PDB file to generate the AMBER setup script.\n"
+            )
+    elif rcpType == "glycoprotRcp":
+        if "glycoprotFile" not in uploadedFiles:
+            return "# Upload a glycoprotein PDB file to generate the AMBER setup script.\n"
+        # validate the upload; surface failures as a comment, not a 500
+        try:
+            _run_glycoprotein_detection()
+        except NotImplementedError as exc:
+            return f"# Glycoprotein detection failed: {exc}\n"
+        except Exception as exc:  # noqa: BLE001
+            return f"# Glycoprotein detection raised {type(exc).__name__}: {exc}\n"
 
     ######## Ligand ########
-    session["nmLig"] = "nmLig" in request.form  # store whether the nmLig checkbox is checked, e.g. True or False
+    session["nmLig"] = (
+        "nmLig" in request.form
+    )  # store whether the nmLig checkbox is checked, e.g. True or False
     session["spLig"] = "spLig" in request.form
     # save uploaded pdb or sdf file for ligand
     ## for normal ligand
@@ -230,7 +313,11 @@ def setAmberOptions():
 
     ## for special ligand
     if session["spLig"]:
-        if "spLigFile" not in uploadedFiles or "prepcFile" not in uploadedFiles or "frcmodFile" not in uploadedFiles:
+        if (
+            "spLigFile" not in uploadedFiles
+            or "prepcFile" not in uploadedFiles
+            or "frcmodFile" not in uploadedFiles
+        ):
             return "# Upload the special ligand PDB file plus matching PREPC and FRCMOD files to generate the AMBER setup script.\n"
 
     ######## Add Water/Membrane ########
@@ -272,6 +359,8 @@ def configureDefaultAmberOptions():
     session["dna_ff"] = "OL15"
     session["rna_ff"] = "OL3"
     session["carbo_ff"] = "GLYCAM_06j"
+    session["glycoprot_prot_ff"] = "leaprc.protein.ff14SB"
+    session["glycoprot_glycan_ff"] = "leaprc.GLYCAM_06j-1"
 
     # AddWaterMembrane
     session["addType"] = "addWater"
@@ -298,6 +387,7 @@ def createAmberBashScript():
         "dnaRcp": "dnaFile",
         "rnaRcp": "rnaFile",
         "carboRcp": "carboFile",
+        "glycoprotRcp": "glycoprotFile",
     }
     receptor_key = receptor_key_map.get(rcpType)
     if receptor_key is None or receptor_key not in uploadedFiles:
@@ -314,9 +404,10 @@ def createAmberBashScript():
         return "# Upload the special ligand PDB file plus matching PREPC and FRCMOD files to generate the AMBER setup script.\n"
 
     a_script = []
-    a_script.append("# This script was generated by OpenMMDL-Setup on %s.\n" % datetime.date.today())
     a_script.append(
-        """
+        "# This script was generated by OpenMMDL-Setup on %s.\n" % datetime.date.today()
+    )
+    a_script.append("""
         #       ,-----.    .-------.     .-''-.  ,---.   .--.,---.    ,---.,---.    ,---. ______       .---.      
         #     .'  .-,  '.  \  _(`)_ \  .'_ _   \ |    \  |  ||    \  /    ||    \  /    ||    _ `''.   | ,_|      
         #    / ,-.|  \ _ \ | (_ o._)| / ( ` )   '|  ,  \ |  ||  ,  \/  ,  ||  ,  \/  ,  || _ | ) _  \,-./  )      
@@ -328,13 +419,14 @@ def createAmberBashScript():
         #       '-----'    `---'        `'-..-'  '--'    '--''--'      '--''--'      '--''-----'`      `--------` 
                                                                                                       
                                                                                                       
-    """
-    )
+    """)
 
     a_script.append("#!/bin/bash\n")
 
     # Receptor
-    a_script.append("################################## Receptor ######################################")
+    a_script.append(
+        "################################## Receptor ######################################"
+    )
     rcpType = session["rcpType"]
     if rcpType == "protRcp":
         protFile = uploadedFiles["protFile"][0][1]
@@ -396,26 +488,134 @@ def createAmberBashScript():
             )
         a_script.append("\n")
 
-    a_script.append("## Clean the PDB file by pdb4amber")
-    a_script.append(("pdb4amber -i ${rcp_nm}.pdb -o ${rcp_nm}_amber.pdb"))
-    a_script.append(
-        """
+    elif rcpType == "glycoprotRcp":
+        glycoprotFile = uploadedFiles["glycoprotFile"][0][1]
+        glycoprotFile = glycoprotFile[:-4]
+        a_script.append(
+            "rcp_nm=%s # the file name of the glycoprotein without suffix `pdb`" % glycoprotFile
+        )
+
+        prot_ff = session.get("glycoprot_prot_ff", "leaprc.protein.ff14SB")
+        if prot_ff != "other_prot_ff":
+            a_script.append("prot_ff=%s" % prot_ff)
+        else:
+            a_script.append(
+                "prot_ff=%s  # See $AMBERHOME/dat/leap/cmd/ for supported force fields"
+                % session.get("glycoprot_other_prot_ff_input", "")
+            )
+
+        glycan_ff = session.get("glycoprot_glycan_ff", "leaprc.GLYCAM_06j-1")
+        a_script.append("glycan_ff=%s" % glycan_ff)
+
+        # alias rcp_ff to the protein FF; the glycan FF is sourced separately
+        a_script.append("rcp_ff=${prot_ff}")
+        a_script.append("\n")
+
+    if rcpType == "glycoprotRcp":
+        detection = _run_glycoprotein_detection()
+        if detection is None:
+            return "# Upload a glycoprotein PDB file to generate the AMBER setup script.\n"
+        rename_map = detection["rename_map"]
+        protein_links = detection["protein_links"]
+        glycan_links = detection["glycan_glycan_links"]
+        glycans = detection["glycans"]
+
+        a_script.append("## Detected glycans (PDB -> GLYCAM)")
+        for g in glycans:
+            code = rename_map.get((g["chain"], g["resnum"]), "???")
+            a_script.append(
+                "##   %s %s%d  ->  %s" % (g["resname"], g["chain"] or " ", g["resnum"], code)
+            )
+        a_script.append("## Glycosylation sites")
+        for s in protein_links:
+            a_script.append(
+                "##   %s %s%d.%s  --  %s %s%d.%s"
+                % (
+                    s["prot_resname"],
+                    s["prot_chain"] or " ",
+                    s["prot_resid"],
+                    s["prot_atom"],
+                    s["sugar_resname"],
+                    s["sugar_chain"] or " ",
+                    s["sugar_resid"],
+                    s["sugar_atom"],
+                )
+            )
+        a_script.append("## Glycan-glycan linkages")
+        for link in glycan_links:
+            a_script.append(
+                "##   %s %s%d.%s  --  %s %s%d.%s"
+                % (
+                    link["from_resname"],
+                    link["from_chain"] or " ",
+                    link["from_resid"],
+                    link["from_atom"],
+                    link["to_resname"],
+                    link["to_chain"] or " ",
+                    link["to_resid"],
+                    link["to_atom"],
+                )
+            )
+        a_script.append("\n## Rename glycan residues and atoms to GLYCAM conventions")
+        a_script.append("cat > _glyco_rename.py <<'PYEOF'")
+        a_script.append("from openmmdl.openmmdl_setup.glycoprotein import write_renamed_pdb")
+        a_script.append("rename_map = %r" % rename_map)
+        a_script.append(
+            "write_renamed_pdb('%s.pdb', '%s_renamed.pdb', rename_map)"
+            % (glycoprotFile, glycoprotFile)
+        )
+        a_script.append("PYEOF")
+        a_script.append("python3 _glyco_rename.py\n")
+
+        a_script.append("## Clean the renamed PDB by pdb4amber (no hydrogen rebuild)")
+        a_script.append("pdb4amber -i ${rcp_nm}_renamed.pdb -o ${rcp_nm}_amber.pdb --no-reduce")
+        # strip ACE/NME cap atoms tleap will rebuild from its templates
+        a_script.append(
+            """awk '! ($2 ~ "(CH3|HH31|HH32|HH33)" || $3 ~ "(CH3|HH31|HH32|HH33)" )' """
+            """${rcp_nm}_amber.pdb > ${rcp_nm}_amber_f.pdb"""
+        )
+        a_script.append("grep -v '^CONECT' ${rcp_nm}_amber_f.pdb > ${rcp_nm}_cnt_rmv.pdb\n")
+
+        a_script.append("## Emit explicit tleap bond statements for the glycosidic linkages")
+        a_script.append("cat > _glyco_bonds.py <<'PYEOF'")
+        a_script.append("from openmmdl.openmmdl_setup.glycoprotein import emit_bond_statements")
+        a_script.append("protein_links = %r" % protein_links)
+        a_script.append("glycan_links = %r" % glycan_links)
+        # read _renamed.pdb, not _amber.pdb: pdb4amber renumbers residues but
+        # keeps their order, so (chain, resid) keys only match the renamed file
+        a_script.append(
+            "for stmt in emit_bond_statements('%s_renamed.pdb', protein_links, glycan_links):"
+            % glycoprotFile
+        )
+        a_script.append("    print(stmt)")
+        a_script.append("PYEOF")
+        a_script.append("python3 _glyco_bonds.py > tleap.bonds.txt\n")
+    else:
+        a_script.append("## Clean the PDB file by pdb4amber")
+        a_script.append(("pdb4amber -i ${rcp_nm}.pdb -o ${rcp_nm}_amber.pdb"))
+        a_script.append(
+            """
 ## `tleap` requires that all residues and atoms have appropriate types to ensure compatibility with the specified force field.
 ## To avoid `tleap` failing, we delete non-essential atoms, such as hydrogens, but preserve important atoms like carbon and nitrogen within the caps residues.
 ## Don' worry about the missing atoms as tleap has the capability to reconstruct them automatically. """
-    )
-    a_script.append(
-        """awk '! ($2 ~ "(CH3|HH31|HH32|HH33)" || $3 ~ "(CH3|HH31|HH32|HH33)" )' ${rcp_nm}_amber.pdb > ${rcp_nm}_amber_f.pdb """
-    )
-    a_script.append("grep -v '^CONECT' ${rcp_nm}_amber_f.pdb > ${rcp_nm}_cnt_rmv.pdb\n")
+        )
+        a_script.append(
+            """awk '! ($2 ~ "(CH3|HH31|HH32|HH33)" || $3 ~ "(CH3|HH31|HH32|HH33)" )' ${rcp_nm}_amber.pdb > ${rcp_nm}_amber_f.pdb """
+        )
+        a_script.append("grep -v '^CONECT' ${rcp_nm}_amber_f.pdb > ${rcp_nm}_cnt_rmv.pdb\n")
 
     # Ligand
     if session["nmLig"] or session["spLig"]:
-        a_script.append("################################## Ligand ######################################")
+        a_script.append(
+            "################################## Ligand ######################################"
+        )
     if session["nmLig"]:
         a_script.append("# Normal Ligand that is compatible with GAFF force field")
         nmLigFile = uploadedFiles["nmLigFile"][0][1]
-        a_script.append("nmLigFile=%s # the file name of ligand without suffix `.pdb` or `.sdf`" % nmLigFile[:-4])
+        a_script.append(
+            "nmLigFile=%s # the file name of ligand without suffix `.pdb` or `.sdf`"
+            % nmLigFile[:-4]
+        )
         # depending on the uploaded file format,convert it to pdb or sdf file.
         if nmLigFile[-4:] == ".sdf":
             a_script.append(
@@ -427,7 +627,8 @@ def createAmberBashScript():
             )
 
         a_script.append(
-            "charge_method=%s # refers to the charge method that antechamber will adopt" % session["charge_method"]
+            "charge_method=%s # refers to the charge method that antechamber will adopt"
+            % session["charge_method"]
         )
         a_script.append(
             "charge_value=%s # Enter the net molecular charge of the ligand as integer (e.g. 1 or -2)"
@@ -442,18 +643,24 @@ def createAmberBashScript():
         a_script.append(
             "antechamber -fi pdb -fo prepc -i ${nmLigFile}_amber.pdb -o ${nmLigFile}.prepc -c ${charge_method} -at ${lig_ff} -nc ${charge_value} -pf y"
         )
-        a_script.append("## Write out the ligand with partial charge information via `antechamber`")
+        a_script.append(
+            "## Write out the ligand with partial charge information via `antechamber`"
+        )
         a_script.append(
             "antechamber -fi pdb -fo prepc -i ${nmLigFile}_amber.pdb -o ${nmLigFile}_pc.mol2 -c ${charge_method} -at ${lig_ff} -nc ${charge_value} -pf y"
         )
         a_script.append("parmchk2 -f prepc -i ${nmLigFile}.prepc -o ${nmLigFile}.frcmod\n")
         a_script.append("## Rename ligand pdb")
-        a_script.append("antechamber -i ${nmLigFile}.prepc -fi prepc -o rename_${nmLigFile}.pdb -fo pdb\n")
+        a_script.append(
+            "antechamber -i ${nmLigFile}.prepc -fi prepc -o rename_${nmLigFile}.pdb -fo pdb\n"
+        )
 
     if session["spLig"]:
         a_script.append("# Special Ligand that is incompatible with GAFF force field")
         spLigFile = uploadedFiles["spLigFile"][0][1]
-        a_script.append("spLigFile=%s # the file name of ligand without suffix `.pdb`" % spLigFile[:-4])
+        a_script.append(
+            "spLigFile=%s # the file name of ligand without suffix `.pdb`" % spLigFile[:-4]
+        )
         prepcFile = uploadedFiles["prepcFile"][0][1]
         prepcFile = prepcFile[:-6]
         a_script.append("prepc=%s # the file name without suffix `prepc`" % prepcFile)
@@ -470,9 +677,13 @@ def createAmberBashScript():
 
     # Combine all components to be modelled.
     if session["nmLig"] or session["spLig"]:
-        a_script.append("######################  Combine All Components to Be Modelled ####################")
+        a_script.append(
+            "######################  Combine All Components to Be Modelled ####################"
+        )
         a_script.append("cat > tleap.combine.in <<EOF\n")
         a_script.append("source ${rcp_ff}")
+        if rcpType == "glycoprotRcp":
+            a_script.append("source ${glycan_ff}")
         a_script.append("source leaprc.${lig_ff}")
         ## load the prepc and frcmod file for either normal or special ligand
         if session["nmLig"]:
@@ -483,6 +694,9 @@ def createAmberBashScript():
             a_script.append("loadamberparams ${frcmod}.frcmod\n")
         ## load both receptor and ligand pdb file
         a_script.append("rcp = loadpdb ${rcp_nm}_cnt_rmv.pdb")
+        if rcpType == "glycoprotRcp":
+            # declare the glycosidic bonds on `rcp` before combine
+            a_script.append("$(sed 's/system\\./rcp./g' tleap.bonds.txt)")
         if session["nmLig"] and session["spLig"]:
             a_script.append("nmLig = loadpdb rename_${nmLigFile}.pdb ")
             a_script.append("spLig = loadpdb ${spLigFile}_amber.pdb ")
@@ -502,14 +716,18 @@ def createAmberBashScript():
         a_script.append("grep -v '^CONECT' comp.pdb > comp_cnt_rmv.pdb\n")
 
     # Add Water/Membrane
-    a_script.append("################################ Add Water/Membrane ##############################")
+    a_script.append(
+        "################################ Add Water/Membrane ##############################"
+    )
 
     ## Box setting
     addType = session["addType"]
     if addType == "addWater":
         boxType = session["boxType"]
         if boxType == "cube":
-            a_script.append("boxType=solvatebox # `solvatebox`, a command in tleap, creates a cubic box ")
+            a_script.append(
+                "boxType=solvatebox # `solvatebox`, a command in tleap, creates a cubic box "
+            )
             a_script.append(
                 "dist=%s # the minimum distance between any atom originally present in solute and the edge of the periodic box."
                 % session["dist"]
@@ -542,7 +760,9 @@ def createAmberBashScript():
                 "lipid_tp=%s  # The command to check supported lipids: packmol-memgen --available_lipids"
                 % session["other_lipid_tp_input"]
             )
-            a_script.append(("lipid_ratio=%s # Set to 1 if only one lipid required" % session["lipid_ratio"]))
+            a_script.append(
+                ("lipid_ratio=%s # Set to 1 if only one lipid required" % session["lipid_ratio"])
+            )
 
         lipid_ff = session["lipid_ff"]
         if lipid_ff != "other_lipid_ff":
@@ -588,7 +808,9 @@ def createAmberBashScript():
             % session["other_water_ff_input"]
         )
         if addType == "addWater":
-            a_script.append("solvent=%sBOX  # set the water box" % session["other_water_ff_input"].upper())
+            a_script.append(
+                "solvent=%sBOX  # set the water box" % session["other_water_ff_input"].upper()
+            )
 
     ## Ion Setting
     pos_ion = session["pos_ion"]
@@ -620,9 +842,13 @@ def createAmberBashScript():
                 "packmol-memgen --pdb ${rcp_nm}_cnt_rmv.pdb --lipids ${lipid_tp} --ratio ${lipid_ratio} --preoriented --dist ${dist2Border} --dist_wat ${padDist} --salt --salt_c ${pos_ion} --saltcon ${ionConc} --nottrim --overwrite --notprotonate\n"
             )
             a_script.append("## Clean the complex pdb by `pdb4amber` for further `tleap` process")
-            a_script.append("pdb4amber -i bilayer_${rcp_nm}_cnt_rmv.pdb -o clean_bilayer_${rcp_nm}.pdb")
+            a_script.append(
+                "pdb4amber -i bilayer_${rcp_nm}_cnt_rmv.pdb -o clean_bilayer_${rcp_nm}.pdb"
+            )
             ## remove 'CONECT' line in the pdb file
-            a_script.append("grep -v '^CONECT' clean_bilayer_${rcp_nm}.pdb > clean_bilayer_${rcp_nm}_cnt_rmv.pdb")
+            a_script.append(
+                "grep -v '^CONECT' clean_bilayer_${rcp_nm}.pdb > clean_bilayer_${rcp_nm}_cnt_rmv.pdb"
+            )
             a_script.append("\n")
         if session["nmLig"] or session["spLig"]:
             a_script.append(
@@ -631,14 +857,20 @@ def createAmberBashScript():
             a_script.append("## Clean the complex pdb by `pdb4amber` for further `tleap` process")
             a_script.append("pdb4amber -i bilayer_comp.pdb -o clean_bilayer_comp.pdb")
             ## remove 'CONECT' line in the pdb file
-            a_script.append("grep -v '^CONECT' clean_bilayer_comp.pdb > clean_bilayer_comp_cnt_rmv.pdb")
+            a_script.append(
+                "grep -v '^CONECT' clean_bilayer_comp.pdb > clean_bilayer_comp_cnt_rmv.pdb"
+            )
             a_script.append("\n")
 
     # Generate the prmtop and frcmod file for the complex.
-    a_script.append("##################### Generate Prmtop and Frcmod File for the Complex ###################### ")
+    a_script.append(
+        "##################### Generate Prmtop and Frcmod File for the Complex ###################### "
+    )
     a_script.append("cat > tleap.in <<EOF\n")
     ## source the force field
     a_script.append("source ${rcp_ff}")
+    if rcpType == "glycoprotRcp":
+        a_script.append("source ${glycan_ff}")
     a_script.append("source leaprc.water.${water_ff}")
     if session["nmLig"] or session["spLig"]:
         a_script.append("source leaprc.${lig_ff}")
@@ -662,6 +894,9 @@ def createAmberBashScript():
             a_script.append("\nsystem = loadpdb clean_bilayer_${rcp_nm}_cnt_rmv.pdb\n")
         if session["nmLig"] or session["spLig"]:
             a_script.append("system = loadpdb clean_bilayer_comp_cnt_rmv.pdb\n")
+    ## glycosidic bonds (unless already declared in the combine step)
+    if rcpType == "glycoprotRcp" and not (session["nmLig"] or session["spLig"]):
+        a_script.append("$(cat tleap.bonds.txt)")
     ## add box
     if addType == "addWater":
         if boxType == "cube":
@@ -717,6 +952,7 @@ def getCurrentStructure():
     pdb = StringIO()
     PDBFile.writeFile(fixer.topology, fixer.positions, pdb)
     return pdb.getvalue()
+
 
 @app.route("/showSelectChains")
 def showSelectChainsPage():
@@ -855,9 +1091,9 @@ def showAddHydrogens():
     if unitCell is not None:
         unitCell = unitCell.value_in_unit(unit.nanometer)
     boundingBox = tuple(
-        (max((pos[i] for pos in fixer.positions)) - min((pos[i] for pos in fixer.positions))).value_in_unit(
-            unit.nanometer
-        )
+        (
+            max((pos[i] for pos in fixer.positions)) - min((pos[i] for pos in fixer.positions))
+        ).value_in_unit(unit.nanometer)
         for i in range(3)
     )
     return render_template("addHydrogens.html", unitCell=unitCell, boundingBox=boundingBox)
@@ -1002,7 +1238,11 @@ def downloadPackage():
             for i, mol in enumerate(supplier):
                 if mol is None:
                     continue
-                raw_name = mol.GetProp("_Name").strip() if mol.HasProp("_Name") and mol.GetProp("_Name").strip() else "ligand_%d" % i
+                raw_name = (
+                    mol.GetProp("_Name").strip()
+                    if mol.HasProp("_Name") and mol.GetProp("_Name").strip()
+                    else "ligand_%d" % i
+                )
                 mol_name = "".join(c if c.isalnum() or c in "_-" else "_" for c in raw_name)
                 folder = "openmmdl_simulation/%s" % mol_name
                 ligand_sdf_filename = "%s.sdf" % mol_name
@@ -1097,15 +1337,21 @@ def configureDefaultOptions():
     session["rmsd"] = "True"
     session["md_postprocessing"] = "True"
 
-def createScript(isInternal: bool = False, ligand_sdf_override: str | None = None, protein_path_override: str | None = None, companion_files_override: list[str] | None = None, companion_resnames_override: list[str] | None = None):
+
+def createScript(
+    isInternal: bool = False,
+    ligand_sdf_override: str | None = None,
+    protein_path_override: str | None = None,
+    companion_files_override: list[str] | None = None,
+    companion_resnames_override: list[str] | None = None,
+):
     script = []
 
     # If we are creating this script for internal use to run a simulation directly, add extra code at the top
     # to set the working directory and redirect stdout to the pipe.
 
     if isInternal:
-        script.append(
-            """
+        script.append("""
 import os
 import sys
 import time
@@ -1116,14 +1362,14 @@ class PipeOutput(object):
 
 sys.stdout = PipeOutput()
 sys.stderr = PipeOutput()
-os.chdir(outputDir)"""
-        )
+os.chdir(outputDir)""")
 
     # Header
 
-    script.append("# This script was generated by OpenMM-MDL Setup on %s.\n" % datetime.date.today())
     script.append(
-        """
+        "# This script was generated by OpenMM-MDL Setup on %s.\n" % datetime.date.today()
+    )
+    script.append("""
 #       ,-----.    .-------.     .-''-.  ,---.   .--.,---.    ,---.,---.    ,---. ______       .---.      
 #     .'  .-,  '.  \  _(`)_ \  .'_ _   \ |    \  |  ||    \  /    ||    \  /    ||    _ `''.   | ,_|      
 #    / ,-.|  \ _ \ | (_ o._)| / ( ` )   '|  ,  \ |  ||  ,  \/  ,  ||  ,  \/  ,  || _ | ) _  \,-./  )      
@@ -1135,8 +1381,7 @@ os.chdir(outputDir)"""
 #       '-----'    `---'        `'-..-'  '--'    '--''--'      '--''--'      '--''-----'`      `--------` 
                                                                                                       
                                                                                                       
-"""
-    )
+""")
     script.append(
         "from openmmdl.openmmdl_simulation.scripts.forcefield_water import ff_selection, water_forcefield_selection, water_model_selection, generate_forcefield, generate_transitional_forcefield"
     )
@@ -1154,7 +1399,9 @@ os.chdir(outputDir)"""
     script.append(
         "from simtk.openmm.app import PDBFile, Modeller, PDBReporter, StateDataReporter, DCDReporter, CheckpointReporter, AmberPrmtopFile, AmberInpcrdFile"
     )
-    script.append("from simtk.openmm import unit, Platform, MonteCarloBarostat, LangevinMiddleIntegrator")
+    script.append(
+        "from simtk.openmm import unit, Platform, MonteCarloBarostat, LangevinMiddleIntegrator"
+    )
     script.append("from openmm.openmm import XmlSerializer")
     script.append("from simtk.openmm import Vec3")
     script.append("import simtk.openmm as mm")
@@ -1179,27 +1426,46 @@ os.chdir(outputDir)"""
         )
         pdbType = session["pdbType"]
         if pdbType == "pdb":
-            pdb_path = protein_path_override if protein_path_override else uploadedFiles["file"][0][1]
+            pdb_path = (
+                protein_path_override if protein_path_override else uploadedFiles["file"][0][1]
+            )
             script.append('protein = "%s"' % pdb_path)
             if has_pdb_ligands:
                 ligand_paths = []
                 if session["sdfFile"] != "":
-                    ligand_paths.append(ligand_sdf_override if ligand_sdf_override else session["sdfFile"])
-                ligand_paths.extend(companion_files_override if companion_files_override is not None else session.get("companionFiles", []))
+                    ligand_paths.append(
+                        ligand_sdf_override if ligand_sdf_override else session["sdfFile"]
+                    )
+                ligand_paths.extend(
+                    companion_files_override
+                    if companion_files_override is not None
+                    else session.get("companionFiles", [])
+                )
                 ligand_names = []
                 if session["sdfFile"] != "":
                     ligand_names.append(session.get("sdfResname", "UNK"))
-                companion_resnames = companion_resnames_override if companion_resnames_override is not None else session.get("companionResnames", [])
+                companion_resnames = (
+                    companion_resnames_override
+                    if companion_resnames_override is not None
+                    else session.get("companionResnames", [])
+                )
                 expected_companion_count = len(ligand_paths) - len(ligand_names)
                 for i in range(expected_companion_count):
-                    ligand_names.append(companion_resnames[i] if i < len(companion_resnames) else f"L{i+1:02d}")
+                    ligand_names.append(
+                        companion_resnames[i] if i < len(companion_resnames) else f"L{i+1:02d}"
+                    )
                 script.append("ligands = %r" % ligand_paths)
                 script.append("ligand_names = %r" % ligand_names)
                 script.append("ligand = ligands[0]")
                 script.append("ligand_name = ligand_names[0]")
                 script.append("minimization = %s" % session["ligandMinimization"])
-                script.append("smallMoleculeForceField = '%s'" % session["smallMoleculeForceField"])
-                script.append("smallMoleculeForceFieldVersion = '%s'" % session["smallMoleculeForceFieldVersion"])
+                script.append(
+                    "smallMoleculeForceField = '%s'" % session["smallMoleculeForceField"]
+                )
+                script.append(
+                    "smallMoleculeForceFieldVersion = '%s'"
+                    % session["smallMoleculeForceFieldVersion"]
+                )
                 script.append("sanitization = %s" % session["ligandSanitization"])
             elif not has_pdb_ligands:
                 script.append("smallMoleculeForceField = None")
@@ -1231,7 +1497,9 @@ os.chdir(outputDir)"""
             # ligand related variables
             if session["nmLig"]:
                 nmLigFileName = uploadedFiles["nmLigFile"][0][1]  # e.g. '8QY.pdb'
-                nmLigName = extractLigName(nmLigFileName)  # e.g '8QY' or 'UNL' # resname in topology
+                nmLigName = extractLigName(
+                    nmLigFileName
+                )  # e.g '8QY' or 'UNL' # resname in topology
             else:
                 nmLigFileName = None
                 nmLigName = None
@@ -1248,7 +1516,9 @@ os.chdir(outputDir)"""
         script.append("inpcrd = AmberInpcrdFile(inpcrd_file)")
 
     if fileType == "pdb":
-        script.append("""\n############# Forcefield, Water and Membrane Model Selection ###################\n""")
+        script.append(
+            """\n############# Forcefield, Water and Membrane Model Selection ###################\n"""
+        )
         script.append("ff = '%s'" % session["forcefield"])
         if water != "None":
             script.append("water = '%s'" % water)
@@ -1273,7 +1543,9 @@ os.chdir(outputDir)"""
                 script.append("add_membrane = %s" % session["add_membrane"])
                 if session["water_padding"]:
                     script.append('Water_Box = "Buffer"')
-                    script.append("water_padding_distance = %s" % session["water_padding_distance"])
+                    script.append(
+                        "water_padding_distance = %s" % session["water_padding_distance"]
+                    )
                     script.append("water_boxShape = '%s'" % session["water_boxShape"])
                 else:
                     script.append('Water_Box = "Absolute"')
@@ -1353,10 +1625,13 @@ os.chdir(outputDir)"""
     if session["writeDCD"]:
         if session["restart_checkpoint"] == "yes":
             script.append(
-                "dcdReporter = DCDReporter('%s_%s', dcdInterval)" % (session["restart_step"], session["dcdFilename"])
+                "dcdReporter = DCDReporter('%s_%s', dcdInterval)"
+                % (session["restart_step"], session["dcdFilename"])
             )
         else:
-            script.append("dcdReporter = DCDReporter('%s', dcdInterval)" % (session["dcdFilename"]))
+            script.append(
+                "dcdReporter = DCDReporter('%s', dcdInterval)" % (session["dcdFilename"])
+            )
     if session["writeData"]:
         args = ", ".join("%s=True" % field for field in session["dataFields"])
         if session["restart_checkpoint"] == "yes":
@@ -1381,7 +1656,10 @@ os.chdir(outputDir)"""
                 % (session["dataInterval"], args)
             )
     if session["writeCheckpoint"]:
-        script.append("checkpointInterval = int(1000 * %s / %s)" % (session["checkpointInterval_ns"], session["dt"]))
+        script.append(
+            "checkpointInterval = int(1000 * %s / %s)"
+            % (session["checkpointInterval_ns"], session["dt"])
+        )
         if session["restart_checkpoint"] == "yes":
             script.append(
                 "checkpointReporter = CheckpointReporter('%s_%s', checkpointInterval)"
@@ -1397,7 +1675,8 @@ os.chdir(outputDir)"""
             )
         else:
             script.append(
-                "checkpointReporter = CheckpointReporter('%s', checkpointInterval)" % (session["checkpointFilename"])
+                "checkpointReporter = CheckpointReporter('%s', checkpointInterval)"
+                % (session["checkpointFilename"])
             )
             script.append(
                 "checkpointReporter10 = CheckpointReporter('10x_%s', checkpointInterval* 10)"
@@ -1412,8 +1691,7 @@ os.chdir(outputDir)"""
 
     if fileType == "pdb":
         if has_pdb_ligands:
-            script.append(
-                """
+            script.append("""
 print("Preparing MD Simulation with ligand(s)")
 protein_pdb = pdbfixer.PDBFixer(str(protein))
 prepared_ligands = [
@@ -1433,8 +1711,7 @@ for ligand_prepared, ligand_name in zip(prepared_ligands, ligand_names):
     complex_modeller.add(omm_ligand.topology, omm_ligand.positions)
 complex_topology = complex_modeller.topology
 complex_positions = complex_modeller.positions
-print("Complex topology has", complex_topology.getNumAtoms(), "atoms.")     """
-            )
+print("Complex topology has", complex_topology.getNumAtoms(), "atoms.")     """)
         elif not has_pdb_ligands:
             script.append(
                 """
@@ -1451,8 +1728,7 @@ if add_membrane:
         transitional_forcefield = generate_transitional_forcefield(protein_ff=forcefield_selected, solvent_ff=water_selected, add_membrane=add_membrane, smallMoleculeForceField=smallMoleculeForceField, smallMoleculeForceFieldVersion=smallMoleculeForceFieldVersion, rdkit_mol=None)     """
             )
         if not has_pdb_ligands:
-            script.append(
-                """
+            script.append("""
 forcefield = generate_forcefield(protein_ff=forcefield_selected, solvent_ff=water_selected, add_membrane=add_membrane, smallMoleculeForceField=smallMoleculeForceField, smallMoleculeForceFieldVersion=smallMoleculeForceFieldVersion, rdkit_mol=None)        
 modeller = app.Modeller(protein_pdb.topology, protein_pdb.positions)
 if add_membrane:
@@ -1464,11 +1740,9 @@ elif not add_membrane:
         modeller = water_absolute_solvent_builder(model_water, forcefield, water_box_x, water_box_y, water_box_z, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, protein)
 topology = modeller.topology
 positions = modeller.positions
-positions_for_equil = np.array(positions.value_in_unit(unit.nanometers)) * unit.nanometers """
-            )
+positions_for_equil = np.array(positions.value_in_unit(unit.nanometers)) * unit.nanometers """)
         elif has_pdb_ligands:
-            script.append(
-                """
+            script.append("""
 modeller = app.Modeller(complex_topology, complex_positions)
 if add_membrane:
     modeller = membrane_builder(ff, model_water, forcefield, transitional_forcefield, protein_pdb, modeller, membrane_lipid_type, membrane_padding, membrane_positive_ion, membrane_negative_ion, membrane_ionicstrength, protein)
@@ -1479,8 +1753,7 @@ elif not add_membrane:
         modeller = water_absolute_solvent_builder(model_water, forcefield, water_box_x, water_box_y, water_box_z, protein_pdb, modeller, water_positive_ion, water_negative_ion, water_ionicstrength, protein)
 topology = modeller.topology
 positions = modeller.positions  
-positions_for_equil = np.array(positions.value_in_unit(unit.nanometers)) * unit.nanometers """
-            )
+positions_for_equil = np.array(positions.value_in_unit(unit.nanometers)) * unit.nanometers """)
     elif fileType == "amber":
         script.append("topology = prmtop.topology")
         script.append("positions = inpcrd.positions")
@@ -1512,9 +1785,13 @@ positions_for_equil = np.array(positions.value_in_unit(unit.nanometers)) * unit.
                 hmrOptions,
             )
         )
-    script.append("write_ligand_with_partial_charges(topology, system, positions, ligand_name=globals().get('ligand_name'), ligand_names=globals().get('ligand_names'), ligand_files=globals().get('ligands'))")
+    script.append(
+        "write_ligand_with_partial_charges(topology, system, positions, ligand_name=globals().get('ligand_name'), ligand_names=globals().get('ligand_names'), ligand_files=globals().get('ligands'))"
+    )
     if ensemble == "npt":
-        script.append("system.addForce(MonteCarloBarostat(pressure, temperature, barostatInterval))")
+        script.append(
+            "system.addForce(MonteCarloBarostat(pressure, temperature, barostatInterval))"
+        )
     script.append("integrator = LangevinMiddleIntegrator(temperature, friction, dt)")
     if constraints != "none":
         script.append("integrator.setConstraintTolerance(constraintTolerance)")
@@ -1634,34 +1911,17 @@ stages = [
     },
 ]
             """)
-        script.append(
-            "run_gentle_equilibration("
-        )
-        script.append(
-            "    topology,"
-        )
-        script.append(
-            "    positions_for_equil,"
-        )
-        script.append(
-            "    system,"
-        )
-        script.append(
-            "    stages,"
-        )
-        script.append(
-            "    equil_output,"
-        )
-        script.append(
-            "    platform_name = '%s',"
-            % (session["platform"])
-        )
-        script.append(
-            ")"
-        )
+        script.append("run_gentle_equilibration(")
+        script.append("    topology,")
+        script.append("    positions_for_equil,")
+        script.append("    system,")
+        script.append("    stages,")
+        script.append("    equil_output,")
+        script.append("    platform_name = '%s'," % (session["platform"]))
+        script.append(")")
 
-        script.append("positions = PDBFile(equil_output).positions")        
-    
+        script.append("positions = PDBFile(equil_output).positions")
+
     if session["restart_checkpoint"] == "yes":
         script.append("simulation.loadCheckpoint('%s')" % session["checkpointFilename"])
 
@@ -1679,14 +1939,22 @@ stages = [
     script.append("simulation.context.setPositions(positions)")
     if session["restart_checkpoint"] == "yes":
         if fileType == "pdb":
-            script.append("simulation.reporters.append(PDBReporter(f'restart_output_{protein}', pdbInterval))")
+            script.append(
+                "simulation.reporters.append(PDBReporter(f'restart_output_{protein}', pdbInterval))"
+            )
         elif fileType == "amber":
-            script.append("simulation.reporters.append(PDBReporter(f'restart_output_{prmtop_file}', pdbInterval))")
+            script.append(
+                "simulation.reporters.append(PDBReporter(f'restart_output_{prmtop_file}', pdbInterval))"
+            )
     else:
         if fileType == "pdb":
-            script.append("simulation.reporters.append(PDBReporter(f'output_{protein}', pdbInterval))")
+            script.append(
+                "simulation.reporters.append(PDBReporter(f'output_{protein}', pdbInterval))"
+            )
         elif fileType == "amber":
-            script.append("simulation.reporters.append(PDBReporter(f'output_{prmtop_file[:-7]}.pdb', pdbInterval))")
+            script.append(
+                "simulation.reporters.append(PDBReporter(f'output_{prmtop_file[:-7]}.pdb', pdbInterval))"
+            )
     if session["writeDCD"]:
         script.append("simulation.reporters.append(dcdReporter)")
     if session["writeData"]:
@@ -1724,12 +1992,14 @@ stages = [
     script.append("close_reporters(simulation)")
     script.append("del simulation")
     script.append("gc.collect()")
-    
+
     # session[md_postprocessing]
     if session["md_postprocessing"] == "True":
         # mdtraj_conversion() and MDanalysis_conversion()
         if fileType == "pdb":
-            script.append("mdtraj_conversion(f'Equilibration_{protein}', '%s')" % session["mdtraj_output"])
+            script.append(
+                "mdtraj_conversion(f'Equilibration_{protein}', '%s')" % session["mdtraj_output"]
+            )
             if has_pdb_ligands:
                 if session["mdtraj_output"] != "mdtraj_gro_xtc":
                     script.append(
@@ -1809,20 +2079,27 @@ stages = [
     # post_md_file_movement()
     if fileType == "pdb":
         if has_pdb_ligands:
-            script.append("post_md_file_movement(protein, ligands=globals().get('ligands'), mda_selection='%s')" % session["mda_selection"])
+            script.append(
+                "post_md_file_movement(protein, ligands=globals().get('ligands'), mda_selection='%s')"
+                % session["mda_selection"]
+            )
         elif not has_pdb_ligands:
-            script.append("post_md_file_movement(protein, mda_selection='%s')" % session["mda_selection"])
+            script.append(
+                "post_md_file_movement(protein, mda_selection='%s')" % session["mda_selection"]
+            )
     elif fileType == "amber":
         if (
             session["has_files"] == "yes"
         ):  # In this case, no ligand file will be uploaded, thus not neccessary to assign value to argument `ligands`
             script.append(
-                "post_md_file_movement(protein_name=f'{prmtop_file[:-7]}.pdb', prmtop=prmtop_file, inpcrd=inpcrd_file, mda_selection='%s')" % session["mda_selection"]
+                "post_md_file_movement(protein_name=f'{prmtop_file[:-7]}.pdb', prmtop=prmtop_file, inpcrd=inpcrd_file, mda_selection='%s')"
+                % session["mda_selection"]
             )
         elif session["has_files"] == "no":
             if not session["nmLig"] and not session["spLig"]:
                 script.append(
-                    "post_md_file_movement(protein_name=f'{prmtop_file[:-7]}.pdb', prmtop=prmtop_file, inpcrd=inpcrd_file, mda_selection='%s')" % session["mda_selection"]
+                    "post_md_file_movement(protein_name=f'{prmtop_file[:-7]}.pdb', prmtop=prmtop_file, inpcrd=inpcrd_file, mda_selection='%s')"
+                    % session["mda_selection"]
                 )
             elif session["nmLig"] and not session["spLig"]:
                 script.append(
@@ -1835,10 +2112,7 @@ stages = [
                     % (nmLigFileName, spLigFileName, session["mda_selection"])
                 )
 
-    if (
-        session["md_postprocessing"] == "True"
-        and session.get("cleanup", "False") == "True"
-    ):
+    if session["md_postprocessing"] == "True" and session.get("cleanup", "False") == "True":
         script.append("cleanup_post_md()")
 
     # session[openmmdl_analysis]
@@ -1851,7 +2125,9 @@ stages = [
             top_ext = ".gro"
             traj_ext = ".xtc"
         if fileType == "pdb" and has_pdb_ligands:
-            script.append("analysis_special_flags = ''.join(f\" -s {name}\" for name in ligand_names[1:])")
+            script.append(
+                "analysis_special_flags = ''.join(f\" -s {name}\" for name in ligand_names[1:])"
+            )
         # session[analysis_selection] == 'analysis_all'
         if session["analysis_selection"] == "analysis_all":
             if fileType == "pdb":
@@ -2138,4 +2414,3 @@ def main(host="127.0.0.1", port=5000, open_browser=True):
 
 if __name__ == "__main__":
     main()
-
