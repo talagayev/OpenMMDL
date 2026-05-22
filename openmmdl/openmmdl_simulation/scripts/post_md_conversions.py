@@ -8,6 +8,7 @@ from MDAnalysis.analysis import align
 from MDAnalysis import transformations as trans
 from MDAnalysis.lib import distances
 
+
 def _close_mda_objects(*objs):
     for obj in objs:
         if obj is None:
@@ -18,6 +19,36 @@ def _close_mda_objects(*objs):
                 traj.close()
             except Exception:
                 pass
+
+
+def residues_bonded_to_protein(universe):
+    """Return residues covalently bonded to protein atoms but not themselves
+    protein (i.e. N-/O-glycans). Empty AtomGroup if no protein or no bonds."""
+    try:
+        prot = universe.select_atoms("protein")
+    except Exception:
+        return universe.atoms[0:0]
+    if prot.n_atoms == 0:
+        return universe.atoms[0:0]
+    try:
+        bonds = prot.bonds
+    except Exception:
+        return universe.atoms[0:0]
+
+    protein_atom_ix = set(prot.indices.tolist())
+    other_atom_ix = []
+    for bond in bonds:
+        a, b = bond.atoms[0], bond.atoms[1]
+        a_in = a.index in protein_atom_ix
+        b_in = b.index in protein_atom_ix
+        if a_in and not b_in:
+            other_atom_ix.append(b.index)
+        elif b_in and not a_in:
+            other_atom_ix.append(a.index)
+    if not other_atom_ix:
+        return universe.atoms[0:0]
+    return universe.atoms[other_atom_ix].residues.atoms
+
 
 def mdtraj_conversion(pdb_file, mdtraj_output):
     """
@@ -112,6 +143,9 @@ def MDanalysis_conversion(
         # Optional keyword; if unsupported, returns empty.
         return _safe_select(u, "lipid")
 
+    def _glycan_group(u):
+        return residues_bonded_to_protein(u)
+
     def _has_pbc(ts):
         dims = getattr(ts, "dimensions", None)
         if dims is None or len(dims) < 3:
@@ -199,16 +233,22 @@ def MDanalysis_conversion(
         prot = _safe_select(u, "protein")
         lig = _ligand_group(u)
         lip = _lipid_group(u)
+        glycan = _glycan_group(u)
 
-        # Anchor for centering: protein + ligand + lipids (if present)
+        # Anchor for centering: protein + ligand + lipids + glycans (if present)
         anchor = prot if prot.n_atoms else u.atoms
         if lig.n_atoms:
             anchor = anchor + lig
         if lip.n_atoms:
             anchor = anchor + lip
+        if glycan.n_atoms:
+            anchor = anchor + glycan
 
         protein = prot
         non_protein = _safe_select(u, "not protein")
+        # exclude glycans from the per-residue wrap so they stay with the protein
+        if glycan.n_atoms:
+            non_protein = non_protein - glycan
 
         transforms = []
 
@@ -228,12 +268,19 @@ def MDanalysis_conversion(
         if lip.n_atoms and protein.n_atoms:
             transforms.append(reimage_residues_to_reference(lip, protein))
 
+        # Keep covalently-attached glycans in the same image as the protein
+        if glycan.n_atoms and protein.n_atoms:
+            if _can_unwrap(glycan):
+                transforms.append(trans.unwrap(glycan))
+            transforms.append(reimage_to_reference(glycan, protein))
+
         # Center then wrap: protein by segments; everything else by residues
         transforms.append(trans.center_in_box(anchor, center="mass", wrap=False))
 
         if protein.n_atoms:
             transforms.append(trans.wrap(protein, compound="segments"))
-        transforms.append(trans.wrap(non_protein, compound="residues"))
+        if non_protein.n_atoms:
+            transforms.append(trans.wrap(non_protein, compound="residues"))
 
         u.trajectory.add_transformations(*transforms)
 
@@ -250,9 +297,12 @@ def MDanalysis_conversion(
         prot2 = _safe_select(u2, "protein")
         lig2 = _ligand_group(u2)
         lip2 = _lipid_group(u2)
+        glycan2 = _glycan_group(u2)
 
         protein2 = prot2
         non_protein2 = _safe_select(u2, "not protein")
+        if glycan2.n_atoms:
+            non_protein2 = non_protein2 - glycan2
 
         transforms = []
 
@@ -265,9 +315,13 @@ def MDanalysis_conversion(
         if lip2.n_atoms and protein2.n_atoms:
             transforms.append(reimage_residues_to_reference(lip2, protein2))
 
+        if glycan2.n_atoms and protein2.n_atoms:
+            transforms.append(reimage_to_reference(glycan2, protein2))
+
         if protein2.n_atoms:
             transforms.append(trans.wrap(protein2, compound="segments"))
-        transforms.append(trans.wrap(non_protein2, compound="residues"))
+        if non_protein2.n_atoms:
+            transforms.append(trans.wrap(non_protein2, compound="residues"))
 
         u2.trajectory.add_transformations(*transforms)
 

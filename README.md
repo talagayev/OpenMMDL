@@ -103,6 +103,14 @@ the address displayed in the console window (e.g. http://127.0.0.1:5000).
 Download the processed PDB file and Python script, which will serve as input
 for the **OpenMMDL Simulation** script.
 
+The Amber path additionally supports a **Glycoprotein** receptor mode for
+N-/O-glycosylated proteins. OpenMMDL detects sugar residues (NAG/NDG, BMA,
+MAN, FUC/FUL) by PDB residue name, renames them to GLYCAM-06j-1 conventions,
+and emits explicit glycosidic-bond statements into the generated tleap
+script. Only the common N-glycan core sugars are currently supported;
+unrecognised sugars produce a descriptive error rather than an incorrect
+topology.
+
 ## OpenMMDL Simulation
 
 **OpenMMDL Simulation** starts the MD simulation with the inputs acquired

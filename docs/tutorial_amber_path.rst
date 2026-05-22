@@ -84,7 +84,9 @@ The page consists of three tabs: Receptor, Ligand, and Add Water/Membrane.
 
 1. **Receptor**
 
-Depending on the macromolecule type (Protein, DNA, RNA, or Carbohydrate), users can select the receptor PDB file using the file browser and choose the appropriate force fields.
+Depending on the macromolecule type (Protein, DNA, RNA, Carbohydrate, or Glycoprotein), users can select the receptor PDB file using the file browser and choose the appropriate force fields.
+
+For the **Glycoprotein** option, OpenMMDL Setup detects sugar residues (NAG / NDG, BMA, MAN, FUC / FUL) by PDB residue name, renames the residues and atoms to GLYCAM conventions, and emits explicit ``bond`` statements into the generated ``tleap.in`` so the glycosidic linkages survive into the prmtop. Both the protein and the glycan force fields are sourced. Currently the verified N-glycan core (NAG/NDG, BMA, MAN, FUC/FUL with 0-/3-/4-/6-/3,6-/4,6-linkages) is supported; unrecognised sugars raise a clear error rather than producing an incorrect topology.
 
 .. figure:: /_static/images/tutorials/Amber_Path/receptor.png
    :figwidth: 700px
