@@ -21,6 +21,10 @@ The rules for this file:
 talagayev, MarvinTaterra
 
 ### Added
+- Added an interactive `PDB small molecule` tutorial inside `OpenMMDL Setup`
+  with a guided panel, example files (5WYZ receptor with crystal glycans,
+  two `7VF` ligand copies) and an `Interactive Tutorials` docs page
+  (2026-09-06, PR#TBD)
 - Added native glycoprotein support in `OpenMMDL Setup` AMBER path
   (2026-05-20, PR#210)
 - Added glycan-aware PBC imaging in `OpenMMDL Simulation`
@@ -33,6 +37,14 @@ talagayev, MarvinTaterra
 - Fixed `OPC` water recognition error (2026-04-28, PR#204)
 
 ### Changed
+- Changed `OpenMMDL Setup` PDB path defaults: `AMBER14` is the default force
+  field, `AMBER19` auto-selects the `OPC3` water model, and the input path is
+  no longer pre-selected on the first page (2026-09-06, PR#TBD)
+- Changed the docs pages `tutorial_pdb_path` / `tutorial_amber_path` to
+  `pdb_path` / `amber_path` (old URLs redirect); the PDB path page now documents
+  all options (2026-09-06, PR#TBD)
+- Removed the mislabeled `5VF.sdf` tutorial ligand in favour of `7VF_A.sdf` /
+  `7VF_B.sdf` (2026-09-06, PR#TBD)
 - Changed `-n` to optional to fix peptide issues in `OpenMMDL Analysis` (2026-05-13, PR#208)
 - Changed imports to lightweight imports in `OpenMMDL Analysis` (2026-05-03, PR#206)
 
